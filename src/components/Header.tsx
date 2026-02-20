@@ -4,7 +4,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef } from "react";
 
-const navItems = [
+interface SubMenuItem {
+  name: string;
+  href: string;
+  submenu?: SubMenuItem[];
+}
+
+interface NavItem {
+  name: string;
+  href: string;
+  submenu?: SubMenuItem[];
+}
+
+const navItems: NavItem[] = [
   {
     name: "회사소개",
     href: "/about",
