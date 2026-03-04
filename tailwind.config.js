@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-noto-sans-kr)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+        en: ['var(--font-montserrat)', 'Pretendard', 'sans-serif'],
       },
     },
   },
