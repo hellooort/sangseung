@@ -6,50 +6,50 @@ import Image from "next/image";
 const works = [
   { 
     id: 1, 
-    title: "LH 레퍼런스 LED 전광판", 
+    title: "LH 컨퍼런스 LED 포스터", 
     spec: "S-Poster P2.5mm",
     category: "INDOOR", 
-    image: "/image/레퍼런스/S-Poster_P2.5mm_LH 레퍼런스 LED 전광판.jpg",
+    image: "/image/reference/work_1.jpg",
     height: 280 
   },
   { 
-    id: 2, 
-    title: "호주 SUN CORP 빌딩 COB LED 스크린", 
+    id: 4, 
+    title: "호주 SUN CORP 실내 COB LED 스크린", 
     spec: "SCO-Wall P0.93mm",
     category: "INDOOR", 
-    image: "/image/레퍼런스/SCO-Wall_P0.93mm, 0.78mm_호주 SUN CORP 빌딩 COB LED 스크린.jpg",
+    image: "/image/reference/work_4.jpg",
     height: 350 
   },
   { 
-    id: 3, 
-    title: "세종시청 다목적홀 LED 스크린", 
+    id: 6, 
+    title: "서울시청 다목적홀 LED 스크린", 
     spec: "SI640 P2.5mm",
     category: "INDOOR", 
-    image: "/image/레퍼런스/SI640_P2.5mm_세종시청 다목적홀 LED 스크린.jpg",
+    image: "/image/reference/work_6.jpg",
     height: 240 
   },
   { 
-    id: 4, 
-    title: "서울 반포쌍용쇼핑센터 LED 미디어 파사드", 
+    id: 8, 
+    title: "김해 금관가야휴게소 LED 미디어 파사드", 
     spec: "SMI P7.8mm",
     category: "MEDIA FACADE", 
-    image: "/image/레퍼런스/SMI_P7.8mm_서울 반포쌍용쇼핑센터 LED 미디어 파사드.jpg",
+    image: "/image/reference/work_8.jpg",
     height: 320 
   },
   { 
-    id: 5, 
-    title: "일본 아사히료칸 LED 스크린", 
+    id: 22, 
+    title: "일본 방재훈련소 LED 스크린", 
     spec: "SOD-R P3.91mm",
     category: "RENTAL", 
-    image: "/image/레퍼런스/SOD-R_P3.91mm_일본 아사히료칸 LED 스크린.jpg",
+    image: "/image/reference/work_22.jpg",
     height: 260 
   },
   { 
-    id: 6, 
-    title: "중국 심천시 메타버스 LED 미디어파사드", 
+    id: 9, 
+    title: "중국 스포츠 스타디움 LED 미디어파사드", 
     spec: "SMO P31.25mm",
     category: "MEDIA FACADE", 
-    image: "/image/레퍼런스/SMO_P31.25mm_중국 심천시 메타버스 LED 미디어파사드.jpg",
+    image: "/image/reference/work_9.jpg",
     height: 300 
   },
 ];
