@@ -45,12 +45,58 @@ const navItems: NavItem[] = [
         name: "LED 디스플레이",
         href: "/business/led",
         submenu: [
-          { name: "COB LED", href: "/business/led/cob" },
-          { name: "INDOOR FIXED", href: "/business/led/indoor" },
-          { name: "OUTDOOR FIXED", href: "/business/led/outdoor" },
-          { name: "RENTAL", href: "/business/led/rental" },
-          { name: "MEDIA FACADE", href: "/business/led/facade" },
-          { name: "AD SIGN", href: "/business/led/adsign" },
+          {
+            name: "COB LED",
+            href: "/business/led/cob",
+            submenu: [
+              { name: "LFlex", href: "/business/led/cob/lflex" },
+              { name: "SCO-Wall Series", href: "/business/led/cob/sco-wall" },
+            ],
+          },
+          {
+            name: "INDOOR FIXED",
+            href: "/business/led/indoor",
+            submenu: [
+              { name: "S-Wall Series", href: "/business/led/indoor/s-wall" },
+              { name: "SVI60 Series", href: "/business/led/indoor/svi60" },
+              { name: "SVI 1000 Series", href: "/business/led/indoor/svi1000" },
+            ],
+          },
+          {
+            name: "OUTDOOR FIXED",
+            href: "/business/led/outdoor",
+            submenu: [
+              { name: "SOD Series", href: "/business/led/outdoor/sod" },
+              { name: "SCOD Series", href: "/business/led/outdoor/scod" },
+            ],
+          },
+          {
+            name: "RENTAL",
+            href: "/business/led/rental",
+            submenu: [
+              { name: "SVI50 Series", href: "/business/led/rental/svi50" },
+              { name: "STD Series", href: "/business/led/rental/std" },
+            ],
+          },
+          {
+            name: "MEDIA FACADE",
+            href: "/business/led/facade",
+            submenu: [
+              { name: "SGL Series", href: "/business/led/facade/sgl" },
+              { name: "ROD-1 Series", href: "/business/led/facade/rod1" },
+              { name: "ROD-2 Series", href: "/business/led/facade/rod2" },
+              { name: "ROD-3 Series", href: "/business/led/facade/rod3" },
+              { name: "ROD-4 Series", href: "/business/led/facade/rod4" },
+            ],
+          },
+          {
+            name: "AD SIGN",
+            href: "/business/led/adsign",
+            submenu: [
+              { name: "AD Sign", href: "/business/led/adsign/ad-sign" },
+              { name: "Cloud IoT Solution", href: "/business/led/adsign/cloud-iot" },
+            ],
+          },
         ],
       },
     ],
