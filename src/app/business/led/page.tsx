@@ -1,43 +1,50 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 const products = [
   {
     id: 1,
-    name: "실외용 LED 전광판",
-    description: "고휘도, 방수/방진 설계로 옥외 환경에 최적화된 대형 LED 디스플레이",
-    specs: ["밝기: 6,000~10,000 nits", "방수등급: IP65", "픽셀피치: P3~P16"],
+    name: "S-Wall (실내용)",
+    description: "고화질, 고해상도의 실내 환경에 최적화된 LED 디스플레이",
+    specs: ["밝기: 800~1,500 nits", "픽셀피치: P1.2~P4", "시야각: 160°"],
+    image: "/image/S-Wall/2.jpg",
   },
   {
     id: 2,
-    name: "실내용 LED 전광판",
-    description: "고화질, 고해상도의 실내 환경에 최적화된 LED 디스플레이",
-    specs: ["밝기: 800~1,500 nits", "픽셀피치: P1.2~P4", "시야각: 160°"],
+    name: "S-Poster (LED 포스터)",
+    description: "슬림한 디자인의 이동형 LED 포스터 디스플레이",
+    specs: ["초슬림 설계", "이동식 스탠드", "고해상도"],
+    image: "/image/S-Poster/S-Poster main.jpg",
   },
   {
     id: 3,
-    name: "미디어 파사드",
-    description: "건물 외벽을 미디어 콘텐츠 표출 공간으로 활용하는 대형 디스플레이 시스템",
-    specs: ["곡면 설치 가능", "투과형 설계", "맞춤 제작"],
+    name: "SCO-Wall (COB LED)",
+    description: "COB 기술 적용 프리미엄 LED 디스플레이",
+    specs: ["COB 패키징", "광시야각", "고대비"],
+    image: "/image/SCO-Wall/1-1.png",
   },
   {
     id: 4,
-    name: "교통정보 전광판",
-    description: "도로, 철도, 공항 등 교통 시설에 최적화된 정보 표출 시스템",
-    specs: ["실시간 연동", "고시인성", "원격 제어"],
+    name: "SOD-C (실외용)",
+    description: "고휘도, 방수/방진 설계로 옥외 환경에 최적화된 대형 LED 디스플레이",
+    specs: ["밝기: 6,000~10,000 nits", "방수등급: IP65", "픽셀피치: P4~P16"],
+    image: "/image/SOD-C/SOD-C_main_img_sample.jpg",
   },
   {
     id: 5,
-    name: "기상정보 전광판",
-    description: "기상청 연동 실시간 기상 정보 표출 전광판",
-    specs: ["기상청 API 연동", "자동 업데이트", "다중 정보 표출"],
+    name: "SMI (미디어 파사드)",
+    description: "건물 외벽을 미디어 콘텐츠 표출 공간으로 활용하는 대형 디스플레이 시스템",
+    specs: ["곡면 설치 가능", "투과형 설계", "맞춤 제작"],
+    image: "/image/SMI/1.jpg",
   },
   {
     id: 6,
-    name: "스포츠 전광판",
-    description: "경기장, 체육관 등 스포츠 시설 전용 대형 전광판",
-    specs: ["고속 영상 처리", "광시야각", "대형 사이즈"],
+    name: "AD Cloud (클라우드 전광판)",
+    description: "클라우드 기반 원격 제어 LED 전광판 시스템",
+    specs: ["실시간 콘텐츠 관리", "원격 제어", "다중 디스플레이 연동"],
+    image: "/image/AD Cloud/AD Cloud_main.jpg",
   },
 ];
 
@@ -86,15 +93,24 @@ export default function LEDBusinessPage() {
       <Header />
       <main className="pt-20">
         {/* 히어로 섹션 */}
-        <section className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative py-32 px-6 lg:px-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/image/reference/work_8.jpg"
+              alt="LED Display"
+              fill
+              className="object-cover opacity-30"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
+          </div>
+          <div className="relative max-w-7xl mx-auto">
             <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
               LED DISPLAY
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               LED 디스플레이
             </h1>
-            <p className="text-[#888] text-lg max-w-2xl leading-relaxed mb-8">
+            <p className="text-[#ccc] text-lg max-w-2xl leading-relaxed mb-8">
               설계부터 제작, 시공, 유지보수까지 LED 디스플레이의 모든 것을 제공하는
               원스톱 솔루션 전문 기업입니다.
             </p>
@@ -117,25 +133,32 @@ export default function LEDBusinessPage() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-[#111] rounded-xl p-6 hover:bg-[#1a1a1a] transition-colors group"
+                  className="bg-[#111] rounded-xl overflow-hidden hover:bg-[#1a1a1a] transition-colors group"
                 >
-                  <div className="w-full aspect-video bg-[#1a1a1a] rounded-lg mb-6 flex items-center justify-center group-hover:bg-[#222] transition-colors">
-                    <span className="text-[#333] text-4xl font-bold">{product.id}</span>
+                  <div className="relative w-full aspect-video bg-[#1a1a1a]">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                  <h3 className="text-white text-xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-[#888] text-sm mb-4 leading-relaxed">
-                    {product.description}
-                  </p>
-                  <ul className="space-y-1">
-                    {product.specs.map((spec, index) => (
-                      <li key={index} className="text-[#666] text-xs flex items-center gap-2">
-                        <span className="text-[#4A90D9]">•</span>
-                        {spec}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-6">
+                    <h3 className="text-white text-xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="text-[#888] text-sm mb-4 leading-relaxed">
+                      {product.description}
+                    </p>
+                    <ul className="space-y-1">
+                      {product.specs.map((spec, index) => (
+                        <li key={index} className="text-[#666] text-xs flex items-center gap-2">
+                          <span className="text-[#4A90D9]">•</span>
+                          {spec}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               ))}
             </div>
@@ -161,17 +184,17 @@ export default function LEDBusinessPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-24 px-6 lg:px-20">
+        <section className="py-24 px-6 lg:px-20 bg-gradient-to-r from-[#4A90D9] to-[#3A7BC8]">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               프로젝트 상담이 필요하신가요?
             </h2>
-            <p className="text-[#888] mb-8">
+            <p className="text-white/80 mb-8">
               전문 상담원이 귀사에 최적화된 LED 솔루션을 제안해 드립니다.
             </p>
             <Link
               href="/contact"
-              className="inline-block bg-[#4A90D9] text-white px-8 py-4 rounded font-semibold hover:bg-[#3A80C9] transition-colors"
+              className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors"
             >
               문의하기
             </Link>
