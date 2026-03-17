@@ -131,16 +131,9 @@ export default function SWallDetailPage() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               {/* Gallery */}
-              <div>
-                <div className="relative aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden mb-4">
-                  <Image
-                    src={galleryImages[selectedImage]}
-                    alt={`S-Wall View ${selectedImage + 1}`}
-                    fill
-                    className="object-contain p-4"
-                  />
-                </div>
-                <div className="flex gap-2 overflow-x-auto pb-2">
+              <div className="flex gap-3">
+                {/* Thumbnails — 왼쪽 세로 */}
+                <div className="flex flex-col gap-2 overflow-y-auto max-h-[500px] pr-1">
                   {galleryImages.map((img, index) => (
                     <button
                       key={index}
@@ -154,6 +147,15 @@ export default function SWallDetailPage() {
                       <Image src={img} alt="" fill className="object-cover" />
                     </button>
                   ))}
+                </div>
+                {/* Main Image */}
+                <div className="relative flex-1 aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden">
+                  <Image
+                    src={galleryImages[selectedImage]}
+                    alt={`S-Wall View ${selectedImage + 1}`}
+                    fill
+                    className="object-contain p-4"
+                  />
                 </div>
               </div>
 
@@ -209,27 +211,8 @@ export default function SWallDetailPage() {
           </div>
         </section>
 
-        {/* Section 3: Immersive Banner — Samsung The Wall 메인 비주얼 스타일 */}
+        {/* Section 3: Immersive Banner */}
         <section className="relative py-0">
-          <div className="sticky-nav bg-black border-b border-white/10">
-            <div className="max-w-7xl mx-auto px-6 lg:px-20 flex items-center justify-between h-14">
-              <div className="flex items-center gap-8">
-                <span className="text-white font-bold text-sm">실내용 S-Wall</span>
-                <div className="hidden md:flex items-center gap-6 text-sm">
-                  <a href="#features" className="text-white/60 hover:text-white transition-colors">특장점</a>
-                  <a href="#specs" className="text-white/60 hover:text-white transition-colors">스펙</a>
-                  <a href="#applications" className="text-white/60 hover:text-white transition-colors">활용분야</a>
-                </div>
-              </div>
-              <Link
-                href="/contact"
-                className="text-sm border border-white/30 text-white px-5 py-1.5 rounded hover:bg-white hover:text-black transition-all"
-              >
-                견적문의
-              </Link>
-            </div>
-          </div>
-
           <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-black">
             <div className="absolute inset-0">
               <Image
