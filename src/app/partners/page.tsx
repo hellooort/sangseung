@@ -2,22 +2,22 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const partners = [
-  { name: "한화", category: "건설/화학" },
-  { name: "롯데", category: "호텔/케미칼" },
-  { name: "현대자동차", category: "자동차" },
-  { name: "삼성 SDI", category: "전자" },
-  { name: "AIG 손해보험", category: "금융" },
-  { name: "동국제강", category: "철강" },
-  { name: "LS메탈", category: "금속" },
-  { name: "기아자동차", category: "자동차" },
-  { name: "아산병원", category: "의료" },
-  { name: "인하대학교", category: "교육" },
-  { name: "국민체육진흥공단", category: "공공기관" },
-  { name: "국회도서관", category: "공공기관" },
-  { name: "외교부", category: "공공기관" },
-  { name: "해군 2함대", category: "국방" },
-  { name: "한국보건산업진흥원", category: "공공기관" },
-  { name: "서울산업대학교", category: "교육" },
+  { name: "한화", category: "건설/화학", url: "https://www.hanwha.co.kr" },
+  { name: "롯데", category: "호텔/케미칼", url: "https://www.lotte.co.kr" },
+  { name: "현대자동차", category: "자동차", url: "https://www.hyundai.com" },
+  { name: "삼성 SDI", category: "전자", url: "https://www.samsungsdi.co.kr" },
+  { name: "AIG 손해보험", category: "금융", url: "https://www.aig.co.kr" },
+  { name: "동국제강", category: "철강", url: "https://www.dongkuk.com" },
+  { name: "LS메탈", category: "금속", url: "https://www.lsmetal.co.kr" },
+  { name: "기아자동차", category: "자동차", url: "https://www.kia.com" },
+  { name: "아산병원", category: "의료", url: "https://www.amc.seoul.kr" },
+  { name: "인하대학교", category: "교육", url: "https://www.inha.ac.kr" },
+  { name: "국민체육진흥공단", category: "공공기관", url: "https://www.kspo.or.kr" },
+  { name: "국회도서관", category: "공공기관", url: "https://www.nanet.go.kr" },
+  { name: "외교부", category: "공공기관", url: "https://www.mofa.go.kr" },
+  { name: "해군 2함대", category: "국방", url: "#" },
+  { name: "한국보건산업진흥원", category: "공공기관", url: "https://www.khidi.or.kr" },
+  { name: "서울산업대학교", category: "교육", url: "https://www.seoultech.ac.kr" },
 ];
 
 export default function PartnersPage() {
@@ -38,13 +38,24 @@ export default function PartnersPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {partners.map((partner) => (
-                <div
+                <a
                   key={partner.name}
-                  className="bg-[#1a1a1a] rounded-xl p-6 flex flex-col items-center justify-center h-40 hover:bg-[#222] transition-colors"
+                  href={partner.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#1a1a1a] rounded-xl p-6 flex flex-col items-center justify-center h-40 hover:bg-[#222] transition-colors group"
                 >
-                  <span className="text-white text-xl font-bold mb-2">{partner.name}</span>
+                  <span className="text-white text-xl font-bold mb-2 group-hover:text-[#4A90D9] transition-colors">{partner.name}</span>
                   <span className="text-[#666] text-xs">{partner.category}</span>
-                </div>
+                  {partner.url !== "#" && (
+                    <span className="text-[#4A90D9] text-xs mt-3 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                      사이트 방문
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </span>
+                  )}
+                </a>
               ))}
             </div>
           </div>

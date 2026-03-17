@@ -10,6 +10,7 @@ const products = [
     description: "고화질, 고해상도의 실내 환경에 최적화된 LED 디스플레이",
     specs: ["밝기: 800~1,500 nits", "픽셀피치: P1.2~P4", "시야각: 160°"],
     image: "/image/S-Wall/2.jpg",
+    href: "/business/led/indoor/s-wall",
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const products = [
     description: "슬림한 디자인의 이동형 LED 포스터 디스플레이",
     specs: ["초슬림 설계", "이동식 스탠드", "고해상도"],
     image: "/image/S-Poster/S-Poster main.jpg",
+    href: "#",
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ const products = [
     description: "COB 기술 적용 프리미엄 LED 디스플레이",
     specs: ["COB 패키징", "광시야각", "고대비"],
     image: "/image/SCO-Wall/1-1.png",
+    href: "/business/led/cob/sco-wall",
   },
   {
     id: 4,
@@ -31,6 +34,7 @@ const products = [
     description: "고휘도, 방수/방진 설계로 옥외 환경에 최적화된 대형 LED 디스플레이",
     specs: ["밝기: 6,000~10,000 nits", "방수등급: IP65", "픽셀피치: P4~P16"],
     image: "/image/SOD-C/SOD-C_main_img_sample.jpg",
+    href: "#",
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ const products = [
     description: "건물 외벽을 미디어 콘텐츠 표출 공간으로 활용하는 대형 디스플레이 시스템",
     specs: ["곡면 설치 가능", "투과형 설계", "맞춤 제작"],
     image: "/image/SMI/1.jpg",
+    href: "#",
   },
   {
     id: 6,
@@ -45,6 +50,7 @@ const products = [
     description: "클라우드 기반 원격 제어 LED 전광판 시스템",
     specs: ["실시간 콘텐츠 관리", "원격 제어", "다중 디스플레이 연동"],
     image: "/image/AD Cloud/AD Cloud_main.jpg",
+    href: "#",
   },
 ];
 
@@ -131,9 +137,10 @@ export default function LEDBusinessPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
-                <div
+                <Link
                   key={product.id}
-                  className="bg-[#111] rounded-xl overflow-hidden hover:bg-[#1a1a1a] transition-colors group"
+                  href={product.href}
+                  className="bg-[#111] rounded-xl overflow-hidden hover:bg-[#1a1a1a] transition-colors group block"
                 >
                   <div className="relative w-full aspect-video bg-[#1a1a1a]">
                     <Image
@@ -159,7 +166,7 @@ export default function LEDBusinessPage() {
                       ))}
                     </ul>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

@@ -252,11 +252,10 @@ export default function WorksPage() {
                       />
                     </div>
                     
-                    {/* Overlay on hover */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
                       <span className="text-[#4A90D9] text-xs mb-1">{work.spec}</span>
-                      <h3 className="text-white text-lg font-bold">{work.title}</h3>
-                      <span className="text-[#aaa] text-sm">{work.category}</span>
+                      <h3 className="text-white text-lg font-bold leading-tight">{work.title}</h3>
+                      <span className="text-[#aaa] text-sm mt-1">{work.category}</span>
                     </div>
                   </div>
                 </div>

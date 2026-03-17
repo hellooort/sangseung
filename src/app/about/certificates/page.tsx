@@ -1,6 +1,11 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import { useState } from "react";
+
+const certFilters = ["전체", "품질", "인증", "등록", "생산", "표창", "특허"];
 
 const certificates = [
   { id: 1, title: "ISO 14001 인증서 (EN)", category: "품질", image: "/image/cert/cert_1.jpg" },
@@ -33,6 +38,12 @@ const certificates = [
 ];
 
 export default function CertificatesPage() {
+  const [activeFilter, setActiveFilter] = useState("전체");
+
+  const filteredCerts = activeFilter === "전체"
+    ? certificates
+    : certificates.filter((cert) => cert.category === activeFilter);
+
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
@@ -43,11 +54,33 @@ export default function CertificatesPage() {
               CERTIFICATES
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">인증서</h1>
-            <p className="text-[#888] mb-12">상승종합통신㈜의 기술력과 품질을 증명하는 인증서입니다.</p>
+            <p className="text-[#888] mb-8">상승종합통신㈜의 기술력과 품질을 증명하는 인증서입니다.</p>
+
+            {/* 분류 탭 */}
+            <div className="flex flex-wrap gap-3 mb-12">
+              {certFilters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-5 py-2.5 rounded-full text-sm transition-all ${
+                    activeFilter === filter
+                      ? "bg-[#4A90D9] text-white"
+                      : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
+                  }`}
+                >
+                  {filter}
+                  <span className="ml-1.5 text-xs opacity-70">
+                    {filter === "전체"
+                      ? certificates.length
+                      : certificates.filter((c) => c.category === filter).length}
+                  </span>
+                </button>
+              ))}
+            </div>
 
             {/* 갤러리 그리드 */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {certificates.map((cert) => (
+              {filteredCerts.map((cert) => (
                 <div
                   key={cert.id}
                   className="group bg-[#1a1a1a] rounded-xl overflow-hidden"

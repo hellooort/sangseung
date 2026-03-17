@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface SubMenuItem {
   name: string;
@@ -40,6 +40,10 @@ const navItems: NavItem[] = [
           { name: "해외 프로젝트", href: "/business/network/overseas" },
           { name: "공사실적", href: "/business/network/projects" },
         ],
+      },
+      {
+        name: "IP-Wall",
+        href: "/business/ip-wall",
       },
       {
         name: "LED 디스플레이",
@@ -117,9 +121,18 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const submenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleMenuEnter = (menuName: string) => {
     if (menuTimeoutRef.current) {
@@ -161,7 +174,11 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-sm border-b border-white/10">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled
+        ? "bg-black/95 backdrop-blur-md border-b border-white/10 shadow-lg"
+        : "bg-transparent backdrop-blur-sm border-b border-white/10"
+    }`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-20">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center">

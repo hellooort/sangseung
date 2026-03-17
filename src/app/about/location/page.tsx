@@ -40,15 +40,16 @@ export default function LocationPage() {
             <div className="space-y-12">
               {locations.map((location, index) => (
                 <div key={location.name} className="bg-[#111] rounded-2xl overflow-hidden">
-                  {/* 지도 영역 */}
-                  <div className="aspect-video md:aspect-[21/9] bg-[#1a1a1a] relative">
-                    <iframe
-                      src={`https://maps.google.com/maps?q=${encodeURIComponent(location.mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                      className="w-full h-full border-0"
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
+                  {/* 지도 영역 - 네이버 지도 연동 예정 */}
+                  <div className="aspect-video md:aspect-[21/9] bg-[#1a1a1a] relative flex items-center justify-center">
+                    <div className="text-center">
+                      <svg className="w-12 h-12 text-[#4A90D9]/40 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <p className="text-[#666] text-sm">네이버 지도 연동 예정</p>
+                      <p className="text-[#444] text-xs mt-1">{location.address}</p>
+                    </div>
                   </div>
 
                   {/* 정보 영역 */}

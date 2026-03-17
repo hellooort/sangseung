@@ -17,6 +17,13 @@ const businessAreas = [
     href: "/business/led",
     services: ["대형 LED 전광판", "실내 LED 디스플레이", "미디어 파사드", "기상전광판", "교통정보전광판", "안내전광판"],
   },
+  {
+    title: "IP-Wall",
+    subtitle: "IP-based Video Wall Solution",
+    description: "IP 기반 영상 송출 시스템으로 다수의 디스플레이를 네트워크로 연결하여 통합 관리하는 차세대 비디오월 솔루션입니다.",
+    href: "/business/ip-wall",
+    services: ["IP 기반 영상 분배", "다채널 동시 송출", "원격 관리 시스템", "실시간 콘텐츠 제어", "확장형 구조 설계", "통합 모니터링"],
+  },
 ];
 
 export default function BusinessPage() {
