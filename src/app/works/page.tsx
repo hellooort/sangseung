@@ -231,7 +231,7 @@ export default function WorksPage() {
             </div>
 
             {/* Masonry Grid */}
-            <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
               {filteredWorks.map((work) => (
                 <div
                   key={work.id}

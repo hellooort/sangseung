@@ -107,14 +107,8 @@ const navItems: NavItem[] = [
   },
   { name: "파트너사", href: "/partners" },
   { name: "시공사례", href: "/works" },
-  {
-    name: "자료실",
-    href: "/resources",
-    submenu: [
-      { name: "보도자료", href: "/resources/press" },
-      { name: "자료실", href: "/resources/downloads" },
-    ],
-  },
+  { name: "자료실", href: "/resources/downloads" },
+  { name: "보도자료", href: "/resources/press" },
 ];
 
 export default function Header() {
