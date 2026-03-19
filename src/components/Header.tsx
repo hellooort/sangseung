@@ -42,10 +42,6 @@ const navItems: NavItem[] = [
         ],
       },
       {
-        name: "IP-Wall",
-        href: "/business/ip-wall",
-      },
-      {
         name: "LED 디스플레이",
         href: "/business/led",
         submenu: [
@@ -102,6 +98,10 @@ const navItems: NavItem[] = [
             ],
           },
         ],
+      },
+      {
+        name: "IP-Wall",
+        href: "/business/ip-wall",
       },
     ],
   },
