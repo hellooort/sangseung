@@ -11,8 +11,8 @@ export default function HeroSection() {
         <iframe
           src="https://www.youtube.com/embed/3GzbSKluk3A?autoplay=1&mute=1&loop=1&playlist=3GzbSKluk3A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
           title="Background Video"
-          className="absolute top-1/2 left-1/2 w-[300vw] h-[300vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          style={{ minWidth: '100%', minHeight: '100%' }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          style={{ width: '120vw', height: '1200vh', minWidth: '120vw', minHeight: '100vh' }}
           allow="autoplay; encrypted-media"
           allowFullScreen
         />
