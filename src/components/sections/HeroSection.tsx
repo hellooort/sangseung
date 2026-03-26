@@ -7,7 +7,7 @@ export default function HeroSection() {
     <section className="relative w-full h-screen bg-[#0A0A0A]">
       {/* YouTube Video Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <div className="absolute inset-0 bg-black/50 z-10" />
+        <div className="absolute inset-0 bg-black/0 z-10" />
         <iframe
           src="https://www.youtube.com/embed/3GzbSKluk3A?autoplay=1&mute=1&loop=1&playlist=3GzbSKluk3A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
           title="Background Video"
