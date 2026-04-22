@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 
-interface Category { id: number; name: string; }
-interface ProjectRecord { id: number; name: string; categoryId: number; year: string; }
+interface Category { id: number; nameKo: string; nameEn: string; }
+interface ProjectRecord { id: number; nameKo: string; nameEn: string; categoryId: number; year: string; }
 
 const initialCategories: Category[] = [
-  { id: 1, name: "네트워크 구축" },
-  { id: 2, name: "LED 전광판" },
-  { id: 3, name: "CCTV/보안" },
+  { id: 1, nameKo: "네트워크 구축", nameEn: "Network Infrastructure" },
+  { id: 2, nameKo: "LED 전광판", nameEn: "LED Display" },
+  { id: 3, nameKo: "CCTV/보안", nameEn: "CCTV/Security" },
 ];
 
 const initialRecords: ProjectRecord[] = [
-  { id: 1, name: "○○아파트 통합배선공사", categoryId: 1, year: "2024" },
-  { id: 2, name: "△△빌딩 IBS 구축공사", categoryId: 1, year: "2023" },
-  { id: 3, name: "□□경기장 LED 전광판 설치", categoryId: 2, year: "2023" },
-  { id: 4, name: "◇◇공원 CCTV 설치공사", categoryId: 3, year: "2022" },
+  { id: 1, nameKo: "○○아파트 통합배선공사", nameEn: "○○ Apartment Integrated Wiring Project", categoryId: 1, year: "2024" },
+  { id: 2, nameKo: "△△빌딩 IBS 구축공사", nameEn: "△△ Building IBS Installation", categoryId: 1, year: "2023" },
+  { id: 3, nameKo: "□□경기장 LED 전광판 설치", nameEn: "□□ Stadium LED Display Installation", categoryId: 2, year: "2023" },
+  { id: 4, nameKo: "◇◇공원 CCTV 설치공사", nameEn: "◇◇ Park CCTV Installation", categoryId: 3, year: "2022" },
 ];
 
 export default function AdminProjectsPage() {
@@ -27,7 +27,7 @@ export default function AdminProjectsPage() {
 
   const addCategory = () => {
     if (!newCatName.trim()) return;
-    setCategories([...categories, { id: Date.now(), name: newCatName.trim() }]);
+    setCategories([...categories, { id: Date.now(), nameKo: newCatName.trim(), nameEn: "" }]);
     setNewCatName("");
   };
   const removeCategory = (id: number) => {
@@ -35,12 +35,12 @@ export default function AdminProjectsPage() {
     setCategories(categories.filter((c) => c.id !== id));
     setRecords(records.filter((r) => r.categoryId !== id));
   };
-  const updateCategoryName = (id: number, name: string) => {
-    setCategories(categories.map((c) => (c.id === id ? { ...c, name } : c)));
+  const updateCategoryName = (id: number, field: "nameKo" | "nameEn", value: string) => {
+    setCategories(categories.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
   };
   const addRecord = () => {
     if (activeCategory === null) { alert("카테고리를 먼저 선택해주세요."); return; }
-    setRecords([...records, { id: Date.now(), name: "", categoryId: activeCategory, year: "" }]);
+    setRecords([...records, { id: Date.now(), nameKo: "", nameEn: "", categoryId: activeCategory, year: "" }]);
   };
   const updateRecord = (id: number, field: keyof ProjectRecord, value: string | number) => {
     setRecords(records.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
@@ -60,10 +60,11 @@ export default function AdminProjectsPage() {
 
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">카테고리 관리</h2>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="space-y-2 mb-3">
           {categories.map((cat) => (
-            <div key={cat.id} className="flex items-center gap-1 bg-gray-100 rounded-lg px-1">
-              <input type="text" value={cat.name} onChange={(e) => updateCategoryName(cat.id, e.target.value)} className="px-2 py-1.5 bg-transparent text-sm text-gray-700 outline-none w-28" />
+            <div key={cat.id} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
+              <input type="text" value={cat.nameKo} onChange={(e) => updateCategoryName(cat.id, "nameKo", e.target.value)} placeholder="카테고리 (KO)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
+              <input type="text" value={cat.nameEn} onChange={(e) => updateCategoryName(cat.id, "nameEn", e.target.value)} placeholder="Category (EN)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
               <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600 p-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
@@ -79,18 +80,18 @@ export default function AdminProjectsPage() {
       <div className="flex flex-wrap gap-2 mb-6">
         <button onClick={() => setActiveCategory(null)} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeCategory === null ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200"}`}>전체</button>
         {categories.map((cat) => (
-          <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeCategory === cat.id ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200"}`}>{cat.name}</button>
+          <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeCategory === cat.id ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200"}`}>{cat.nameKo}</button>
         ))}
       </div>
 
       <button onClick={addRecord} className="bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 mb-6">+ 실적 추가</button>
 
-      {/* 테이블 형태 */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">공사명</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">공사명 (KO)</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">공사명 (EN)</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-32">카테고리</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-24">년도</th>
               <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 w-16">삭제</th>
@@ -100,11 +101,14 @@ export default function AdminProjectsPage() {
             {filteredRecords.map((record) => (
               <tr key={record.id} className="border-b border-gray-100 last:border-0">
                 <td className="px-4 py-2">
-                  <input type="text" value={record.name} onChange={(e) => updateRecord(record.id, "name", e.target.value)} placeholder="공사명" className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500" />
+                  <input type="text" value={record.nameKo} onChange={(e) => updateRecord(record.id, "nameKo", e.target.value)} placeholder="공사명" className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500" />
+                </td>
+                <td className="px-4 py-2">
+                  <input type="text" value={record.nameEn} onChange={(e) => updateRecord(record.id, "nameEn", e.target.value)} placeholder="Project Name" className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500" />
                 </td>
                 <td className="px-4 py-2">
                   <select value={record.categoryId} onChange={(e) => updateRecord(record.id, "categoryId", Number(e.target.value))} className="text-sm text-gray-700 outline-none">
-                    {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.name}</option>))}
+                    {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.nameKo}</option>))}
                   </select>
                 </td>
                 <td className="px-4 py-2">

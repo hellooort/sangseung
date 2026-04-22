@@ -18,11 +18,11 @@ const businessAreas = [
     services: ["대형 LED 전광판", "실내 LED 디스플레이", "미디어 파사드", "기상전광판", "교통정보전광판", "안내전광판"],
   },
   {
-    title: "IP-Wall",
-    subtitle: "IP-based Video Wall Solution",
-    description: "IP 기반 영상 송출 시스템으로 다수의 디스플레이를 네트워크로 연결하여 통합 관리하는 차세대 비디오월 솔루션입니다.",
+    title: "Video-Wall",
+    subtitle: "CALICO PRO Video Processing Solution",
+    description: "수백 개의 4K60 비디오 창과 10비트 색 심도를 지원하는 tvONE CALICO PRO 기반의 차세대 Video-Wall 프로세싱 솔루션입니다.",
     href: "/business/ip-wall",
-    services: ["IP 기반 영상 분배", "다채널 동시 송출", "원격 관리 시스템", "실시간 콘텐츠 제어", "확장형 구조 설계", "통합 모니터링"],
+    services: ["CALICO PRO 2200", "CALICO PRO 1200", "4K60 Video Windows", "10-bit Color Depth", "관제실 / 방송 환경 최적화", "전문 비디오 프로세싱"],
   },
 ];
 

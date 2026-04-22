@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 
-interface WorkCategory { id: number; name: string; }
+interface WorkCategory { id: number; nameKo: string; nameEn: string; }
 interface WorkProject {
   id: number;
-  title: string;
-  subtitle: string;
+  titleKo: string;
+  titleEn: string;
+  subtitleKo: string;
+  subtitleEn: string;
   categoryId: number;
   size: string;
   logo: string;
@@ -14,16 +16,16 @@ interface WorkProject {
 }
 
 const initialCategories: WorkCategory[] = [
-  { id: 1, name: "INDOOR" },
-  { id: 2, name: "OUTDOOR" },
-  { id: 3, name: "MEDIA FACADE" },
-  { id: 4, name: "RENTAL" },
+  { id: 1, nameKo: "INDOOR", nameEn: "Indoor" },
+  { id: 2, nameKo: "OUTDOOR", nameEn: "Outdoor" },
+  { id: 3, nameKo: "MEDIA FACADE", nameEn: "Media Facade" },
+  { id: 4, nameKo: "RENTAL", nameEn: "Rental" },
 ];
 
 const initialProjects: WorkProject[] = [
-  { id: 1, title: "LH 컨퍼런스 LED 포스터", subtitle: "S-Poster P2.5mm", categoryId: 1, size: "1000 x 500mm", logo: "", images: ["/image/reference/work_1.jpg"] },
-  { id: 2, title: "씨아이씨소프트 스튜디오 LED 스크린", subtitle: "S-Wall P1.875mm", categoryId: 1, size: "3000 x 2000mm", logo: "", images: ["/image/reference/work_2.jpg"] },
-  { id: 3, title: "삼성전자 옥외 LED 전광판", subtitle: "SOD-C P6mm", categoryId: 2, size: "12000 x 6000mm", logo: "", images: ["/image/reference/work_3.jpg", "/image/reference/work_4.jpg"] },
+  { id: 1, titleKo: "LH 컨퍼런스 LED 포스터", titleEn: "LH Conference LED Poster", subtitleKo: "S-Poster P2.5mm", subtitleEn: "S-Poster P2.5mm", categoryId: 1, size: "1000 x 500mm", logo: "", images: ["/image/reference/work_1.jpg"] },
+  { id: 2, titleKo: "씨아이씨소프트 스튜디오 LED 스크린", titleEn: "CIC Soft Studio LED Screen", subtitleKo: "S-Wall P1.875mm", subtitleEn: "S-Wall P1.875mm", categoryId: 1, size: "3000 x 2000mm", logo: "", images: ["/image/reference/work_2.jpg"] },
+  { id: 3, titleKo: "삼성전자 옥외 LED 전광판", titleEn: "Samsung Outdoor LED Display", subtitleKo: "SOD-C P6mm", subtitleEn: "SOD-C P6mm", categoryId: 2, size: "12000 x 6000mm", logo: "", images: ["/image/reference/work_3.jpg", "/image/reference/work_4.jpg"] },
 ];
 
 export default function AdminWorksPage() {
@@ -36,7 +38,7 @@ export default function AdminWorksPage() {
 
   const addCategory = () => {
     if (!newCatName.trim()) return;
-    setCategories([...categories, { id: Date.now(), name: newCatName.trim() }]);
+    setCategories([...categories, { id: Date.now(), nameKo: newCatName.trim(), nameEn: "" }]);
     setNewCatName("");
   };
   const removeCategory = (id: number) => {
@@ -44,15 +46,17 @@ export default function AdminWorksPage() {
     setCategories(categories.filter((c) => c.id !== id));
     setProjects(projects.filter((p) => p.categoryId !== id));
   };
-  const updateCategoryName = (id: number, name: string) => {
-    setCategories(categories.map((c) => (c.id === id ? { ...c, name } : c)));
+  const updateCategoryName = (id: number, field: "nameKo" | "nameEn", value: string) => {
+    setCategories(categories.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
   };
 
   const addProject = () => {
     const newProject: WorkProject = {
       id: Date.now(),
-      title: "",
-      subtitle: "",
+      titleKo: "",
+      titleEn: "",
+      subtitleKo: "",
+      subtitleEn: "",
       categoryId: activeCategory || categories[0]?.id || 0,
       size: "",
       logo: "",
@@ -105,10 +109,11 @@ export default function AdminWorksPage() {
       {/* 카테고리 관리 */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">카테고리 관리</h2>
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="space-y-2 mb-3">
           {categories.map((cat) => (
-            <div key={cat.id} className="flex items-center gap-1 bg-gray-100 rounded-lg px-1">
-              <input type="text" value={cat.name} onChange={(e) => updateCategoryName(cat.id, e.target.value)} className="px-2 py-1.5 bg-transparent text-sm text-gray-700 outline-none w-28" />
+            <div key={cat.id} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
+              <input type="text" value={cat.nameKo} onChange={(e) => updateCategoryName(cat.id, "nameKo", e.target.value)} placeholder="카테고리 (KO)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
+              <input type="text" value={cat.nameEn} onChange={(e) => updateCategoryName(cat.id, "nameEn", e.target.value)} placeholder="Category (EN)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
               <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600 p-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
@@ -127,7 +132,7 @@ export default function AdminWorksPage() {
           <button onClick={() => setActiveCategory(null)} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeCategory === null ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200"}`}>전체 ({projects.length})</button>
           {categories.map((cat) => (
             <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`px-4 py-2 rounded-lg text-sm font-medium ${activeCategory === cat.id ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200"}`}>
-              {cat.name} ({projects.filter((p) => p.categoryId === cat.id).length})
+              {cat.nameKo} ({projects.filter((p) => p.categoryId === cat.id).length})
             </button>
           ))}
         </div>
@@ -154,13 +159,13 @@ export default function AdminWorksPage() {
                     </div>
                   )}
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-900">{project.title || "(제목 없음)"}</h3>
-                    <p className="text-xs text-gray-500">{project.subtitle} {project.size && `| ${project.size}`}</p>
+                    <h3 className="text-sm font-semibold text-gray-900">{project.titleKo || "(제목 없음)"}</h3>
+                    <p className="text-xs text-gray-500">{project.subtitleKo} {project.size && `| ${project.size}`}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded">
-                    {categories.find((c) => c.id === project.categoryId)?.name || "-"}
+                    {categories.find((c) => c.id === project.categoryId)?.nameKo || "-"}
                   </span>
                   <span className="text-xs text-gray-400">이미지 {project.images.length}장</span>
                   <svg className={`w-5 h-5 text-gray-400 transition-transform ${isEditing ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,17 +179,25 @@ export default function AdminWorksPage() {
                 <div className="border-t border-gray-200 px-6 py-6 space-y-5">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">제목</label>
-                      <input type="text" value={project.title} onChange={(e) => updateProject(project.id, "title", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                      <label className="block text-xs font-medium text-gray-600 mb-1">제목 (KO)</label>
+                      <input type="text" value={project.titleKo} onChange={(e) => updateProject(project.id, "titleKo", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">소제목</label>
-                      <input type="text" value={project.subtitle} onChange={(e) => updateProject(project.id, "subtitle", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Title (EN)</label>
+                      <input type="text" value={project.titleEn} onChange={(e) => updateProject(project.id, "titleEn", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">소제목 (KO)</label>
+                      <input type="text" value={project.subtitleKo} onChange={(e) => updateProject(project.id, "subtitleKo", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">Subtitle (EN)</label>
+                      <input type="text" value={project.subtitleEn} onChange={(e) => updateProject(project.id, "subtitleEn", e.target.value)} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-gray-600 mb-1">카테고리</label>
                       <select value={project.categoryId} onChange={(e) => updateProject(project.id, "categoryId", Number(e.target.value))} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 outline-none">
-                        {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.name}</option>))}
+                        {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.nameKo}</option>))}
                       </select>
                     </div>
                     <div>

@@ -4,17 +4,18 @@ import { useState } from "react";
 
 interface Partner {
   id: number;
-  name: string;
+  nameKo: string;
+  nameEn: string;
   logo: string;
   link: string;
   sortOrder: number;
 }
 
 const initialPartners: Partner[] = [
-  { id: 1, name: "삼성전자", logo: "", link: "https://samsung.com", sortOrder: 1 },
-  { id: 2, name: "LG전자", logo: "", link: "https://lg.com", sortOrder: 2 },
-  { id: 3, name: "한국전력", logo: "", link: "https://kepco.co.kr", sortOrder: 3 },
-  { id: 4, name: "현대건설", logo: "", link: "https://hdec.kr", sortOrder: 4 },
+  { id: 1, nameKo: "삼성전자", nameEn: "Samsung Electronics", logo: "", link: "https://samsung.com", sortOrder: 1 },
+  { id: 2, nameKo: "LG전자", nameEn: "LG Electronics", logo: "", link: "https://lg.com", sortOrder: 2 },
+  { id: 3, nameKo: "한국전력", nameEn: "KEPCO", logo: "", link: "https://kepco.co.kr", sortOrder: 3 },
+  { id: 4, nameKo: "현대건설", nameEn: "Hyundai E&C", logo: "", link: "https://hdec.kr", sortOrder: 4 },
 ];
 
 export default function AdminPartnersPage() {
@@ -22,7 +23,7 @@ export default function AdminPartnersPage() {
   const [saved, setSaved] = useState(false);
 
   const addPartner = () => {
-    setPartners([...partners, { id: Date.now(), name: "", logo: "", link: "", sortOrder: partners.length + 1 }]);
+    setPartners([...partners, { id: Date.now(), nameKo: "", nameEn: "", logo: "", link: "", sortOrder: partners.length + 1 }]);
   };
 
   const updatePartner = (id: number, field: keyof Partner, value: string | number) => {
@@ -89,8 +90,9 @@ export default function AdminPartnersPage() {
             </div>
 
             {/* 정보 */}
-            <div className="flex-1 grid grid-cols-2 gap-3">
-              <input type="text" value={partner.name} onChange={(e) => updatePartner(partner.id, "name", e.target.value)} placeholder="파트너사 이름" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input type="text" value={partner.nameKo} onChange={(e) => updatePartner(partner.id, "nameKo", e.target.value)} placeholder="파트너사 이름 (KO)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+              <input type="text" value={partner.nameEn} onChange={(e) => updatePartner(partner.id, "nameEn", e.target.value)} placeholder="Partner Name (EN)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
               <input type="text" value={partner.link} onChange={(e) => updatePartner(partner.id, "link", e.target.value)} placeholder="https://..." className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 

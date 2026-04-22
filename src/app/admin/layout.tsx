@@ -3,22 +3,30 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/admin/Sidebar";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [email, setEmail] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
   const isLoginPage = pathname === "/admin/login";
+  const supabase = createClient();
 
   useEffect(() => {
-    // TODO: Supabase 인증으로 교체
-    const isAuth = localStorage.getItem("admin_auth");
-    if (!isAuth && !isLoginPage) {
-      router.replace("/admin/login");
-    } else {
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (cancelled) return;
+      if (!user && !isLoginPage) {
+        router.replace("/admin/login");
+        return;
+      }
+      setEmail(user?.email ?? null);
       setIsReady(true);
-    }
-  }, [pathname, isLoginPage, router]);
+    })();
+    return () => { cancelled = true; };
+  }, [pathname, isLoginPage, router, supabase]);
 
   if (isLoginPage) {
     return <>{children}</>;
@@ -32,8 +40,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_auth");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     router.replace("/admin/login");
   };
 
@@ -41,11 +49,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-gray-50">
       <Sidebar />
       <div className="ml-64">
-        {/* Top Bar */}
         <header className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between sticky top-0 z-30">
           <div />
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">admin@sangseung.co.kr</span>
+            <span className="text-sm text-gray-500">{email ?? ""}</span>
             <button
               onClick={handleLogout}
               className="text-sm text-gray-500 hover:text-red-600 transition-colors"
@@ -54,8 +61,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </button>
           </div>
         </header>
-
-        {/* Content */}
         <main className="p-8">{children}</main>
       </div>
     </div>

@@ -5,35 +5,37 @@ import Image from "next/image";
 
 interface Category {
   id: number;
-  name: string;
+  nameKo: string;
+  nameEn: string;
 }
 
 interface Certificate {
   id: number;
-  title: string;
+  titleKo: string;
+  titleEn: string;
   categoryId: number;
   image: string;
 }
 
 const initialCategories: Category[] = [
-  { id: 1, name: "품질" },
-  { id: 2, name: "인증" },
-  { id: 3, name: "표창" },
-  { id: 4, name: "등록" },
-  { id: 5, name: "생산" },
-  { id: 6, name: "특허" },
+  { id: 1, nameKo: "품질", nameEn: "Quality" },
+  { id: 2, nameKo: "인증", nameEn: "Certification" },
+  { id: 3, nameKo: "표창", nameEn: "Award" },
+  { id: 4, nameKo: "등록", nameEn: "Registration" },
+  { id: 5, nameKo: "생산", nameEn: "Production" },
+  { id: 6, nameKo: "특허", nameEn: "Patent" },
 ];
 
 const initialCerts: Certificate[] = [
-  { id: 1, title: "ISO 14001 인증서 (EN)", categoryId: 1, image: "/image/cert/cert_1.jpg" },
-  { id: 2, title: "ISO 45001 인증서 (EN)", categoryId: 1, image: "/image/cert/cert_2.jpg" },
-  { id: 3, title: "ISO 9001 인증서 (EN)", categoryId: 1, image: "/image/cert/cert_3.jpg" },
-  { id: 4, title: "LED 모듈 KC 인증서 P1.25mm", categoryId: 2, image: "/image/cert/cert_4.jpg" },
-  { id: 5, title: "LED 모듈 KC 인증서 P2.5mm", categoryId: 2, image: "/image/cert/cert_5.jpg" },
-  { id: 6, title: "경영혁신형 중소기업 확인서", categoryId: 2, image: "/image/cert/cert_9.jpg" },
-  { id: 7, title: "대한민국커뮤니티 표창장", categoryId: 3, image: "/image/cert/cert_10.png" },
-  { id: 8, title: "중소벤처기업부장관 표창장", categoryId: 3, image: "/image/cert/cert_18.jpg" },
-  { id: 9, title: "특허증 - 클라우드 전광판", categoryId: 6, image: "/image/cert/cert_27.jpg" },
+  { id: 1, titleKo: "ISO 14001 인증서", titleEn: "ISO 14001 Certificate", categoryId: 1, image: "/image/cert/cert_1.jpg" },
+  { id: 2, titleKo: "ISO 45001 인증서", titleEn: "ISO 45001 Certificate", categoryId: 1, image: "/image/cert/cert_2.jpg" },
+  { id: 3, titleKo: "ISO 9001 인증서", titleEn: "ISO 9001 Certificate", categoryId: 1, image: "/image/cert/cert_3.jpg" },
+  { id: 4, titleKo: "LED 모듈 KC 인증서 P1.25mm", titleEn: "LED Module KC Certificate P1.25mm", categoryId: 2, image: "/image/cert/cert_4.jpg" },
+  { id: 5, titleKo: "LED 모듈 KC 인증서 P2.5mm", titleEn: "LED Module KC Certificate P2.5mm", categoryId: 2, image: "/image/cert/cert_5.jpg" },
+  { id: 6, titleKo: "경영혁신형 중소기업 확인서", titleEn: "Innovative SME Certificate", categoryId: 2, image: "/image/cert/cert_9.jpg" },
+  { id: 7, titleKo: "대한민국커뮤니티 표창장", titleEn: "Korea Community Award", categoryId: 3, image: "/image/cert/cert_10.png" },
+  { id: 8, titleKo: "중소벤처기업부장관 표창장", titleEn: "Minister of SMEs Award", categoryId: 3, image: "/image/cert/cert_18.jpg" },
+  { id: 9, titleKo: "특허증 - 클라우드 전광판", titleEn: "Patent - Cloud Display", categoryId: 6, image: "/image/cert/cert_27.jpg" },
 ];
 
 export default function AdminCertificatesPage() {
@@ -45,7 +47,7 @@ export default function AdminCertificatesPage() {
 
   const addCategory = () => {
     if (!newCatName.trim()) return;
-    setCategories([...categories, { id: Date.now(), name: newCatName.trim() }]);
+    setCategories([...categories, { id: Date.now(), nameKo: newCatName.trim(), nameEn: "" }]);
     setNewCatName("");
   };
 
@@ -57,8 +59,8 @@ export default function AdminCertificatesPage() {
     if (activeCategory === id) setActiveCategory(null);
   };
 
-  const updateCategoryName = (id: number, name: string) => {
-    setCategories(categories.map((c) => (c.id === id ? { ...c, name } : c)));
+  const updateCategoryName = (id: number, field: "nameKo" | "nameEn", value: string) => {
+    setCategories(categories.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
   };
 
   const addCert = () => {
@@ -68,7 +70,7 @@ export default function AdminCertificatesPage() {
     }
     setCerts([
       ...certs,
-      { id: Date.now(), title: "", categoryId: activeCategory, image: "" },
+      { id: Date.now(), titleKo: "", titleEn: "", categoryId: activeCategory, image: "" },
     ]);
   };
 
@@ -103,14 +105,22 @@ export default function AdminCertificatesPage() {
       {/* 카테고리 관리 */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">카테고리 관리</h2>
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="space-y-2 mb-4">
           {categories.map((cat) => (
-            <div key={cat.id} className="flex items-center gap-1 bg-gray-100 rounded-lg px-1">
+            <div key={cat.id} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
               <input
                 type="text"
-                value={cat.name}
-                onChange={(e) => updateCategoryName(cat.id, e.target.value)}
-                className="px-2 py-1.5 bg-transparent text-sm text-gray-700 outline-none w-20"
+                value={cat.nameKo}
+                onChange={(e) => updateCategoryName(cat.id, "nameKo", e.target.value)}
+                placeholder="카테고리명 (KO)"
+                className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="text"
+                value={cat.nameEn}
+                onChange={(e) => updateCategoryName(cat.id, "nameEn", e.target.value)}
+                placeholder="Category Name (EN)"
+                className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 onClick={() => removeCategory(cat.id)}
@@ -158,7 +168,7 @@ export default function AdminCertificatesPage() {
               activeCategory === cat.id ? "bg-blue-600 text-white" : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
             }`}
           >
-            {cat.name} ({certs.filter((c) => c.categoryId === cat.id).length})
+            {cat.nameKo} ({certs.filter((c) => c.categoryId === cat.id).length})
           </button>
         ))}
       </div>
@@ -180,7 +190,7 @@ export default function AdminCertificatesPage() {
             {/* 이미지 */}
             <div className="aspect-[3/4] bg-gray-100 relative flex items-center justify-center">
               {cert.image ? (
-                <Image src={cert.image} alt={cert.title} fill className="object-contain p-2" />
+                <Image src={cert.image} alt={cert.titleKo} fill className="object-contain p-2" />
               ) : (
                 <div className="text-center">
                   <svg className="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,9 +208,16 @@ export default function AdminCertificatesPage() {
             <div className="p-4 space-y-3">
               <input
                 type="text"
-                value={cert.title}
-                onChange={(e) => updateCert(cert.id, "title", e.target.value)}
-                placeholder="인증서 이름"
+                value={cert.titleKo}
+                onChange={(e) => updateCert(cert.id, "titleKo", e.target.value)}
+                placeholder="인증서 이름 (KO)"
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="text"
+                value={cert.titleEn}
+                onChange={(e) => updateCert(cert.id, "titleEn", e.target.value)}
+                placeholder="Certificate Name (EN)"
                 className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500"
               />
               <select
@@ -210,7 +227,7 @@ export default function AdminCertificatesPage() {
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
-                    {cat.name}
+                    {cat.nameKo}
                   </option>
                 ))}
               </select>

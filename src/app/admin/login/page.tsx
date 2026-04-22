@@ -1,28 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // TODO: Supabase 인증으로 교체
-    if (email === "admin@sangseung.co.kr" && password === "admin1234") {
-      localStorage.setItem("admin_auth", "true");
-      router.push("/admin/dashboard");
-    } else {
+    const { error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
       setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+
+    const redirectTo = searchParams.get("redirectTo") ?? "/admin";
+    router.replace(redirectTo);
+    router.refresh();
   };
 
   return (

@@ -4,8 +4,10 @@ import { useState } from "react";
 
 interface Office {
   id: number;
-  name: string;
-  address: string;
+  nameKo: string;
+  nameEn: string;
+  addressKo: string;
+  addressEn: string;
   tel: string;
   fax: string;
   mapUrl: string;
@@ -14,24 +16,30 @@ interface Office {
 const initialOffices: Office[] = [
   {
     id: 1,
-    name: "본사",
-    address: "서울시 강서구 양천로 551-24 한화비즈메트로 2차 903호",
+    nameKo: "본사",
+    nameEn: "Head Office",
+    addressKo: "서울시 강서구 양천로 551-24 한화비즈메트로 2차 903호",
+    addressEn: "#903, Hanwha Biz Metro 2, 551-24 Yangcheon-ro, Gangseo-gu, Seoul",
     tel: "02-953-0056",
     fax: "02-953-0118",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!...",
   },
   {
     id: 2,
-    name: "미디어시스템사업부",
-    address: "경기도 구리시 갈매순환로166번길 46 금강펜테리움IX타워 제5층 020, 021호",
+    nameKo: "미디어시스템사업부",
+    nameEn: "Media System Division",
+    addressKo: "경기도 구리시 갈매순환로166번길 46 금강펜테리움IX타워 제5층 020, 021호",
+    addressEn: "#020-021, 5F Geumkang Penterium IX Tower, 46 Galmaesunhwan-ro 166beon-gil, Guri, Gyeonggi-do",
     tel: "031-512-0110",
     fax: "031-512-0120",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!...",
   },
   {
     id: 3,
-    name: "양주공장",
-    address: "경기도 양주시 율정로 20(옥정동) 양주옥정메타엑스 지식산업센터 514,515호",
+    nameKo: "양주공장",
+    nameEn: "Yangju Factory",
+    addressKo: "경기도 양주시 율정로 20(옥정동) 양주옥정메타엑스 지식산업센터 514,515호",
+    addressEn: "#514-515, Yangju Okjeong MetaX Knowledge Industrial Center, 20 Yuljeong-ro, Yangju, Gyeonggi-do",
     tel: "031-512-0110",
     fax: "031-512-0120",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!...",
@@ -47,7 +55,7 @@ export default function AdminLocationsPage() {
   };
 
   const addOffice = () => {
-    setOffices([...offices, { id: Date.now(), name: "", address: "", tel: "", fax: "", mapUrl: "" }]);
+    setOffices([...offices, { id: Date.now(), nameKo: "", nameEn: "", addressKo: "", addressEn: "", tel: "", fax: "", mapUrl: "" }]);
   };
 
   const removeOffice = (id: number) => {
@@ -86,16 +94,25 @@ export default function AdminLocationsPage() {
         {offices.map((office) => (
           <div key={office.id} className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <input
-                type="text"
-                value={office.name}
-                onChange={(e) => updateOffice(office.id, "name", e.target.value)}
-                placeholder="사무실 이름 (예: 본사)"
-                className="text-lg font-semibold text-gray-900 outline-none border-b border-transparent focus:border-blue-500 transition-colors pb-1"
-              />
+              <div className="flex gap-3 flex-1">
+                <input
+                  type="text"
+                  value={office.nameKo}
+                  onChange={(e) => updateOffice(office.id, "nameKo", e.target.value)}
+                  placeholder="사무실 이름 (KO)"
+                  className="text-lg font-semibold text-gray-900 outline-none border-b border-gray-200 focus:border-blue-500 transition-colors pb-1"
+                />
+                <input
+                  type="text"
+                  value={office.nameEn}
+                  onChange={(e) => updateOffice(office.id, "nameEn", e.target.value)}
+                  placeholder="Office Name (EN)"
+                  className="text-lg font-semibold text-gray-700 outline-none border-b border-gray-200 focus:border-blue-500 transition-colors pb-1"
+                />
+              </div>
               <button
                 onClick={() => removeOffice(office.id)}
-                className="text-red-500 hover:text-red-700 text-sm"
+                className="text-red-500 hover:text-red-700 text-sm ml-3"
               >
                 삭제
               </button>
@@ -103,10 +120,19 @@ export default function AdminLocationsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">주소</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">주소 (KO)</label>
                 <textarea
-                  value={office.address}
-                  onChange={(e) => updateOffice(office.id, "address", e.target.value)}
+                  value={office.addressKo}
+                  onChange={(e) => updateOffice(office.id, "addressKo", e.target.value)}
+                  rows={2}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Address (EN)</label>
+                <textarea
+                  value={office.addressEn}
+                  onChange={(e) => updateOffice(office.id, "addressEn", e.target.value)}
                   rows={2}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none"
                 />

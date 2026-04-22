@@ -5,7 +5,8 @@ import { useState } from "react";
 interface HistoryItem {
   id: number;
   month: string;
-  text: string;
+  textKo: string;
+  textEn: string;
 }
 
 interface YearData {
@@ -17,34 +18,34 @@ const initialData: YearData[] = [
   {
     year: "2020",
     items: [
-      { id: 1, month: "", text: "IT 스마트코리아 표창" },
-      { id: 2, month: "", text: "기업부설연구소 설립" },
+      { id: 1, month: "", textKo: "IT 스마트코리아 표창", textEn: "IT Smart Korea Award" },
+      { id: 2, month: "", textKo: "기업부설연구소 설립", textEn: "Corporate R&D Center established" },
     ],
   },
   {
     year: "2019",
     items: [
-      { id: 3, month: "", text: "양주 공장 설립" },
-      { id: 4, month: "", text: "LED 전광판 KC 인증 획득" },
+      { id: 3, month: "", textKo: "양주 공장 설립", textEn: "Yangju Factory established" },
+      { id: 4, month: "", textKo: "LED 전광판 KC 인증 획득", textEn: "Obtained LED display KC certification" },
     ],
   },
   {
     year: "2018",
     items: [
-      { id: 5, month: "", text: "미디어시스템사업부 설립" },
-      { id: 6, month: "", text: "우수기술기업 인증" },
+      { id: 5, month: "", textKo: "미디어시스템사업부 설립", textEn: "Media System Division established" },
+      { id: 6, month: "", textKo: "우수기술기업 인증", textEn: "Certified as Excellent Technology Company" },
     ],
   },
   {
     year: "2008",
     items: [
-      { id: 7, month: "", text: "소프트웨어사업자 신고" },
+      { id: 7, month: "", textKo: "소프트웨어사업자 신고", textEn: "Registered as a software business" },
     ],
   },
   {
     year: "2001",
     items: [
-      { id: 8, month: "", text: "상승종합통신㈜ 설립" },
+      { id: 8, month: "", textKo: "상승종합통신㈜ 설립", textEn: "Sangseung Co., Ltd. established" },
     ],
   },
 ];
@@ -71,13 +72,13 @@ export default function AdminHistoryPage() {
     setData(
       data.map((d) =>
         d.year === year
-          ? { ...d, items: [...d.items, { id: Date.now(), month: "", text: "" }] }
+          ? { ...d, items: [...d.items, { id: Date.now(), month: "", textKo: "", textEn: "" }] }
           : d
       )
     );
   };
 
-  const updateItem = (year: string, itemId: number, field: "month" | "text", value: string) => {
+  const updateItem = (year: string, itemId: number, field: "month" | "textKo" | "textEn", value: string) => {
     setData(
       data.map((d) =>
         d.year === year
@@ -165,7 +166,7 @@ export default function AdminHistoryPage() {
 
             <div className="space-y-3">
               {yearData.items.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
+                <div key={item.id} className="flex items-start gap-3">
                   <input
                     type="text"
                     value={item.month}
@@ -173,16 +174,25 @@ export default function AdminHistoryPage() {
                     placeholder="월"
                     className="w-16 px-3 py-2 rounded-lg border border-gray-300 text-gray-900 text-sm text-center focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                   />
-                  <input
-                    type="text"
-                    value={item.text}
-                    onChange={(e) => updateItem(yearData.year, item.id, "text", e.target.value)}
-                    placeholder="내용을 입력하세요"
-                    className="flex-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  />
+                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <input
+                      type="text"
+                      value={item.textKo}
+                      onChange={(e) => updateItem(yearData.year, item.id, "textKo", e.target.value)}
+                      placeholder="내용 (KO)"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    />
+                    <input
+                      type="text"
+                      value={item.textEn}
+                      onChange={(e) => updateItem(yearData.year, item.id, "textEn", e.target.value)}
+                      placeholder="Content (EN)"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    />
+                  </div>
                   <button
                     onClick={() => removeItem(yearData.year, item.id)}
-                    className="text-red-400 hover:text-red-600 transition-colors p-1"
+                    className="text-red-400 hover:text-red-600 transition-colors p-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

@@ -100,15 +100,19 @@ const navItems: NavItem[] = [
         ],
       },
       {
-        name: "IP-Wall",
+        name: "Video-Wall",
         href: "/business/ip-wall",
+      },
+      {
+        name: "유지보수",
+        href: "/business/maintenance",
       },
     ],
   },
-  { name: "파트너사", href: "/partners" },
   { name: "시공사례", href: "/works" },
   { name: "자료실", href: "/resources/downloads" },
   { name: "보도자료", href: "/resources/press" },
+  { name: "파트너사", href: "/partners" },
 ];
 
 export default function Header() {

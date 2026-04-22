@@ -28,6 +28,9 @@ const menuItems: MenuItem[] = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
       </svg>
     ),
+    children: [
+      { label: "히어로 섹션 (영상/문구)", href: "/admin/main/hero" },
+    ],
   },
   {
     label: "회사소개",
@@ -58,6 +61,7 @@ const menuItems: MenuItem[] = [
       { label: "해외 프로젝트", href: "/admin/business/overseas" },
       { label: "공사실적", href: "/admin/business/projects" },
       { label: "제품 라인업", href: "/admin/business/products" },
+      { label: "Video-Wall", href: "/admin/business/ip-wall" },
     ],
   },
   {
@@ -86,6 +90,10 @@ const menuItems: MenuItem[] = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
       </svg>
     ),
+    children: [
+      { label: "보도자료", href: "/admin/resources/press" },
+      { label: "자료실", href: "/admin/resources/downloads" },
+    ],
   },
   {
     label: "사이트 설정",
@@ -99,7 +107,6 @@ const menuItems: MenuItem[] = [
     children: [
       { label: "푸터 정보", href: "/admin/settings/footer" },
       { label: "네비게이션", href: "/admin/settings/navigation" },
-      { label: "메인 영상", href: "/admin/settings/hero" },
     ],
   },
 ];

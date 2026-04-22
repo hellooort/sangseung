@@ -1,98 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 
-interface Resource {
-  id: number;
-  title: string;
-  description: string;
-  fileName: string;
-  fileSize: string;
-  createdAt: string;
-}
-
-const initialResources: Resource[] = [
-  { id: 1, title: "LED 전광판 카탈로그 2024", description: "상승종합통신 LED 전광판 제품 카탈로그입니다.", fileName: "LED_Catalog_2024.pdf", fileSize: "12.5 MB", createdAt: "2024-03-15" },
-  { id: 2, title: "S-Wall 제품 사양서", description: "S-Wall Series 제품 상세 사양서", fileName: "S-Wall_Spec.pdf", fileSize: "3.2 MB", createdAt: "2024-02-20" },
-  { id: 3, title: "회사 소개서", description: "상승종합통신㈜ 회사 소개 브로셔", fileName: "Company_Brochure.pdf", fileSize: "8.7 MB", createdAt: "2024-01-10" },
+const resourceLinks = [
+  {
+    href: "/admin/resources/press",
+    title: "보도자료",
+    description: "이미지와 제목 형태의 보도자료를 관리합니다.",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2M5 8h6m-6 4h6m-6 4h6" />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/resources/downloads",
+    title: "자료실 (다운로드)",
+    description: "카탈로그, 사양서 등 다운로드 파일을 관리합니다.",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      </svg>
+    ),
+  },
 ];
 
-export default function AdminResourcesPage() {
-  const [resources, setResources] = useState<Resource[]>(initialResources);
-  const [saved, setSaved] = useState(false);
-
-  const addResource = () => {
-    setResources([
-      { id: Date.now(), title: "", description: "", fileName: "", fileSize: "", createdAt: new Date().toISOString().split("T")[0] },
-      ...resources,
-    ]);
-  };
-
-  const updateResource = (id: number, field: keyof Resource, value: string) => {
-    setResources(resources.map((r) => (r.id === id ? { ...r, [field]: value } : r)));
-  };
-
-  const removeResource = (id: number) => {
-    if (confirm("이 자료를 삭제하시겠습니까?")) {
-      setResources(resources.filter((r) => r.id !== id));
-    }
-  };
-
-  const handleSave = () => {
-    console.log("자료실 저장:", resources);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
-
+export default function AdminResourcesHubPage() {
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">자료실 관리</h1>
-        <div className="flex gap-3">
-          <button onClick={addResource} className="bg-gray-800 text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-900">+ 자료 추가</button>
-          <button onClick={handleSave} className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700">
-            {saved ? "저장 완료!" : "저장"}
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        {resources.map((resource) => (
-          <div key={resource.id} className="bg-white rounded-xl border border-gray-200 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-2 space-y-3">
-                <input type="text" value={resource.title} onChange={(e) => updateResource(resource.id, "title", e.target.value)} placeholder="자료 제목" className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 font-semibold outline-none focus:ring-2 focus:ring-blue-500" />
-                <textarea value={resource.description} onChange={(e) => updateResource(resource.id, "description", e.target.value)} placeholder="자료 설명" rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
-              </div>
-              <div className="space-y-3">
-                {/* 파일 업로드 */}
-                <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center">
-                  {resource.fileName ? (
-                    <div>
-                      <svg className="w-8 h-8 text-blue-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
-                      <p className="text-sm text-gray-700 font-medium">{resource.fileName}</p>
-                      <p className="text-xs text-gray-400">{resource.fileSize}</p>
-                    </div>
-                  ) : (
-                    <label className="cursor-pointer">
-                      <svg className="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                      </svg>
-                      <p className="text-sm text-blue-600">파일을 선택하세요</p>
-                      <p className="text-xs text-gray-400 mt-1">PDF, DOC, ZIP 등</p>
-                      <input type="file" className="hidden" />
-                    </label>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">{resource.createdAt}</span>
-                  <button onClick={() => removeResource(resource.id)} className="text-red-500 hover:text-red-700 text-sm">삭제</button>
-                </div>
-              </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-8">자료실 관리</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {resourceLinks.map((link) => (
+          <Link key={link.href} href={link.href} className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-500 hover:shadow-md transition-all">
+            <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              {link.icon}
             </div>
-          </div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">{link.title}</h2>
+            <p className="text-sm text-gray-500">{link.description}</p>
+          </Link>
         ))}
       </div>
     </div>
