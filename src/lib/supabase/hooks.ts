@@ -2,8 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "./client";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-const supabase = createClient();
+let _supabase: SupabaseClient | null = null;
+const getSupabase = (): SupabaseClient => {
+  if (!_supabase) _supabase = createClient();
+  return _supabase;
+};
 
 // =============================================================================
 // useSiteSetting<T>(key, defaultValue)
@@ -20,7 +25,7 @@ export function useSiteSetting<T>(key: string, defaultValue: T) {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from("site_settings")
         .select("value")
         .eq("key", key)
@@ -48,7 +53,7 @@ export function useSiteSetting<T>(key: string, defaultValue: T) {
   const save = useCallback(async () => {
     setSaving(true);
     setError(null);
-    const { error } = await supabase
+    const { error } = await getSupabase()
       .from("site_settings")
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .upsert({ key, value: value as any }, { onConflict: "key" });
@@ -89,7 +94,7 @@ export function useTableList<T extends ListItem>(
   const reload = useCallback(async () => {
     setLoading(true);
     setError(null);
-    let query = supabase.from(table).select("*").order(orderBy, { ascending });
+    let query = getSupabase().from(table).select("*").order(orderBy, { ascending });
     if (filterCol !== undefined) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       query = query.eq(filterCol, filterVal as any);
@@ -108,7 +113,7 @@ export function useTableList<T extends ListItem>(
     async (row: Partial<T>): Promise<T | null> => {
       setSaving(true);
       setError(null);
-      const { data, error } = await supabase
+      const { data, error } = await getSupabase()
         .from(table)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .insert(row as any)
@@ -130,7 +135,7 @@ export function useTableList<T extends ListItem>(
     async (id: number, patch: Partial<T>): Promise<boolean> => {
       setSaving(true);
       setError(null);
-      const { error } = await supabase
+      const { error } = await getSupabase()
         .from(table)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .update(patch as any)
@@ -150,7 +155,7 @@ export function useTableList<T extends ListItem>(
     async (id: number): Promise<boolean> => {
       setSaving(true);
       setError(null);
-      const { error } = await supabase.from(table).delete().eq("id", id);
+      const { error } = await getSupabase().from(table).delete().eq("id", id);
       setSaving(false);
       if (error) {
         setError(error.message);
@@ -166,8 +171,9 @@ export function useTableList<T extends ListItem>(
   const persistOrder = useCallback(async (): Promise<boolean> => {
     setSaving(true);
     setError(null);
+    const sb = getSupabase();
     const updates = items.map((it, idx) =>
-      supabase
+      sb
         .from(table)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .update({ sort_order: idx } as any)
