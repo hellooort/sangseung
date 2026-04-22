@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSiteSetting } from "@/lib/supabase/hooks";
 
 interface NavCategory {
   id: number;
@@ -40,8 +41,11 @@ const initialNav: NavCategory[] = [
 ];
 
 export default function AdminNavigationPage() {
-  const [nav, setNav] = useState<NavCategory[]>(initialNav);
-  const [saved, setSaved] = useState(false);
+  const { value: nav, setValue: setNav, loading, saving, save, error } = useSiteSetting<NavCategory[]>(
+    "navigation",
+    initialNav,
+  );
+  const [savedMsg, setSavedMsg] = useState(false);
 
   const updateNav = (id: number, field: "nameKo" | "nameEn", value: string) => {
     setNav(
@@ -50,29 +54,38 @@ export default function AdminNavigationPage() {
         if (item.children) {
           return {
             ...item,
-            children: item.children.map((child) =>
-              child.id === id ? { ...child, [field]: value } : child
-            ),
+            children: item.children.map((child) => (child.id === id ? { ...child, [field]: value } : child)),
           };
         }
         return item;
-      })
+      }),
     );
   };
 
-  const handleSave = () => {
-    console.log("네비게이션 저장:", nav);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    const ok = await save();
+    if (ok) {
+      setSavedMsg(true);
+      setTimeout(() => setSavedMsg(false), 2000);
+    }
   };
+
+  if (loading) return <div className="text-gray-400 text-sm">로딩 중...</div>;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-gray-900">네비게이션 텍스트 관리</h1>
-        <button onClick={handleSave} className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700">
-          {saved ? "저장 완료!" : "저장"}
-        </button>
+        <div className="flex items-center gap-3">
+          {error && <span className="text-red-500 text-sm">{error}</span>}
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-60"
+          >
+            {saving ? "저장 중..." : savedMsg ? "저장 완료!" : "저장"}
+          </button>
+        </div>
       </div>
 
       <p className="text-sm text-gray-500 mb-6">상위 카테고리와 하위 메뉴의 한/영 텍스트를 수정할 수 있습니다.</p>

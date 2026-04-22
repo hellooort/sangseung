@@ -1,0 +1,15 @@
+feat(admin): wire all admin pages to Supabase (CRUD + uploads)
+
+Connect remaining admin pages to Supabase backend so content
+edits actually persist:
+
+- Hero / Greeting / Footer / Navigation / Video-Wall (site_settings)
+- History / Locations / Press / Downloads / Partners (table CRUD)
+- Certificates / Works / IBS / Overseas / Projects / Products
+  (category + items with image/file uploads)
+- Business overview (4 sections: network/led/video-wall/maintenance)
+
+Add shared helpers:
+- src/lib/supabase/hooks.ts (useSiteSetting, useTableList)
+- src/components/admin/CategoryItemAdmin.tsx (generic CRUD UI)
+- supabase/migrations.sql (incremental schema columns + seeds)
