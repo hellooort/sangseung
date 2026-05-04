@@ -1,10 +1,10 @@
 -- =====================================================================
--- ?????? ???? ?????? ???
--- Supabase SQL Editor?? ?? (???? ???? ?? ??)
+-- 상승종합통신 사이트 데이터베이스 스키마
+-- Supabase SQL Editor에서 실행 (전체 선택 후 한 번에 실행)
 -- =====================================================================
 
 -- =====================================================================
--- 1) Storage ?? ?? (public)
+-- 1) Storage 버킷 생성 (public)
 -- =====================================================================
 INSERT INTO storage.buckets (id, name, public) VALUES ('images', 'images', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
@@ -12,7 +12,7 @@ ON CONFLICT (id) DO UPDATE SET public = true;
 INSERT INTO storage.buckets (id, name, public) VALUES ('files', 'files', true)
 ON CONFLICT (id) DO UPDATE SET public = true;
 
--- Storage RLS: ?? ??, ??? ???? ???/??/??
+-- Storage RLS: 공개 읽기, 인증된 사용자만 업로드/수정/삭제
 DROP POLICY IF EXISTS "Public read images" ON storage.objects;
 CREATE POLICY "Public read images" ON storage.objects
   FOR SELECT USING (bucket_id IN ('images', 'files'));
@@ -33,7 +33,7 @@ CREATE POLICY "Authenticated delete images" ON storage.objects
   USING (bucket_id IN ('images', 'files'));
 
 -- =====================================================================
--- 2) ?? updated_at ??? ??
+-- 2) 공통 updated_at 트리거 함수
 -- =====================================================================
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS TRIGGER AS $$
@@ -44,13 +44,13 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- =====================================================================
--- 3) ?? RLS ?? ??? (?? ? ???? ??)
---    - SELECT: ??? ?? (public)
---    - INSERT/UPDATE/DELETE: authenticated (???? ???)?
+-- 3) 공통 RLS 정책 가이드 (각 테이블에 적용됨)
+--    - SELECT: 모두에게 허용 (public)
+--    - INSERT/UPDATE/DELETE: authenticated (로그인된 사용자)만
 -- =====================================================================
 
 -- =====================================================================
--- TABLE: histories (??)
+-- TABLE: histories (연혁)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.histories (
   id BIGSERIAL PRIMARY KEY,
@@ -73,7 +73,7 @@ DROP POLICY IF EXISTS "Auth write histories" ON public.histories;
 CREATE POLICY "Auth write histories" ON public.histories FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: partners (????)
+-- TABLE: partners (파트너사)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.partners (
   id BIGSERIAL PRIMARY KEY,
@@ -96,7 +96,7 @@ DROP POLICY IF EXISTS "Auth write partners" ON public.partners;
 CREATE POLICY "Auth write partners" ON public.partners FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: certificate_categories / certificates (???)
+-- TABLE: certificate_categories / certificates (인증서)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.certificate_categories (
   id BIGSERIAL PRIMARY KEY,
@@ -137,7 +137,7 @@ DROP POLICY IF EXISTS "Auth write certificates" ON public.certificates;
 CREATE POLICY "Auth write certificates" ON public.certificates FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: resources (??? ????)
+-- TABLE: resources (자료실 다운로드)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.resources (
   id BIGSERIAL PRIMARY KEY,
@@ -163,7 +163,7 @@ DROP POLICY IF EXISTS "Auth write resources" ON public.resources;
 CREATE POLICY "Auth write resources" ON public.resources FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: press_releases (????)
+-- TABLE: press_releases (보도자료)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.press_releases (
   id BIGSERIAL PRIMARY KEY,
@@ -191,7 +191,7 @@ DROP POLICY IF EXISTS "Auth write press" ON public.press_releases;
 CREATE POLICY "Auth write press" ON public.press_releases FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: work_categories / works (????)
+-- TABLE: work_categories / works (시공사례)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.work_categories (
   id BIGSERIAL PRIMARY KEY,
@@ -238,7 +238,7 @@ DROP POLICY IF EXISTS "Auth write works" ON public.works;
 CREATE POLICY "Auth write works" ON public.works FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: product_categories / products (?? ???)
+-- TABLE: product_categories / products (제품 라인업)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.product_categories (
   id BIGSERIAL PRIMARY KEY,
@@ -282,7 +282,7 @@ DROP POLICY IF EXISTS "Auth write products" ON public.products;
 CREATE POLICY "Auth write products" ON public.products FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: office_locations (??? ? / ???)
+-- TABLE: office_locations (오시는 길 / 사업장)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.office_locations (
   id BIGSERIAL PRIMARY KEY,
@@ -397,7 +397,7 @@ DROP POLICY IF EXISTS "Auth write prec" ON public.project_records;
 CREATE POLICY "Auth write prec" ON public.project_records FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: business_sections (????/LED/Video-Wall/????)
+-- TABLE: business_sections (네트워크/LED/Video-Wall/유지보수)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.business_sections (
   id TEXT PRIMARY KEY,  -- 'network' | 'led' | 'video-wall' | 'maintenance'
@@ -423,7 +423,7 @@ DROP POLICY IF EXISTS "Auth write biz_sec" ON public.business_sections;
 CREATE POLICY "Auth write biz_sec" ON public.business_sections FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- TABLE: site_settings (??, ?? ?? ? ?? ????)
+-- TABLE: site_settings (헤더, 푸터 등의 단일 환경설정)
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS public.site_settings (
   key TEXT PRIMARY KEY,  -- 'footer' | 'company_info' | 'hero' ...
@@ -441,7 +441,7 @@ DROP POLICY IF EXISTS "Auth write settings" ON public.site_settings;
 CREATE POLICY "Auth write settings" ON public.site_settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 -- =====================================================================
--- ??. ?? Supabase Dashboard ? Authentication ? Users ??
--- ??? ??(???+????)? ???? ?????.
---   ?) admin@sangseung.co.kr / ???_????
+-- 끝. 이후 Supabase Dashboard → Authentication → Users 에서
+-- 관리자 계정(이메일+비밀번호)을 직접 추가하세요.
+--   예) admin@sangseung.co.kr / 강한_비밀번호
 -- =====================================================================

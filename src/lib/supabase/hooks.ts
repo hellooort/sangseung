@@ -12,7 +12,7 @@ const getSupabase = (): SupabaseClient => {
 
 // =============================================================================
 // useSiteSetting<T>(key, defaultValue)
-//   - site_settings ???? ?? JSON row ??/?? (upsert)
+//   - site_settings 테이블의 단일 JSON row 로드/저장 (upsert)
 // =============================================================================
 export function useSiteSetting<T>(key: string, defaultValue: T) {
   const [value, setValueState] = useState<T>(defaultValue);
@@ -70,7 +70,7 @@ export function useSiteSetting<T>(key: string, defaultValue: T) {
 
 // =============================================================================
 // useTableList<T>(table)
-//   - ?? ???? list CRUD (sort_order ?? ??)
+//   - 일반 테이블의 list CRUD (sort_order 기반 정렬)
 // =============================================================================
 export interface ListItem {
   id: number;
