@@ -95,7 +95,8 @@ INSERT INTO public.site_settings (key, value) VALUES (
 -- ---------------------------------------------------------------------
 -- partners (파트너사) - 8개
 -- ---------------------------------------------------------------------
-INSERT INTO public.partners (name_ko, name_en, sort_order) VALUES
+INSERT INTO public.partners (name_ko, name_en, sort_order)
+SELECT v.name_ko, v.name_en, v.sort_order FROM (VALUES
   ('한화',     'Hanwha',         0),
   ('롯데',     'Lotte',          1),
   ('현대',     'Hyundai',        2),
@@ -104,13 +105,15 @@ INSERT INTO public.partners (name_ko, name_en, sort_order) VALUES
   ('동국제강', 'Dongkuk Steel',  5),
   ('LS',       'LS',             6),
   ('기아',     'Kia',            7)
-ON CONFLICT DO NOTHING;
+) AS v(name_ko, name_en, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.partners p WHERE p.name_ko = v.name_ko);
 
 -- ---------------------------------------------------------------------
 -- histories (연혁)
 -- ---------------------------------------------------------------------
-INSERT INTO public.histories (year, text_ko, text_en, sort_order) VALUES
-  ('2020', 'IT 스마트코리아 표창',                                                          NULL, 0),
+INSERT INTO public.histories (year, text_ko, text_en, sort_order)
+SELECT v.year, v.text_ko, v.text_en, v.sort_order FROM (VALUES
+  ('2020', 'IT 스마트코리아 표창',                                                          NULL::text, 0),
   ('2020', '기업부설연구소 설립',                                                            NULL, 1),
   ('2020', '직접생산확인증명 (기상전광판 / 교통정보전광판 / 안내전광판)',                    NULL, 2),
   ('2020', '직접생산확인증명 (영상정보디스플레이장치)',                                       NULL, 3),
@@ -118,23 +121,28 @@ INSERT INTO public.histories (year, text_ko, text_en, sort_order) VALUES
   ('2019', '태국지사 설립',                                                                  NULL, 1),
   ('2019', '일본지사 설립',                                                                  NULL, 2),
   ('2018', '우수기술기업 인증',                                                              NULL, 0),
-  ('2018', 'LED Display 중국공장 설립 (GAMIN & SANGSEUNG)',                                 NULL, 1),
+  ('2018', 'LED Display 중국공장 설립 (GAMIN & SANGSEUNG)',                                  NULL, 1),
   ('2017', '미디어시스템사업부 설립',                                                        NULL, 0),
   ('2008', '소프트웨어 사업자등록',                                                          NULL, 0),
-  ('2005', '한화 S&C 파트너체결',                                                             NULL, 0),
+  ('2005', '한화 S&C 파트너체결',                                                            NULL, 0),
   ('2003', '한국 Carrefour 네트워크 인프라구축',                                              NULL, 0),
   ('2002', '정보통신공사업 등록',                                                            NULL, 0),
   ('2001', '상승종합통신㈜ 설립',                                                             NULL, 0)
-ON CONFLICT DO NOTHING;
+) AS v(year, text_ko, text_en, sort_order)
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.histories h WHERE h.year = v.year AND h.text_ko = v.text_ko
+);
 
 -- ---------------------------------------------------------------------
 -- office_locations (오시는 길)
 -- ---------------------------------------------------------------------
-INSERT INTO public.office_locations (name_ko, address_ko, phone, fax, sort_order) VALUES
+INSERT INTO public.office_locations (name_ko, address_ko, phone, fax, sort_order)
+SELECT v.name_ko, v.address_ko, v.phone, v.fax, v.sort_order FROM (VALUES
   ('본사',                '서울시 강서구 양천로 551-24 한화비즈메트로 2차 903호',                                  '02-953-0056', '02-953-0118', 0),
   ('미디어시스템사업부', '경기도 구리시 갈매순환로166번길 46 금강펜테리움IX타워 제5층 020, 021호',                  '031-512-0110', '031-512-0120', 1),
   ('양주공장',            '경기도 양주시 율정로 20(옥정동) 양주옥정메타엑스 지식산업센터 514, 515호',               '031-512-0110', '031-512-0120', 2)
-ON CONFLICT DO NOTHING;
+) AS v(name_ko, address_ko, phone, fax, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.office_locations o WHERE o.name_ko = v.name_ko);
 
 -- ---------------------------------------------------------------------
 -- certificate_categories (인증서 분류)
@@ -152,7 +160,8 @@ SELECT setval(pg_get_serial_sequence('public.certificate_categories','id'), 7, f
 -- ---------------------------------------------------------------------
 -- certificates (인증서) - 27개
 -- ---------------------------------------------------------------------
-INSERT INTO public.certificates (category_id, title_ko, image_url, sort_order) VALUES
+INSERT INTO public.certificates (category_id, title_ko, image_url, sort_order)
+SELECT v.category_id, v.title_ko, v.image_url, v.sort_order FROM (VALUES
   (1, 'ISO 14001 인증서 (EN)',                                                                        '/image/cert/cert_1.jpg',  0),
   (1, 'ISO 45001 인증서 (EN)',                                                                        '/image/cert/cert_2.jpg',  1),
   (1, 'ISO 9001 인증서 (EN)',                                                                         '/image/cert/cert_3.jpg',  2),
@@ -180,7 +189,8 @@ INSERT INTO public.certificates (category_id, title_ko, image_url, sort_order) V
   (4, '직접생산확인증명서 - 전광표시판관리서버',                                                       '/image/cert/cert_25.jpg', 24),
   (4, '직접생산확인증명서 - 패키지소프트웨어및멀티미디어소프트, 정보시스템개발서비스',                 '/image/cert/cert_26.jpg', 25),
   (6, '특허증 - 클라우드 기반의 전광판 시스템',                                                         '/image/cert/cert_27.jpg', 26)
-ON CONFLICT DO NOTHING;
+) AS v(category_id, title_ko, image_url, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.certificates c WHERE c.title_ko = v.title_ko);
 
 -- ---------------------------------------------------------------------
 -- work_categories (시공사례 분류)
@@ -196,7 +206,8 @@ SELECT setval(pg_get_serial_sequence('public.work_categories','id'), 5, false);
 -- ---------------------------------------------------------------------
 -- works (시공사례) - 23개
 -- ---------------------------------------------------------------------
-INSERT INTO public.works (category_id, title_ko, size, image_url, sort_order) VALUES
+INSERT INTO public.works (category_id, title_ko, size, image_url, sort_order)
+SELECT v.category_id, v.title_ko, v.size, v.image_url, v.sort_order FROM (VALUES
   (1, 'LH 컨퍼런스 LED 포스터',                                  'S-Poster P2.5mm',          '/image/reference/work_1.jpg',  0),
   (1, '씨아이씨소프트 스튜디오 LED 스크린',                      'S-Wall P1.875mm',           '/image/reference/work_2.jpg',  1),
   (1, '의왕시 의회 LED 스크린',                                   'S-Wall P1.875mm',           '/image/reference/work_3.jpg',  2),
@@ -220,7 +231,8 @@ INSERT INTO public.works (category_id, title_ko, size, image_url, sort_order) VA
   (2, '한국원자력의학원 대형 LED 전광판',                           'SOD-E P6.25mm',             '/image/reference/work_21.jpg', 20),
   (3, '일본 방재훈련소 LED 스크린',                                 'SOD-R P3.91mm',             '/image/reference/work_22.jpg', 21),
   (2, '서울경찰청 기동본부 차량용 양면 LED 전광판',                 'SOD-T P3.91mm',             '/image/reference/work_23.jpg', 22)
-ON CONFLICT DO NOTHING;
+) AS v(category_id, title_ko, size, image_url, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.works w WHERE w.title_ko = v.title_ko);
 
 -- ---------------------------------------------------------------------
 -- product_categories (제품 라인업 카테고리)
@@ -238,13 +250,15 @@ SELECT setval(pg_get_serial_sequence('public.product_categories','id'), 7, false
 -- ---------------------------------------------------------------------
 -- products (대표 제품)
 -- ---------------------------------------------------------------------
-INSERT INTO public.products (category_id, name, name_ko, name_en, description_ko, description_en, specs, image_url, sort_order) VALUES
+INSERT INTO public.products (category_id, name, name_ko, name_en, description_ko, description_en, specs, image_url, sort_order)
+SELECT v.category_id, v.name, v.name_ko, v.name_en, v.description_ko, v.description_en, v.specs, v.image_url, v.sort_order FROM (VALUES
   (1, 'LFlex',           'LFlex',           'LFlex',           'COB 기술이 적용된 고화질 플렉시블 LED 디스플레이', 'High-quality flexible LED display with COB technology', 'P0.93 / P1.25 / P1.56', '/image/LFlex/LFlex_01.jpg',                  0),
   (1, 'SCO-Wall Series', 'SCO-Wall Series', 'SCO-Wall Series', '프리미엄 COB 패키징 기술의 고급형 LED 월',         'Premium LED wall with advanced COB packaging',          'P0.78 / P0.93 / P1.25', '/image/SCO-Wall/1-1.png',                    1),
   (2, 'S-Wall Series',   'S-Wall Series',   'S-Wall Series',   '고화질 실내용 LED 디스플레이',                      'High-quality indoor LED display',                       'P1.2 ~ P4',             '/image/S-Wall/2.jpg',                        2),
   (3, 'SOD Series',      'SOD Series',      'SOD Series',      '고휘도 실외용 LED 디스플레이',                      'High-brightness outdoor LED display',                   'P4 ~ P16',              '/image/SOD-C/SOD-C_main_img_sample.jpg',     3),
   (6, 'AD Sign',         'AD Sign',         'AD Sign',         '클라우드 기반 LED 광고 사이니지',                   'Cloud-based LED advertising signage',                   'P3.91',                 '/image/AD Cloud/AD Cloud_main.jpg',          4)
-ON CONFLICT DO NOTHING;
+) AS v(category_id, name, name_ko, name_en, description_ko, description_en, specs, image_url, sort_order)
+WHERE NOT EXISTS (SELECT 1 FROM public.products p WHERE p.name = v.name);
 
 -- ---------------------------------------------------------------------
 -- business_sections (사업소개 4영역)
