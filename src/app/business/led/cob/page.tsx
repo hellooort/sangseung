@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -20,9 +18,7 @@ const products = [
 
 export default function COBLEDPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero */}
         <section className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
           <div className="max-w-7xl mx-auto">
@@ -115,8 +111,6 @@ export default function COBLEDPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

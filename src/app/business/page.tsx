@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const businessAreas = [
@@ -29,8 +27,6 @@ const businessAreas = [
 export default function BusinessPage() {
   return (
     <>
-      <Header />
-      <main className="pt-20 min-h-screen bg-[#0A0A0A]">
         <section className="py-24 px-6 lg:px-20">
           <div className="max-w-7xl mx-auto">
             <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
@@ -69,8 +65,6 @@ export default function BusinessPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </>
+      </>
   );
 }

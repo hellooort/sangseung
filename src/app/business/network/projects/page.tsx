@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { useState } from "react";
 
 interface YearData {
@@ -238,9 +236,7 @@ export default function ProjectsPage() {
   const [activeYear, setActiveYear] = useState<string>("all");
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero */}
         <section className="relative h-[350px] bg-[#111] flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0A0A0A] z-10" />
@@ -319,8 +315,6 @@ export default function ProjectsPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

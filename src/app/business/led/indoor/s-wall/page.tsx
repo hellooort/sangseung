@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -67,9 +65,7 @@ export default function SWallDetailPage() {
   const [selectedImage, setSelectedImage] = useState(0);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Section 1: Full-screen Hero — 큐보스/임팩트럼 스타일 */}
         <section className="relative min-h-[90vh] flex items-center overflow-hidden">
           <div className="absolute inset-0">
@@ -343,8 +339,6 @@ export default function SWallDetailPage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

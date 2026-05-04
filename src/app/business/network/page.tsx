@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -75,9 +73,7 @@ const services = [
 
 export default function NetworkBusinessPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero Section */}
         <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
@@ -171,8 +167,6 @@ export default function NetworkBusinessPage() {
             </Link>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

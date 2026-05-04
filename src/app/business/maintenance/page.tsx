@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -71,9 +69,7 @@ export default function MaintenancePage() {
   const currentTab = performanceTabs.find((t) => t.id === activeTab) ?? performanceTabs[0];
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main>
+    <>
         {/* Hero */}
         <section className="relative h-[560px] md:h-[640px] flex items-center overflow-hidden">
           <div className="absolute inset-0">
@@ -242,8 +238,6 @@ export default function MaintenancePage() {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

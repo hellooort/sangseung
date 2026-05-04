@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -113,9 +111,7 @@ const features = [
 
 export default function LEDBusinessPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* 히어로 섹션 */}
         <section className="relative py-32 px-6 lg:px-20 overflow-hidden">
           <div className="absolute inset-0">
@@ -221,8 +217,6 @@ export default function LEDBusinessPage() {
             </Link>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

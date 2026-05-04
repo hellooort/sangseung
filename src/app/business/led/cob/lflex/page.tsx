@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -34,9 +32,7 @@ const sizeConfigs = [
 
 export default function LFlexPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero Section - 제품 소개 */}
         <section className="py-20 px-6 lg:px-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-7xl mx-auto">
@@ -215,8 +211,6 @@ export default function LFlexPage() {
             </Link>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

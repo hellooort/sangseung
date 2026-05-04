@@ -1,13 +1,9 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function IPWallPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero / Breadcrumb */}
         <section className="pt-16 px-6 lg:px-20 bg-[#0A0A0A]">
           <div className="max-w-7xl mx-auto">
@@ -105,8 +101,6 @@ export default function IPWallPage() {
             </Link>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }

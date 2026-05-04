@@ -1,7 +1,5 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { useState } from "react";
 
 const ibsCategories = [
@@ -40,9 +38,7 @@ export default function IBSPage() {
     : ibsGalleryItems.filter((item) => item.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <Header />
-      <main className="pt-20">
+    <>
         {/* Hero */}
         <section className="relative h-[350px] bg-[#111] flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0A0A0A] z-10" />
@@ -103,8 +99,6 @@ export default function IBSPage() {
             )}
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
-  );
+      </>
+    );
 }
