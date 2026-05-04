@@ -1,58 +1,75 @@
 import Link from "next/link";
+import { getLocale } from "@/lib/locale.server";
 
 const businessAreas = [
   {
-    title: "네트워크 사업",
+    title_ko: "네트워크 사업",
+    title_en: "Network Business",
     subtitle: "Network Infrastructure",
-    description: "IBS 통합시스템, 통합배선공사, CCTV/CATV 공사, 서버실 구축 등 네트워크 인프라 전반을 담당합니다.",
+    description_ko: "IBS 통합시스템, 통합배선공사, CCTV/CATV 공사, 서버실 구축 등 네트워크 인프라 전반을 담당합니다.",
+    description_en: "Comprehensive network infrastructure including IBS integration, structured cabling, CCTV/CATV, and server room construction.",
     href: "/business/network",
-    services: ["통합배선공사", "CCTV 공사", "CATV 공사", "AV 공사", "서버실구축/이전공사", "출입통제공사", "전관방송공사", "UPS공사"],
+    services_ko: ["통합배선공사", "CCTV 공사", "CATV 공사", "AV 공사", "서버실구축/이전공사", "출입통제공사", "전관방송공사", "UPS공사"],
+    services_en: ["Structured Cabling", "CCTV Installation", "CATV Installation", "AV Installation", "Server Room Build/Move", "Access Control", "Public Address", "UPS Systems"],
   },
   {
-    title: "LED 디스플레이",
+    title_ko: "LED 디스플레이",
+    title_en: "LED Display",
     subtitle: "LED Display Solution",
-    description: "대형 LED 전광판부터 미디어 파사드까지, 설계/제작/시공 전 과정을 One-Stop으로 제공합니다.",
+    description_ko: "대형 LED 전광판부터 미디어 파사드까지, 설계/제작/시공 전 과정을 One-Stop으로 제공합니다.",
+    description_en: "From large outdoor displays to media facades — design, manufacturing, and installation provided as a one-stop solution.",
     href: "/business/led",
-    services: ["대형 LED 전광판", "실내 LED 디스플레이", "미디어 파사드", "기상전광판", "교통정보전광판", "안내전광판"],
+    services_ko: ["대형 LED 전광판", "실내 LED 디스플레이", "미디어 파사드", "기상전광판", "교통정보전광판", "안내전광판"],
+    services_en: ["Large Outdoor LED", "Indoor LED Display", "Media Facade", "Weather Display", "Traffic Information", "Information Display"],
   },
   {
-    title: "Video-Wall",
+    title_ko: "Video-Wall",
+    title_en: "Video-Wall",
     subtitle: "CALICO PRO Video Processing Solution",
-    description: "수백 개의 4K60 비디오 창과 10비트 색 심도를 지원하는 tvONE CALICO PRO 기반의 차세대 Video-Wall 프로세싱 솔루션입니다.",
+    description_ko: "수백 개의 4K60 비디오 창과 10비트 색 심도를 지원하는 tvONE CALICO PRO 기반의 차세대 Video-Wall 프로세싱 솔루션입니다.",
+    description_en: "Next-generation video-wall processing powered by tvONE CALICO PRO, supporting hundreds of 4K60 windows with 10-bit color.",
     href: "/business/ip-wall",
-    services: ["CALICO PRO 2200", "CALICO PRO 1200", "4K60 Video Windows", "10-bit Color Depth", "관제실 / 방송 환경 최적화", "전문 비디오 프로세싱"],
+    services_ko: ["CALICO PRO 2200", "CALICO PRO 1200", "4K60 Video Windows", "10-bit Color Depth", "관제실 / 방송 환경 최적화", "전문 비디오 프로세싱"],
+    services_en: ["CALICO PRO 2200", "CALICO PRO 1200", "4K60 Video Windows", "10-bit Color Depth", "Optimized for Control Rooms / Broadcast", "Professional Video Processing"],
   },
 ];
 
-export default function BusinessPage() {
+export default async function BusinessPage() {
+  const locale = await getLocale();
+  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+
   return (
     <>
-        <section className="py-24 px-6 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-            <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
-              BUSINESS
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">사업소개</h1>
+      <section className="py-24 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto">
+          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
+            BUSINESS
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">
+            {t("사업소개", "Our Business")}
+          </h1>
 
-            <div className="space-y-16">
-              {businessAreas.map((area) => (
-                <div key={area.title} className="bg-[#111] rounded-2xl p-8 lg:p-12">
+          <div className="space-y-16">
+            {businessAreas.map((area) => {
+              const services = locale === "en" ? area.services_en : area.services_ko;
+              return (
+                <div key={area.title_ko} className="bg-[#111] rounded-2xl p-8 lg:p-12">
                   <div className="flex flex-col lg:flex-row justify-between gap-8">
                     <div className="lg:w-1/2">
                       <span className="text-[#4A90D9] text-sm mb-2 block">{area.subtitle}</span>
-                      <h2 className="text-3xl font-bold text-white mb-4">{area.title}</h2>
-                      <p className="text-[#888] leading-relaxed mb-6">{area.description}</p>
+                      <h2 className="text-3xl font-bold text-white mb-4">{t(area.title_ko, area.title_en)}</h2>
+                      <p className="text-[#888] leading-relaxed mb-6">{t(area.description_ko, area.description_en)}</p>
                       <Link
                         href={area.href}
                         className="inline-block border border-[#444] text-white px-6 py-3 rounded text-sm hover:border-white/50 transition-colors"
                       >
-                        자세히 보기
+                        {t("자세히 보기", "Learn More")}
                       </Link>
                     </div>
                     <div className="lg:w-1/2">
-                      <h3 className="text-white font-semibold mb-4">주요 서비스</h3>
+                      <h3 className="text-white font-semibold mb-4">{t("주요 서비스", "Key Services")}</h3>
                       <div className="grid grid-cols-2 gap-3">
-                        {area.services.map((service) => (
+                        {services.map((service) => (
                           <div key={service} className="bg-[#1a1a1a] rounded px-4 py-3 text-[#888] text-sm">
                             {service}
                           </div>
@@ -61,10 +78,11 @@ export default function BusinessPage() {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </section>
-      </>
+        </div>
+      </section>
+    </>
   );
 }

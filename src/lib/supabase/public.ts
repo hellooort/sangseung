@@ -49,6 +49,25 @@ export async function getSiteSetting<T>(key: string, fallback: T): Promise<T> {
   }
 }
 
+export async function getRowById<T>(
+  table: string,
+  id: string | number,
+  fallback: T | null = null,
+): Promise<T | null> {
+  const client = getPublicClient();
+  if (!client) return fallback;
+  try {
+    const { data, error } = await withTimeout(
+      client.from(table).select("*").eq("id", id).maybeSingle(),
+      FETCH_TIMEOUT_MS,
+    );
+    if (error || !data) return fallback;
+    return data as T;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function getList<T>(
   table: string,
   options?: {

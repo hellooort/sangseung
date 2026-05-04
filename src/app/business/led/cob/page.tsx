@@ -1,116 +1,138 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getLocale } from "@/lib/locale.server";
 
 const products = [
   {
-    id: "lflex",
+    slug: "lflex",
     name: "LFlex",
-    description: "COB 기술이 적용된 고화질 플렉시블 LED 디스플레이",
+    description_ko: "COB 기술이 적용된 고화질 플렉시블 LED 디스플레이",
+    description_en: "High-quality flexible LED display with COB technology",
     image: "/image/LFlex/LFlex_01.jpg",
   },
   {
-    id: "sco-wall",
+    slug: "sco-wall",
     name: "SCO-Wall Series",
-    description: "프리미엄 COB 패키징 기술의 고급형 LED 월",
+    description_ko: "프리미엄 COB 패키징 기술의 고급형 LED 월",
+    description_en: "Premium LED wall built with COB packaging technology",
     image: "/image/SCO-Wall/1-1.png",
   },
 ];
 
-export default function COBLEDPage() {
+export default async function COBLEDPage() {
+  const locale = await getLocale();
+  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+
   return (
     <>
-        {/* Hero */}
-        <section className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-2 text-sm text-[#666] mb-4">
-              <Link href="/business/led" className="hover:text-[#4A90D9]">LED 디스플레이</Link>
-              <span>/</span>
-              <span className="text-[#4A90D9]">COB LED</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              COB LED
-            </h1>
-            <p className="text-[#888] text-lg max-w-2xl leading-relaxed">
-              Chip on Board 기술을 적용한 차세대 LED 디스플레이입니다.
-              기존 SMD 방식 대비 더 높은 화질과 안정성을 제공합니다.
-            </p>
+      <section className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-2 text-sm text-[#666] mb-4">
+            <Link href="/business/led" className="hover:text-[#4A90D9]">
+              {t("LED 디스플레이", "LED Display")}
+            </Link>
+            <span>/</span>
+            <span className="text-[#4A90D9]">COB LED</span>
           </div>
-        </section>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">COB LED</h1>
+          <p className="text-[#888] text-lg max-w-2xl leading-relaxed">
+            {t(
+              "Chip on Board 기술을 적용한 차세대 LED 디스플레이입니다. 기존 SMD 방식 대비 더 높은 화질과 안정성을 제공합니다.",
+              "Next-generation LED displays based on Chip-on-Board technology, delivering higher image quality and reliability than conventional SMD displays.",
+            )}
+          </p>
+        </div>
+      </section>
 
-        {/* 제품 목록 */}
-        <section className="py-24 px-6 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {products.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/business/led/cob/${product.id}`}
-                  className="group bg-[#111] rounded-2xl overflow-hidden hover:bg-[#1a1a1a] transition-all"
-                >
-                  <div className="relative aspect-video bg-[#1a1a1a]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-white text-2xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-[#888] leading-relaxed mb-4">
-                      {product.description}
-                    </p>
-                    <span className="text-[#4A90D9] text-sm font-medium flex items-center gap-2">
-                      자세히 보기
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+      <section className="py-24 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {products.map((product) => (
+              <Link
+                key={product.slug}
+                href={`/business/led/cob/${product.slug}`}
+                className="group bg-[#111] rounded-2xl overflow-hidden hover:bg-[#1a1a1a] transition-all"
+              >
+                <div className="relative aspect-video bg-[#1a1a1a]">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-white text-2xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
+                    {product.name}
+                  </h3>
+                  <p className="text-[#888] leading-relaxed mb-4">
+                    {locale === "en" ? product.description_en : product.description_ko}
+                  </p>
+                  <span className="text-[#4A90D9] text-sm font-medium flex items-center gap-2">
+                    {t("자세히 보기", "Learn More")}
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* COB 기술 특징 */}
-        <section className="py-24 px-6 lg:px-20 bg-[#111]">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-12 text-center">COB 기술의 장점</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-white text-lg font-bold mb-2">높은 안정성</h3>
-                <p className="text-[#888] text-sm">LED 칩이 기판에 직접 실장되어 충격에 강하고 안정적인 운영이 가능합니다.</p>
+      <section className="py-24 px-6 lg:px-20 bg-[#111]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-12 text-center">
+            {t("COB 기술의 장점", "Benefits of COB Technology")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-white text-lg font-bold mb-2">뛰어난 화질</h3>
-                <p className="text-[#888] text-sm">미세 픽셀피치로 가까운 거리에서도 선명한 화질을 제공합니다.</p>
+              <h3 className="text-white text-lg font-bold mb-2">{t("높은 안정성", "High Reliability")}</h3>
+              <p className="text-[#888] text-sm">
+                {t(
+                  "LED 칩이 기판에 직접 실장되어 충격에 강하고 안정적인 운영이 가능합니다.",
+                  "LED chips are mounted directly onto the board, resulting in shock resistance and stable operation.",
+                )}
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
               </div>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-white text-lg font-bold mb-2">에너지 효율</h3>
-                <p className="text-[#888] text-sm">기존 SMD 대비 전력 소비가 적어 경제적인 운영이 가능합니다.</p>
+              <h3 className="text-white text-lg font-bold mb-2">{t("뛰어난 화질", "Outstanding Image Quality")}</h3>
+              <p className="text-[#888] text-sm">
+                {t(
+                  "미세 픽셀피치로 가까운 거리에서도 선명한 화질을 제공합니다.",
+                  "Fine pixel pitch delivers crisp visuals even at close viewing distances.",
+                )}
+              </p>
+            </div>
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-[#4A90D9]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
+              <h3 className="text-white text-lg font-bold mb-2">{t("에너지 효율", "Energy Efficient")}</h3>
+              <p className="text-[#888] text-sm">
+                {t(
+                  "기존 SMD 대비 전력 소비가 적어 경제적인 운영이 가능합니다.",
+                  "Lower power consumption than conventional SMD solutions enables cost-effective operation.",
+                )}
+              </p>
             </div>
           </div>
-        </section>
-      </>
-    );
+        </div>
+      </section>
+    </>
+  );
 }

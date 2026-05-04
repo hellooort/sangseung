@@ -3,11 +3,14 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 import { getList } from "@/lib/supabase/public";
+import { getLocale } from "@/lib/locale.server";
 
 interface PressRow {
   id: number;
   title_ko: string;
+  title_en: string | null;
   summary_ko: string | null;
+  summary_en: string | null;
   thumbnail_url: string | null;
   external_link: string | null;
   published_at: string | null;
@@ -15,12 +18,12 @@ interface PressRow {
 }
 
 const fallback: PressRow[] = [
-  { id: 1, title_ko: "상승종합통신, IT 스마트코리아 표창 수상", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2020-12-15", sort_order: 0 },
-  { id: 2, title_ko: "기업부설연구소 설립, R&D 역량 강화", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2020-08-20", sort_order: 1 },
-  { id: 3, title_ko: "태국지사 설립으로 동남아 시장 진출", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2019-06-10", sort_order: 2 },
-  { id: 4, title_ko: "일본지사 설립, 글로벌 네트워크 확장", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2019-04-05", sort_order: 3 },
-  { id: 5, title_ko: "우수기술기업 인증 획득", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2018-11-22", sort_order: 4 },
-  { id: 6, title_ko: "중국 LED Display 공장 설립", summary_ko: null, thumbnail_url: null, external_link: null, published_at: "2018-07-15", sort_order: 5 },
+  { id: 1, title_ko: "상승종합통신, IT 스마트코리아 표창 수상", title_en: "SANGSEUNG receives IT Smart Korea commendation",  summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2020-12-15", sort_order: 0 },
+  { id: 2, title_ko: "기업부설연구소 설립, R&D 역량 강화",     title_en: "In-house R&D Institute established",              summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2020-08-20", sort_order: 1 },
+  { id: 3, title_ko: "태국지사 설립으로 동남아 시장 진출",     title_en: "Thailand branch opens — entering SE Asia market",  summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2019-06-10", sort_order: 2 },
+  { id: 4, title_ko: "일본지사 설립, 글로벌 네트워크 확장",     title_en: "Japan branch opens — expanding global network",    summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2019-04-05", sort_order: 3 },
+  { id: 5, title_ko: "우수기술기업 인증 획득",                  title_en: "Certified as an Excellent Technology Company",     summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2018-11-22", sort_order: 4 },
+  { id: 6, title_ko: "중국 LED Display 공장 설립",              title_en: "China LED Display factory established",            summary_ko: null, summary_en: null, thumbnail_url: null, external_link: null, published_at: "2018-07-15", sort_order: 5 },
 ];
 
 function formatDate(d: string | null) {
@@ -29,6 +32,8 @@ function formatDate(d: string | null) {
 }
 
 export default async function PressPage() {
+  const locale = await getLocale();
+  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
   const articles = await getList<PressRow>(
     "press_releases",
     { orderBy: "published_at", ascending: false },
@@ -42,12 +47,14 @@ export default async function PressPage() {
         <section className="py-24 px-6 lg:px-20">
           <div className="max-w-7xl mx-auto">
             <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">PRESS</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">보도자료</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">{t("보도자료", "Press Releases")}</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.map((article) => {
                 const Wrapper = article.external_link ? "a" : Link;
                 const href = article.external_link ?? `/resources/press/${article.id}`;
+                const title = locale === "en" && article.title_en ? article.title_en : article.title_ko;
+                const summary = locale === "en" && article.summary_en ? article.summary_en : article.summary_ko;
                 return (
                   <Wrapper
                     key={article.id}
@@ -59,7 +66,7 @@ export default async function PressPage() {
                       {article.thumbnail_url ? (
                         <Image
                           src={article.thumbnail_url}
-                          alt={article.title_ko}
+                          alt={title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -78,11 +85,9 @@ export default async function PressPage() {
                         <span className="text-[#666] text-xs">{formatDate(article.published_at)}</span>
                       </div>
                       <h3 className="text-white text-base font-medium leading-snug group-hover:text-[#4A90D9] transition-colors line-clamp-2">
-                        {article.title_ko}
+                        {title}
                       </h3>
-                      {article.summary_ko && (
-                        <p className="text-[#888] text-xs mt-2 line-clamp-2">{article.summary_ko}</p>
-                      )}
+                      {summary && <p className="text-[#888] text-xs mt-2 line-clamp-2">{summary}</p>}
                     </div>
                   </Wrapper>
                 );
@@ -90,7 +95,7 @@ export default async function PressPage() {
             </div>
 
             {articles.length === 0 && (
-              <p className="text-[#666] text-center py-20">등록된 보도자료가 없습니다.</p>
+              <p className="text-[#666] text-center py-20">{t("등록된 보도자료가 없습니다.", "No press releases.")}</p>
             )}
           </div>
         </section>
