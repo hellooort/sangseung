@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const services = [
@@ -5,22 +6,15 @@ const services = [
     label: "LED DISPLAY",
     title: "대형 LED 전광판",
     description: "설계, 제작, 시공까지 원스톱 솔루션",
-    gradient: "from-[#1a1a1a] to-[#2a3a4a]",
+    image: "/image/services/led.jpg",
     href: "/business/led",
   },
   {
     label: "NETWORK",
     title: "네트워크 인프라",
     description: "유무선 네트워크 통합 구축",
-    gradient: "from-[#1a1a1a] to-[#2a4a3a]",
+    image: "/image/services/network.jpg",
     href: "/business/network",
-  },
-  {
-    label: "IBS",
-    title: "통합 빌딩 시스템",
-    description: "A/V, PA, CCTV, CATV 등 IBS 구축",
-    gradient: "from-[#1a1a1a] to-[#3a2a4a]",
-    href: "/business/network/ibs",
   },
 ];
 
@@ -37,20 +31,32 @@ export default function ServicesSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service) => (
             <Link
               key={service.label}
               href={service.href}
-              className={`group bg-gradient-to-b ${service.gradient} rounded-xl h-80 p-8 flex flex-col justify-end hover:scale-[1.02] transition-transform`}
+              className="group relative overflow-hidden rounded-xl h-80 flex flex-col justify-end p-8 hover:scale-[1.02] transition-transform"
             >
-              <span className="text-[#4A90D9] text-sm font-semibold tracking-wider mb-2">
-                {service.label}
-              </span>
-              <h3 className="text-white text-2xl font-bold mb-2 group-hover:text-[#4A90D9] transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-[#888] text-sm">{service.description}</p>
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+
+              <div className="relative z-10">
+                <span className="text-[#4A90D9] text-sm font-semibold tracking-wider mb-2 block">
+                  {service.label}
+                </span>
+                <h3 className="text-white text-2xl font-bold mb-2 group-hover:text-[#4A90D9] transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-[#cfcfcf] text-sm">{service.description}</p>
+              </div>
             </Link>
           ))}
         </div>
