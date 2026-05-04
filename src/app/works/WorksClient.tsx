@@ -27,7 +27,7 @@ export default function WorksClient({ categories, works }: Props) {
       <section className="py-24 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">PORTFOLIO</span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">????</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">시공사례</h1>
 
           <div className="flex flex-wrap gap-3 mb-12">
             <button
@@ -36,7 +36,7 @@ export default function WorksClient({ categories, works }: Props) {
                 activeFilter === "all" ? "bg-[#4A90D9] text-white" : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
               }`}
             >
-              ??
+              전체
             </button>
             {categories.map((cat) => (
               <button
