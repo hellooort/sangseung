@@ -43,14 +43,14 @@ const expertiseCards = [
 const performanceTabs = [
   {
     id: "maintenance",
-    label_ko: "?????? ???? · ??",
+    label_ko: "ì •ë³´í†µì‹  ìœ ì§€ë³´ìˆ˜ Â· ê´€ë¦¬",
     label_en: "ICT Maintenance & Management",
     items: [
-      { title_ko: "??? ??? ?? ????",     title_en: "University Campus Maintenance",  subtitle_ko: "?? ?? 5.3??", subtitle_en: "53,000 m²/yr", image: "/image/reference/work_6.jpg" },
-      { title_ko: "??/?? ?? ???? ????", title_en: "Food/Beverage Plant Network",   subtitle_ko: "?? ?? 3.6??", subtitle_en: "36,000 m²/yr", image: "/image/reference/work_7.jpg" },
-      { title_ko: "???? ???? ????",       title_en: "Consumer Goods Factory",        subtitle_ko: "?? ?? 2.7??", subtitle_en: "27,000 m²/yr", image: "/image/reference/work_8.jpg" },
-      { title_ko: "?? ???? ????",           title_en: "Steel Manufacturing Plant",     subtitle_ko: "?? ?? 1.5??", subtitle_en: "15,000 m²/yr", image: "/image/reference/work_9.jpg" },
-      { title_ko: "???? ?? ????",           title_en: "Public Institution Maintenance", subtitle_ko: "?? ?? 4.2??", subtitle_en: "42,000 m²/yr", image: "/image/reference/work_10.jpg" },
+      { title_ko: "??? ??? ?? ????",     title_en: "University Campus Maintenance",  subtitle_ko: "?? ?? 5.3??", subtitle_en: "53,000 mï¿½/yr", image: "/image/reference/work_6.jpg" },
+      { title_ko: "??/?? ?? ???? ????", title_en: "Food/Beverage Plant Network",   subtitle_ko: "?? ?? 3.6??", subtitle_en: "36,000 mï¿½/yr", image: "/image/reference/work_7.jpg" },
+      { title_ko: "???? ???? ????",       title_en: "Consumer Goods Factory",        subtitle_ko: "?? ?? 2.7??", subtitle_en: "27,000 mï¿½/yr", image: "/image/reference/work_8.jpg" },
+      { title_ko: "?? ???? ????",           title_en: "Steel Manufacturing Plant",     subtitle_ko: "?? ?? 1.5??", subtitle_en: "15,000 mï¿½/yr", image: "/image/reference/work_9.jpg" },
+      { title_ko: "???? ?? ????",           title_en: "Public Institution Maintenance", subtitle_ko: "?? ?? 4.2??", subtitle_en: "42,000 mï¿½/yr", image: "/image/reference/work_10.jpg" },
     ],
   },
   {
@@ -58,7 +58,7 @@ const performanceTabs = [
     label_ko: "???? ??",
     label_en: "ICT Projects",
     items: [
-      { title_ko: "?? ??? LED ??? ??", title_en: "Mall LED Display Build",       subtitle_ko: "?? LED 600?",   subtitle_en: "600 m² Outdoor LED", image: "/image/reference/work_11.jpg" },
+      { title_ko: "?? ??? LED ??? ??", title_en: "Mall LED Display Build",       subtitle_ko: "?? LED 600?",   subtitle_en: "600 mï¿½ Outdoor LED", image: "/image/reference/work_11.jpg" },
       { title_ko: "???? Video-Wall ??",   title_en: "Control Center Video-Wall",   subtitle_ko: "CALICO PRO ??",  subtitle_en: "Powered by CALICO PRO", image: "/image/reference/work_12.jpg" },
       { title_ko: "?? ?? IBS ?????",   title_en: "Corporate HQ IBS",            subtitle_ko: "??? ?? ???", subtitle_en: "Intelligent Building System", image: "/image/reference/work_13.jpg" },
       { title_ko: "?? ?? ???? ???",  title_en: "Overseas Hotel Network",      subtitle_ko: "GUAM / Thailand",   subtitle_en: "Guam / Thailand", image: "/image/reference/work_14.jpg" },
@@ -83,7 +83,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
             Specialists in Reliable ICT
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            {t("???? ????·??", "ICT Maintenance & Management")}
+            {t("ICT ???? ? ??", "ICT Maintenance & Management")}
           </h1>
           <p className="text-white/85 text-base md:text-lg mb-10 max-w-xl">
             {t(
@@ -150,7 +150,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
               <div className="bg-[#3B2B8F] rounded-r-[80px] lg:rounded-r-[120px] -ml-6 lg:-ml-20 px-6 lg:px-20 py-16 lg:py-20">
                 <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
-                  {t("??????\n???? · ??", "ICT Facility\nMaintenance & Management")}
+                  {t("ICT ??\n???? ? ??", "ICT Facility\nMaintenance & Management")}
                 </h2>
               </div>
             </div>
