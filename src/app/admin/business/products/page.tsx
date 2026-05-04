@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useTableList } from "@/lib/supabase/hooks";
 import { uploadImage } from "@/lib/supabase/storage";
 
@@ -23,6 +24,8 @@ interface Product {
   specs: string | null;
   image_url: string | null;
   detail_url: string | null;
+  slug: string | null;
+  category_slug: string | null;
   sort_order: number;
 }
 
@@ -46,6 +49,8 @@ export default function AdminProductsPage() {
       specs: "",
       image_url: "",
       detail_url: "",
+      slug: "",
+      category_slug: "",
       sort_order: products.items.length,
     });
   };
@@ -117,6 +122,8 @@ export default function AdminProductsPage() {
         description_en: p.description_en ?? "",
         specs: p.specs ?? "",
         detail_url: p.detail_url ?? "",
+        slug: p.slug ?? "",
+        category_slug: p.category_slug ?? "",
       }),
     );
     await Promise.all([...catUpdates, ...productUpdates]);
@@ -226,7 +233,23 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input type="text" value={product.specs ?? ""} onChange={(e) => updateProduct(product.id, "specs", e.target.value)} placeholder="주요 스펙 (예: P0.93 / P1.25)" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                  <input type="text" value={product.detail_url ?? ""} onChange={(e) => updateProduct(product.id, "detail_url", e.target.value)} placeholder="상세 페이지 URL (선택)" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" value={product.category_slug ?? ""} onChange={(e) => updateProduct(product.id, "category_slug", e.target.value)} placeholder="카테고리 slug (indoor)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" value={product.slug ?? ""} onChange={(e) => updateProduct(product.id, "slug", e.target.value)} placeholder="제품 slug (s-wall)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                  <span className="text-xs text-gray-400">
+                    {product.slug && product.category_slug
+                      ? `URL: /business/led/${product.category_slug}/${product.slug}`
+                      : "slug를 채우면 URL이 활성화됩니다"}
+                  </span>
+                  <Link
+                    href={`/admin/business/products/${product.id}`}
+                    className="bg-gray-900 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-black"
+                  >
+                    상세 페이지 편집 →
+                  </Link>
                 </div>
               </div>
 

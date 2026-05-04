@@ -424,3 +424,121 @@ UNION ALL SELECT 'overseas_categories',         COUNT(*) FROM public.overseas_ca
 UNION ALL SELECT 'overseas_projects',           COUNT(*) FROM public.overseas_projects
 UNION ALL SELECT 'project_record_categories',   COUNT(*) FROM public.project_record_categories
 UNION ALL SELECT 'project_records',             COUNT(*) FROM public.project_records;
+
+-- ---------------------------------------------------------------------
+-- 10) 제품 상세페이지(detail) JSON + slug 컬럼 추가
+--     /business/led/{category_slug}/{slug} 로 라우팅
+-- ---------------------------------------------------------------------
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS slug          TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS category_slug TEXT;
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS detail        JSONB DEFAULT '{}'::jsonb;
+
+CREATE UNIQUE INDEX IF NOT EXISTS products_slug_idx
+  ON public.products (category_slug, slug)
+  WHERE slug IS NOT NULL AND category_slug IS NOT NULL;
+
+-- 기존 5개 제품에 slug 매핑 (S-Wall은 detail 풀세트, 나머지는 비워둠)
+UPDATE public.products SET slug='lflex',    category_slug='cob'    WHERE name='LFlex'           AND slug IS NULL;
+UPDATE public.products SET slug='sco-wall', category_slug='cob'    WHERE name='SCO-Wall Series' AND slug IS NULL;
+UPDATE public.products SET slug='s-wall',   category_slug='indoor' WHERE name='S-Wall Series'   AND slug IS NULL;
+UPDATE public.products SET slug='sod',      category_slug='outdoor' WHERE name='SOD Series'      AND slug IS NULL;
+UPDATE public.products SET slug='ad-sign',  category_slug='adsign' WHERE name='AD Sign'         AND slug IS NULL;
+
+-- S-Wall 상세 페이지 시드 (UPDATE; 기존 데이터 보존하려면 하나하나 비교 후 채움)
+UPDATE public.products SET detail = '{
+  "hero": {
+    "tag": "INDOOR FIXED LED",
+    "title": "S-Wall",
+    "title_en": "S-Wall",
+    "description_ko": "고화질, 고해상도의 실내 환경에 최적화된 LED 디스플레이.\n어떤 공간이든 몰입감 있는 영상 경험을 선사합니다.",
+    "description_en": "An LED display optimized for high-resolution indoor environments.\nDeliver immersive viewing experiences in any space.",
+    "image": "/image/S-Wall/5-1.jpg",
+    "summary": [
+      { "label_ko": "Screen Size",  "value_ko": "Custom" },
+      { "label_ko": "Pixel Pitch",  "value_ko": "P1.2 ~ P4" },
+      { "label_ko": "Brightness",   "value_ko": "800~1,500 nit" },
+      { "label_ko": "Application",  "value_ko": "회의실 · 스튜디오 · 로비 · 관제센터" }
+    ],
+    "cta_label_ko": "견적문의",
+    "cta_label_en": "Get a Quote",
+    "cta_link": "/contact"
+  },
+  "gallery": {
+    "images": [
+      "/image/S-Wall/1.png",
+      "/image/S-Wall/2.jpg",
+      "/image/S-Wall/3.png",
+      "/image/S-Wall/4.png",
+      "/image/S-Wall/5-1.jpg",
+      "/image/S-Wall/5-2.jpg",
+      "/image/S-Wall/5-3.jpg",
+      "/image/S-Wall/5-4.jpg"
+    ],
+    "title_ko": "실내용 S-Wall",
+    "subtitle_en": "Indoor Fixed LED Display",
+    "description_ko": "고화질, 고해상도의 실내 환경에 최적화된 LED 디스플레이입니다. 회의실, 방송 스튜디오, 기업 로비 등 다양한 실내 공간에서 몰입감 있는 영상 경험을 제공합니다.",
+    "description_en": "High-resolution LED display optimized for indoor environments such as meeting rooms, broadcast studios, and corporate lobbies.",
+    "options_label_ko": "픽셀 피치",
+    "options": ["P1.2", "P1.5", "P1.8", "P2.5", "P4"]
+  },
+  "banner": {
+    "image": "/image/S-Wall/5-3.jpg",
+    "title_ko": "실내 디스플레이의 정점,\nS-Wall",
+    "title_en": "The pinnacle of indoor display,\nS-Wall",
+    "description_ko": "어떤 디스플레이와도 비교할 수 없을 정도로 광활한 세상과 숨막히는 몰입 경험을 S-Wall을 통해 시연하세요. 상승종합통신의 연구와 개발로 완성된 LED 전문 기술로 비즈니스를 위한 최고 수준의 시청 경험을 선사합니다.",
+    "description_en": "Experience an unparalleled, immersive visual world through S-Wall, powered by Sangseung''s LED expertise."
+  },
+  "features": [
+    {
+      "subtitle_en": "HDR Processing",
+      "title_ko": "고화질 HDR 지원",
+      "title_en": "High-quality HDR Support",
+      "description_ko": "S-Wall은 HDR 콘텐츠를 지원하여 밝은 영역과 어두운 영역의 디테일을 동시에 표현합니다. 넓은 색재현율로 현실에 가까운 생생한 영상을 구현합니다.",
+      "description_en": "Supports HDR content with rich detail across both bright and dark regions and a wide color gamut.",
+      "image": "/image/S-Wall/3.png"
+    },
+    {
+      "subtitle_en": "Front Maintenance Design",
+      "title_ko": "초슬림 전면 유지보수",
+      "title_en": "Ultra-slim Front Maintenance",
+      "description_ko": "45mm의 초슬림 캐비닛 설계로 벽면에 밀착 설치가 가능하며, 전면에서 모듈 교체가 가능하여 후면 접근이 불필요합니다. 공간 효율을 극대화합니다.",
+      "description_en": "An ultra-slim 45mm cabinet supports flush wall installation and front-side module replacement.",
+      "image": "/image/S-Wall/4.png"
+    },
+    {
+      "subtitle_en": "Fanless & Low Power",
+      "title_ko": "무소음·저전력 설계",
+      "title_en": "Silent & Energy Efficient",
+      "description_ko": "팬리스 설계로 완전 무소음 환경을 제공합니다. 회의실, 스튜디오 등 소음에 민감한 공간에서도 최적의 환경을 유지하며 에너지 효율도 뛰어납니다.",
+      "description_en": "A fanless design delivers complete silence with excellent energy efficiency.",
+      "image": "/image/S-Wall/5-1.jpg"
+    }
+  ],
+  "specs": [
+    { "label": "Model",                 "value": "S-Wall" },
+    { "label": "Pixel Pitch (mm)",      "value": "1.2 / 1.5 / 1.8 / 2.5 / 4.0" },
+    { "label": "Brightness (nit)",      "value": "800 ~ 1,500" },
+    { "label": "Refresh Rate (Hz)",     "value": "3,840" },
+    { "label": "Viewing Angle (H/V)",   "value": "160° / 160°" },
+    { "label": "Cabinet Size (mm)",     "value": "600 × 337.5 × 45" },
+    { "label": "IP Rating",             "value": "Front IP30" },
+    { "label": "Power (Max/Avg) (W/㎡)","value": "450 / 160" },
+    { "label": "Lifespan (hrs)",        "value": "100,000+" },
+    { "label": "Operating Temp.",       "value": "-20°C ~ 50°C" }
+  ],
+  "applications": [
+    { "title_ko": "회의실",         "title_en": "Meeting Rooms",     "description_ko": "고품질 프레젠테이션 및 화상회의 환경",         "description_en": "High-quality presentation and video conferencing" },
+    { "title_ko": "방송 스튜디오",  "title_en": "Broadcast Studios", "description_ko": "XR/VR 가상 스튜디오 배경",                    "description_en": "XR/VR virtual studio backgrounds" },
+    { "title_ko": "컨트롤룸",       "title_en": "Control Rooms",     "description_ko": "24시간 운영 관제센터 대형 모니터링",          "description_en": "24/7 operations centers" },
+    { "title_ko": "기업 로비",      "title_en": "Corporate Lobby",   "description_ko": "고급스러운 디지털 사이니지",                  "description_en": "Premium digital signage" },
+    { "title_ko": "전시·갤러리",    "title_en": "Exhibition",        "description_ko": "몰입형 미디어 아트 연출",                     "description_en": "Immersive media art experiences" },
+    { "title_ko": "교육기관",       "title_en": "Education",         "description_ko": "강의실 및 캠퍼스 정보 시스템",                "description_en": "Lecture halls and campus information systems" }
+  ],
+  "cta_section": {
+    "title_ko": "S-Wall 도입을 검토하고 계신가요?",
+    "title_en": "Considering S-Wall for your space?",
+    "description_ko": "전문 상담원이 귀사에 최적화된 솔루션을 제안해 드립니다.",
+    "description_en": "Our experts will design the optimal solution for your business."
+  }
+}'::jsonb
+WHERE name='S-Wall Series';
