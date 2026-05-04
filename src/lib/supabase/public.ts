@@ -16,15 +16,32 @@ function getPublicClient(): SupabaseClient | null {
   return _client;
 }
 
+const FETCH_TIMEOUT_MS = 4000;
+
+function withTimeout<T>(p: PromiseLike<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error("supabase fetch timeout")), ms);
+    Promise.resolve(p).then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      },
+    );
+  });
+}
+
 export async function getSiteSetting<T>(key: string, fallback: T): Promise<T> {
   const client = getPublicClient();
   if (!client) return fallback;
   try {
-    const { data, error } = await client
-      .from("site_settings")
-      .select("value")
-      .eq("key", key)
-      .maybeSingle();
+    const { data, error } = await withTimeout(
+      client.from("site_settings").select("value").eq("key", key).maybeSingle(),
+      FETCH_TIMEOUT_MS,
+    );
     if (error || !data?.value) return fallback;
     return data.value as T;
   } catch {
@@ -53,7 +70,7 @@ export async function getList<T>(
       query = query.eq(options.filter.column, options.filter.value as any);
     }
     if (options?.limit) query = query.limit(options.limit);
-    const { data, error } = await query;
+    const { data, error } = await withTimeout(query, FETCH_TIMEOUT_MS);
     if (error || !data || data.length === 0) return fallback;
     return data as T[];
   } catch {

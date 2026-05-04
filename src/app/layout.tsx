@@ -14,8 +14,9 @@ export const metadata: Metadata = {
   keywords: "상승종합통신, LED 디스플레이, 네트워크, IBS, 미디어 파사드, 전광판",
 };
 
-// 관리자 변경사항이 빠르게 반영되도록 모든 공개 페이지를 30초마다 재생성
-export const revalidate = 30;
+// 공개 페이지 ISR 캐시 — 5분(300초)마다 재생성. admin 저장 후 즉시 반영을 원하면
+// 해당 admin 액션에서 revalidatePath/Tag 를 호출하도록 추후 보완.
+export const revalidate = 300;
 
 export default function RootLayout({
   children,
