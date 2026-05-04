@@ -23,7 +23,7 @@ export default function HistoryClient({ rows }: Props) {
   }, [rows]);
 
   const periods = useMemo(() => {
-    if (grouped.length === 0) return [{ label: "??", years: [] as string[] }];
+    if (grouped.length === 0) return [{ label: "전체", years: [] as string[] }];
     const years = grouped.map((g) => g.year);
     const chunkSize = Math.ceil(years.length / 3);
     const chunks: string[][] = [];
@@ -43,7 +43,7 @@ export default function HistoryClient({ rows }: Props) {
     <section className="py-24 px-6 lg:px-20">
       <div className="max-w-5xl mx-auto">
         <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">HISTORY</span>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">??</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">연혁</h1>
 
         <div className="relative mb-16">
           <div className="flex items-center justify-between relative">
