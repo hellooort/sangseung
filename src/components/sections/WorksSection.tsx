@@ -1,68 +1,54 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
+import { getList } from "@/lib/supabase/public";
 
-const works = [
-  { 
-    id: 1, 
-    title: "LH 컨퍼런스 LED 포스터", 
-    spec: "S-Poster P2.5mm",
-    category: "INDOOR", 
-    image: "/image/reference/work_1.jpg",
-    height: 280 
-  },
-  { 
-    id: 4, 
-    title: "호주 SUN CORP 실내 COB LED 스크린", 
-    spec: "SCO-Wall P0.93mm",
-    category: "INDOOR", 
-    image: "/image/reference/work_4.jpg",
-    height: 350 
-  },
-  { 
-    id: 6, 
-    title: "서울시청 다목적홀 LED 스크린", 
-    spec: "SI640 P2.5mm",
-    category: "INDOOR", 
-    image: "/image/reference/work_6.jpg",
-    height: 240 
-  },
-  { 
-    id: 8, 
-    title: "김해 금관가야휴게소 LED 미디어 파사드", 
-    spec: "SMI P7.8mm",
-    category: "MEDIA FACADE", 
-    image: "/image/reference/work_8.jpg",
-    height: 320 
-  },
-  { 
-    id: 22, 
-    title: "일본 방재훈련소 LED 스크린", 
-    spec: "SOD-R P3.91mm",
-    category: "RENTAL", 
-    image: "/image/reference/work_22.jpg",
-    height: 260 
-  },
-  { 
-    id: 9, 
-    title: "중국 스포츠 스타디움 LED 미디어파사드", 
-    spec: "SMO P31.25mm",
-    category: "MEDIA FACADE", 
-    image: "/image/reference/work_9.jpg",
-    height: 300 
-  },
+interface WorkRow {
+  id: number;
+  title_ko: string;
+  size: string | null;
+  category_id: number | null;
+  image_url: string | null;
+  sort_order: number;
+}
+
+interface WorkCatRow {
+  id: number;
+  name_ko: string;
+  sort_order: number;
+}
+
+const fallbackWorks: WorkRow[] = [
+  { id: 1, title_ko: "LH 컨퍼런스 LED 포스터", size: "S-Poster P2.5mm", category_id: 1, image_url: "/image/reference/work_1.jpg", sort_order: 0 },
+  { id: 2, title_ko: "호주 SUN CORP 실내 COB LED 스크린", size: "SCO-Wall P0.93mm", category_id: 1, image_url: "/image/reference/work_4.jpg", sort_order: 1 },
+  { id: 3, title_ko: "서울시청 다목적홀 LED 스크린", size: "SI640 P2.5mm", category_id: 1, image_url: "/image/reference/work_6.jpg", sort_order: 2 },
+  { id: 4, title_ko: "김해 금관가야휴게소 LED 미디어 파사드", size: "SMI P7.8mm", category_id: 4, image_url: "/image/reference/work_8.jpg", sort_order: 3 },
+  { id: 5, title_ko: "일본 방재훈련소 LED 스크린", size: "SOD-R P3.91mm", category_id: 3, image_url: "/image/reference/work_22.jpg", sort_order: 4 },
+  { id: 6, title_ko: "중국 스포츠 스타디움 LED 미디어파사드", size: "SMO P31.25mm", category_id: 4, image_url: "/image/reference/work_9.jpg", sort_order: 5 },
 ];
 
-export default function WorksSection() {
+const fallbackCats: WorkCatRow[] = [
+  { id: 1, name_ko: "INDOOR", sort_order: 0 },
+  { id: 2, name_ko: "OUTDOOR", sort_order: 1 },
+  { id: 3, name_ko: "RENTAL", sort_order: 2 },
+  { id: 4, name_ko: "MEDIA FACADE", sort_order: 3 },
+];
+
+const heights = [280, 350, 240, 320, 260, 300];
+
+export default async function WorksSection() {
+  const [works, cats] = await Promise.all([
+    getList<WorkRow>("works", { orderBy: "sort_order", limit: 6 }, fallbackWorks),
+    getList<WorkCatRow>("work_categories", { orderBy: "sort_order" }, fallbackCats),
+  ]);
+
+  const catMap = new Map(cats.map((c) => [c.id, c.name_ko]));
+
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div>
-            <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
-              PORTFOLIO
-            </span>
+            <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">PORTFOLIO</span>
             <h2 className="text-4xl md:text-5xl font-bold text-white">Works</h2>
           </div>
           <Link
@@ -73,33 +59,29 @@ export default function WorksSection() {
           </Link>
         </div>
 
-        {/* Masonry Grid */}
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-          {works.map((work) => (
-            <Link
-              key={work.id}
-              href="/works"
-              className="break-inside-avoid group block"
-            >
+          {works.map((work, idx) => (
+            <Link key={work.id} href="/works" className="break-inside-avoid group block">
               <div className="relative bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
-                <div 
-                  className="relative w-full bg-[#2a2a2a]"
-                  style={{ height: work.height }}
-                >
-                  <Image
-                    src={work.image}
-                    alt={work.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+                <div className="relative w-full bg-[#2a2a2a]" style={{ height: heights[idx % heights.length] }}>
+                  {work.image_url && (
+                    <Image
+                      src={work.image_url}
+                      alt={work.title_ko}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized
+                    />
+                  )}
                 </div>
-                
-                {/* Overlay on hover */}
+
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                  <span className="text-[#4A90D9] text-xs mb-1">{work.spec}</span>
-                  <h3 className="text-white text-lg font-bold">{work.title}</h3>
-                  <span className="text-[#aaa] text-sm">{work.category}</span>
+                  {work.size && <span className="text-[#4A90D9] text-xs mb-1">{work.size}</span>}
+                  <h3 className="text-white text-lg font-bold">{work.title_ko}</h3>
+                  {work.category_id && catMap.get(work.category_id) && (
+                    <span className="text-[#aaa] text-sm">{catMap.get(work.category_id)}</span>
+                  )}
                 </div>
               </div>
             </Link>

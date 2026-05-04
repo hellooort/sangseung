@@ -1,6 +1,34 @@
 import Link from "next/link";
+import { getSiteSetting } from "@/lib/supabase/public";
 
-export default function Footer() {
+interface OfficeInfo {
+  name: string;
+  address: string;
+}
+
+interface FooterData {
+  companyName: string;
+  copyright: string;
+  tel: string;
+  fax: string;
+  offices: OfficeInfo[];
+}
+
+const fallback: FooterData = {
+  companyName: "상승종합통신㈜",
+  copyright: "© 2025 상승종합통신㈜. All Rights Reserved.",
+  tel: "02-953-0056",
+  fax: "02-953-0118",
+  offices: [
+    { name: "본사", address: "서울시 강서구 양천로 551-24\n한화비즈메트로 2차 903호" },
+    { name: "미디어시스템사업부", address: "경기도 구리시 갈매순환로 154\n현대테라타워지식산업센터 A동 1040호" },
+    { name: "양주공장", address: "경기도 양주시 율정로 20\n양주옥정메타엑스 지식산업센터 514, 515호" },
+  ],
+};
+
+export default async function Footer() {
+  const data = await getSiteSetting<FooterData>("footer", fallback);
+
   const footerLinks = {
     회사소개: [
       { name: "인사말", href: "/about" },
@@ -19,27 +47,12 @@ export default function Footer() {
     ],
   };
 
-  const offices = [
-    {
-      name: "본사",
-      address: "서울시 강서구 양천로 551-24\n한화비즈메트로 2차 903호",
-    },
-    {
-      name: "미디어시스템사업부",
-      address: "경기도 구리시 갈매순환로 154\n현대테라타워지식산업센터 A동 1040호",
-    },
-    {
-      name: "양주공장",
-      address: "경기도 양주시 율정로 20\n양주옥정메타엑스 지식산업센터 514, 515호",
-    },
-  ];
-
   return (
     <footer className="w-full bg-[#050505] pt-16 pb-8 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-12">
           <div className="lg:w-72">
-            <h3 className="text-white text-xl font-bold mb-4">상승종합통신㈜</h3>
+            <h3 className="text-white text-xl font-bold mb-4">{data.companyName}</h3>
             <p className="text-[#666] text-sm leading-relaxed">
               SANGSEUNG Co., Ltd.
               <br />
@@ -54,10 +67,7 @@ export default function Footer() {
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.name}>
-                      <Link
-                        href={link.href}
-                        className="text-[#666] text-sm hover:text-white transition-colors"
-                      >
+                      <Link href={link.href} className="text-[#666] text-sm hover:text-white transition-colors">
                         {link.name}
                       </Link>
                     </li>
@@ -69,22 +79,18 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap gap-8 lg:gap-12 py-8 border-t border-white/10">
-          {offices.map((office) => (
+          {data.offices.map((office) => (
             <div key={office.name}>
               <span className="text-[#4A90D9] text-xs block mb-2">{office.name}</span>
-              <p className="text-[#666] text-xs whitespace-pre-line leading-relaxed">
-                {office.address}
-              </p>
+              <p className="text-[#666] text-xs whitespace-pre-line leading-relaxed">{office.address}</p>
             </div>
           ))}
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center pt-6 border-t border-white/10 gap-4">
+          <p className="text-[#444] text-xs">{data.copyright}</p>
           <p className="text-[#444] text-xs">
-            © 2025 상승종합통신㈜. All Rights Reserved.
-          </p>
-          <p className="text-[#444] text-xs">
-            TEL 02-953-0056 | FAX 02-953-0118
+            TEL {data.tel} | FAX {data.fax}
           </p>
         </div>
       </div>

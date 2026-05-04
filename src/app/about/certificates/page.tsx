@@ -1,116 +1,72 @@
-"use client";
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
-import { useState } from "react";
+import { getList } from "@/lib/supabase/public";
+import CertificatesClient from "./CertificatesClient";
 
-const certFilters = ["전체", "품질", "인증", "등록", "생산", "표창", "특허"];
+export interface CertCat {
+  id: number;
+  name_ko: string;
+  sort_order: number;
+}
 
-const certificates = [
-  { id: 1, title: "ISO 14001 인증서 (EN)", category: "품질", image: "/image/cert/cert_1.jpg" },
-  { id: 2, title: "ISO 45001 인증서 (EN)", category: "품질", image: "/image/cert/cert_2.jpg" },
-  { id: 3, title: "ISO 9001 인증서 (EN)", category: "품질", image: "/image/cert/cert_3.jpg" },
-  { id: 4, title: "LED 모듈 KC 인증서 P1.25mm ~ P2.976mm", category: "인증", image: "/image/cert/cert_4.jpg" },
-  { id: 5, title: "LED 모듈 KC 인증서 P2.5mm", category: "인증", image: "/image/cert/cert_5.jpg" },
-  { id: 6, title: "LED 모듈 KC 인증서 P3.91mm ~ P10mm", category: "인증", image: "/image/cert/cert_6.jpg" },
-  { id: 7, title: "LED 디스플레이 국제안전인증서 P10mm (CB인증)", category: "인증", image: "/image/cert/cert_7.jpg" },
-  { id: 8, title: "LED 컨트롤러 KC 인증서", category: "인증", image: "/image/cert/cert_8.jpg" },
-  { id: 9, title: "경영혁신형 중소기업 (Main-Biz) 확인서", category: "인증", image: "/image/cert/cert_9.jpg" },
-  { id: 10, title: "대한민국커뮤니티 표창장", category: "표창", image: "/image/cert/cert_10.png" },
-  { id: 11, title: "벤처기업확인서", category: "인증", image: "/image/cert/cert_11.jpg" },
-  { id: 12, title: "여신전문금융업 등록증", category: "등록", image: "/image/cert/cert_12.jpg" },
-  { id: 13, title: "전기공사업등록증", category: "등록", image: "/image/cert/cert_13.jpg" },
-  { id: 14, title: "소프트웨어사업자 신고확인서", category: "등록", image: "/image/cert/cert_14.jpg" },
-  { id: 15, title: "전문건설업등록증", category: "등록", image: "/image/cert/cert_15.jpg" },
-  { id: 16, title: "이노비즈 확인서", category: "인증", image: "/image/cert/cert_16.jpg" },
-  { id: 17, title: "우수기술기업인증서", category: "인증", image: "/image/cert/cert_17.jpg" },
-  { id: 18, title: "중소벤처기업부장관 표창장", category: "표창", image: "/image/cert/cert_18.jpg" },
-  { id: 19, title: "직접생산확인증명서 - 데이터분석장치", category: "생산", image: "/image/cert/cert_19.jpg" },
-  { id: 20, title: "직접생산확인증명서 - 스마트그린에너지디스플레이장치", category: "생산", image: "/image/cert/cert_20.jpg" },
-  { id: 21, title: "직접생산확인증명서 - 안내전광판, 교통정보전광판, 기상전광판", category: "생산", image: "/image/cert/cert_21.jpg" },
-  { id: 22, title: "직접생산확인증명서 - 영상정보디스플레이장치", category: "생산", image: "/image/cert/cert_22.jpg" },
-  { id: 23, title: "직접생산확인증명서 - 정보표시판, 정보시스템유지관리용역", category: "생산", image: "/image/cert/cert_23.jpg" },
-  { id: 24, title: "직접생산확인증명서 - 인터넷정보표시장치", category: "생산", image: "/image/cert/cert_24.jpg" },
-  { id: 25, title: "직접생산확인증명서 - 전광표시판관리서버", category: "생산", image: "/image/cert/cert_25.jpg" },
-  { id: 26, title: "직접생산확인증명서 - 패키지소프트웨어및멀티미디어소프트, 정보시스템개발서비스", category: "생산", image: "/image/cert/cert_26.jpg" },
-  { id: 27, title: "특허증 - 클라우드 기반의 전광판 시스템", category: "특허", image: "/image/cert/cert_27.jpg" },
+export interface CertRow {
+  id: number;
+  category_id: number | null;
+  title_ko: string;
+  image_url: string | null;
+  sort_order: number;
+}
+
+const fallbackCats: CertCat[] = [
+  { id: 1, name_ko: "품질", sort_order: 0 },
+  { id: 2, name_ko: "인증", sort_order: 1 },
+  { id: 3, name_ko: "등록", sort_order: 2 },
+  { id: 4, name_ko: "생산", sort_order: 3 },
+  { id: 5, name_ko: "표창", sort_order: 4 },
+  { id: 6, name_ko: "특허", sort_order: 5 },
 ];
 
-export default function CertificatesPage() {
-  const [activeFilter, setActiveFilter] = useState("전체");
+const fallback: CertRow[] = [
+  { id: 1, category_id: 1, title_ko: "ISO 14001 인증서 (EN)", image_url: "/image/cert/cert_1.jpg", sort_order: 0 },
+  { id: 2, category_id: 1, title_ko: "ISO 45001 인증서 (EN)", image_url: "/image/cert/cert_2.jpg", sort_order: 1 },
+  { id: 3, category_id: 1, title_ko: "ISO 9001 인증서 (EN)", image_url: "/image/cert/cert_3.jpg", sort_order: 2 },
+  { id: 4, category_id: 2, title_ko: "LED 모듈 KC 인증서 P1.25mm ~ P2.976mm", image_url: "/image/cert/cert_4.jpg", sort_order: 3 },
+  { id: 5, category_id: 2, title_ko: "LED 모듈 KC 인증서 P2.5mm", image_url: "/image/cert/cert_5.jpg", sort_order: 4 },
+  { id: 6, category_id: 2, title_ko: "LED 모듈 KC 인증서 P3.91mm ~ P10mm", image_url: "/image/cert/cert_6.jpg", sort_order: 5 },
+  { id: 7, category_id: 2, title_ko: "LED 디스플레이 국제안전인증서 P10mm (CB인증)", image_url: "/image/cert/cert_7.jpg", sort_order: 6 },
+  { id: 8, category_id: 2, title_ko: "LED 컨트롤러 KC 인증서", image_url: "/image/cert/cert_8.jpg", sort_order: 7 },
+  { id: 9, category_id: 2, title_ko: "경영혁신형 중소기업 (Main-Biz) 확인서", image_url: "/image/cert/cert_9.jpg", sort_order: 8 },
+  { id: 10, category_id: 5, title_ko: "대한민국커뮤니티 표창장", image_url: "/image/cert/cert_10.png", sort_order: 9 },
+  { id: 11, category_id: 2, title_ko: "벤처기업확인서", image_url: "/image/cert/cert_11.jpg", sort_order: 10 },
+  { id: 12, category_id: 3, title_ko: "여신전문금융업 등록증", image_url: "/image/cert/cert_12.jpg", sort_order: 11 },
+  { id: 13, category_id: 3, title_ko: "전기공사업등록증", image_url: "/image/cert/cert_13.jpg", sort_order: 12 },
+  { id: 14, category_id: 3, title_ko: "소프트웨어사업자 신고확인서", image_url: "/image/cert/cert_14.jpg", sort_order: 13 },
+  { id: 15, category_id: 3, title_ko: "전문건설업등록증", image_url: "/image/cert/cert_15.jpg", sort_order: 14 },
+  { id: 16, category_id: 2, title_ko: "이노비즈 확인서", image_url: "/image/cert/cert_16.jpg", sort_order: 15 },
+  { id: 17, category_id: 2, title_ko: "우수기술기업인증서", image_url: "/image/cert/cert_17.jpg", sort_order: 16 },
+  { id: 18, category_id: 5, title_ko: "중소벤처기업부장관 표창장", image_url: "/image/cert/cert_18.jpg", sort_order: 17 },
+  { id: 19, category_id: 4, title_ko: "직접생산확인증명서 - 데이터분석장치", image_url: "/image/cert/cert_19.jpg", sort_order: 18 },
+  { id: 20, category_id: 4, title_ko: "직접생산확인증명서 - 스마트그린에너지디스플레이장치", image_url: "/image/cert/cert_20.jpg", sort_order: 19 },
+  { id: 21, category_id: 4, title_ko: "직접생산확인증명서 - 안내전광판, 교통정보전광판, 기상전광판", image_url: "/image/cert/cert_21.jpg", sort_order: 20 },
+  { id: 22, category_id: 4, title_ko: "직접생산확인증명서 - 영상정보디스플레이장치", image_url: "/image/cert/cert_22.jpg", sort_order: 21 },
+  { id: 23, category_id: 4, title_ko: "직접생산확인증명서 - 정보표시판, 정보시스템유지관리용역", image_url: "/image/cert/cert_23.jpg", sort_order: 22 },
+  { id: 24, category_id: 4, title_ko: "직접생산확인증명서 - 인터넷정보표시장치", image_url: "/image/cert/cert_24.jpg", sort_order: 23 },
+  { id: 25, category_id: 4, title_ko: "직접생산확인증명서 - 전광표시판관리서버", image_url: "/image/cert/cert_25.jpg", sort_order: 24 },
+  { id: 26, category_id: 4, title_ko: "직접생산확인증명서 - 패키지소프트웨어및멀티미디어소프트, 정보시스템개발서비스", image_url: "/image/cert/cert_26.jpg", sort_order: 25 },
+  { id: 27, category_id: 6, title_ko: "특허증 - 클라우드 기반의 전광판 시스템", image_url: "/image/cert/cert_27.jpg", sort_order: 26 },
+];
 
-  const filteredCerts = activeFilter === "전체"
-    ? certificates
-    : certificates.filter((cert) => cert.category === activeFilter);
+export default async function CertificatesPage() {
+  const [cats, certs] = await Promise.all([
+    getList<CertCat>("certificate_categories", { orderBy: "sort_order" }, fallbackCats),
+    getList<CertRow>("certificates", { orderBy: "sort_order" }, fallback),
+  ]);
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
       <main className="pt-20">
-        <section className="py-24 px-6 lg:px-20">
-          <div className="max-w-7xl mx-auto">
-            <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
-              CERTIFICATES
-            </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">인증서</h1>
-            <p className="text-[#888] mb-8">상승종합통신㈜의 기술력과 품질을 증명하는 인증서입니다.</p>
-
-            {/* 분류 탭 */}
-            <div className="flex flex-wrap gap-3 mb-12">
-              {certFilters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-5 py-2.5 rounded-full text-sm transition-all ${
-                    activeFilter === filter
-                      ? "bg-[#4A90D9] text-white"
-                      : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
-                  }`}
-                >
-                  {filter}
-                  <span className="ml-1.5 text-xs opacity-70">
-                    {filter === "전체"
-                      ? certificates.length
-                      : certificates.filter((c) => c.category === filter).length}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* 갤러리 그리드 */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {filteredCerts.map((cert) => (
-                <div
-                  key={cert.id}
-                  className="group bg-[#1a1a1a] rounded-xl overflow-hidden"
-                >
-                  {/* 이미지 영역 */}
-                  <div className="aspect-[3/4] bg-[#2a2a2a] relative overflow-hidden">
-                    <Image
-                      src={cert.image}
-                      alt={cert.title}
-                      fill
-                      className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  
-                  {/* 텍스트 영역 */}
-                  <div className="p-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-[#4A90D9] text-xs px-2 py-0.5 bg-[#4A90D9]/10 rounded">
-                        {cert.category}
-                      </span>
-                    </div>
-                    <h3 className="text-white text-xs font-medium line-clamp-2 leading-relaxed">
-                      {cert.title}
-                    </h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <CertificatesClient categories={cats} certificates={certs} />
       </main>
       <Footer />
     </div>
