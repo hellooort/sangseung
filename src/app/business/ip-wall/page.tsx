@@ -1,9 +1,50 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
+import { getSiteSetting } from "@/lib/supabase/public";
+import { tr } from "@/lib/locale";
+
+interface VideoWallData {
+  headlineKo: string;
+  headlineEn: string;
+  descriptionKo: string;
+  descriptionEn: string;
+  mainImage: string;
+  button1Label: string;
+  button1Link: string;
+  button2Label: string;
+  button2Link: string;
+  ctaTitleKo: string;
+  ctaTitleEn: string;
+  ctaDescKo: string;
+  ctaDescEn: string;
+  ctaButtonKo: string;
+  ctaButtonEn: string;
+}
+
+const fallback: VideoWallData = {
+  headlineKo: "THE FUTURE OF VIDEO PROCESSING",
+  headlineEn: "THE FUTURE OF VIDEO PROCESSING",
+  descriptionKo:
+    "성능과 화질의 새로운 시대로 진입하세요. CALICO PRO는 수백 개의 4K60 비디오 창과 놀라운 10비트 색 심도를 지원하여, 대규모 환경에서도 부드럽고 사실적인 영상을 제공합니다.\n\n관제실, 방송 환경, 몰입형 경험까지 — CALICO PRO는 전문 비디오 프로세싱의 가능성을 새롭게 정의합니다.",
+  descriptionEn:
+    "Step into a new era of performance and clarity. CALICO PRO delivers unmatched flexibility with support for hundreds of 4K60 video windows and stunning 10-bit color depth — enabling smooth, lifelike visuals at scale.\n\nWhether you're powering control rooms, broadcast environments, or immersive experiences, CALICO PRO redefines what's possible in professional video processing.",
+  mainImage: "/image/calico-pro.png",
+  button1Label: "CALICO PRO 2200",
+  button1Link: "https://tvone.com/",
+  button2Label: "CALICO PRO 1200",
+  button2Link: "https://tvone.com/",
+  ctaTitleKo: "Video-Wall 도입을 검토하고 계신가요?",
+  ctaTitleEn: "Considering a Video-Wall solution?",
+  ctaDescKo: "전문 상담원이 귀사의 환경에 최적화된 Video-Wall 솔루션을 제안해 드립니다.",
+  ctaDescEn: "Our experts will propose a video-wall solution tailored to your environment.",
+  ctaButtonKo: "문의하기",
+  ctaButtonEn: "Contact us",
+};
 
 export default async function IPWallPage() {
   const locale = await getLocale();
+  const data = await getSiteSetting<VideoWallData>("video_wall", fallback);
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
   return (
@@ -24,38 +65,39 @@ export default async function IPWallPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative">
-              <Image src="/image/calico-pro.png" alt="CALICO PRO" width={900} height={720} className="w-full h-auto" priority />
+              <Image src={data.mainImage || "/image/calico-pro.png"} alt="CALICO PRO" width={900} height={720} className="w-full h-auto" priority unoptimized />
             </div>
 
             <div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
-                THE FUTURE OF
-                <br />
-                <span className="text-[#4A90D9]">VIDEO PROCESSING</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8 whitespace-pre-line">
+                {tr(locale, data.headlineKo, data.headlineEn)}
               </h2>
 
-              <div className="space-y-5 text-[#ccc] text-base md:text-lg leading-relaxed mb-10">
-                <p>
-                  {t(
-                    "성능과 화질의 새로운 시대로 진입하세요. CALICO PRO는 수백 개의 4K60 비디오 창과 놀라운 10비트 색 심도를 지원하여, 대규모 환경에서도 부드럽고 사실적인 영상을 제공합니다.",
-                    "Step into a new era of performance and clarity. CALICO PRO delivers unmatched flexibility with support for hundreds of 4K60 video windows and stunning 10-bit color depth — enabling smooth, lifelike visuals at scale.",
-                  )}
-                </p>
-                <p>
-                  {t(
-                    "관제실, 방송 환경, 몰입형 경험까지 — CALICO PRO는 전문 비디오 프로세싱의 가능성을 새롭게 정의합니다.",
-                    "Whether you're powering control rooms, broadcast environments, or immersive experiences, CALICO PRO redefines what's possible in professional video processing.",
-                  )}
-                </p>
+              <div className="space-y-5 text-[#ccc] text-base md:text-lg leading-relaxed mb-10 whitespace-pre-line">
+                <p>{tr(locale, data.descriptionKo, data.descriptionEn)}</p>
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Link href="/contact" className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors">
-                  {t("문의하기", "Contact Us")}
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
+                {data.button1Label && (
+                  <a
+                    href={data.button1Link || "#"}
+                    target={data.button1Link?.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
+                  >
+                    {data.button1Label}
+                  </a>
+                )}
+                {data.button2Label && (
+                  <a
+                    href={data.button2Link || "#"}
+                    target={data.button2Link?.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
+                  >
+                    {data.button2Label}
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -80,16 +122,13 @@ export default async function IPWallPage() {
       <section className="py-24 px-6 lg:px-20 bg-gradient-to-r from-[#4A90D9] to-[#3A7BC8]">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            {t("Video-Wall 도입을 검토하고 계신가요?", "Considering a Video-Wall solution?")}
+            {tr(locale, data.ctaTitleKo, data.ctaTitleEn)}
           </h2>
           <p className="text-white/80 mb-8">
-            {t(
-              "전문 상담원이 귀사의 환경에 최적화된 Video-Wall 솔루션을 제안해 드립니다.",
-              "Our experts will propose a video-wall solution tailored to your environment.",
-            )}
+            {tr(locale, data.ctaDescKo, data.ctaDescEn)}
           </p>
           <Link href="/contact" className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors">
-            {t("문의하기", "Contact Us")}
+            {tr(locale, data.ctaButtonKo, data.ctaButtonEn)}
           </Link>
         </div>
       </section>

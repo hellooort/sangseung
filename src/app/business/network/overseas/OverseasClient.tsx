@@ -1,34 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { Locale } from "@/lib/locale";
 
-const overseasProjects = [
-  { id: 1, title_ko: "롯데호텔",         title_en: "Lotte Hotel",         location_ko: "괌",          location_en: "Guam",         year: "2014", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build", category: "guam" },
-  { id: 2, title_ko: "아라이 리조트",   title_en: "Arai Resort",         location_ko: "일본",        location_en: "Japan",        year: "2017", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build", category: "japan" },
-  { id: 3, title_ko: "한화 월드 리조트", title_en: "Hanwha World Resort", location_ko: "사이판",      location_en: "Saipan",       year: "2019", description_ko: "네트워크 이중화 구축",  description_en: "Network redundancy build",      category: "saipan" },
-  { id: 4, title_ko: "한화 건설",         title_en: "Hanwha E&C",          location_ko: "사우디아라비아", location_en: "Saudi Arabia", year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "saudi" },
-  { id: 5, title_ko: "한화 케미칼",       title_en: "Hanwha Chemical",     location_ko: "태국",        location_en: "Thailand",     year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "thailand" },
-  { id: 6, title_ko: "롯데 케미칼",       title_en: "Lotte Chemical",      location_ko: "말레이시아", location_en: "Malaysia",     year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "malaysia" },
-];
+export interface OverseasCategoryRow {
+  id: number;
+  name_ko: string;
+  name_en: string | null;
+}
 
-const regions = [
-  { id: "all",      name_ko: "전체",            name_en: "All" },
-  { id: "guam",     name_ko: "괌",              name_en: "Guam" },
-  { id: "japan",    name_ko: "일본",            name_en: "Japan" },
-  { id: "saipan",   name_ko: "사이판",          name_en: "Saipan" },
-  { id: "saudi",    name_ko: "사우디아라비아", name_en: "Saudi Arabia" },
-  { id: "thailand", name_ko: "태국",            name_en: "Thailand" },
-  { id: "malaysia", name_ko: "말레이시아",      name_en: "Malaysia" },
-];
+export interface OverseasProjectRow {
+  id: number;
+  category_id: number | null;
+  title_ko: string;
+  title_en: string | null;
+  image_url: string | null;
+}
 
-export default function OverseasClient({ locale }: { locale: Locale }) {
-  const [activeRegion, setActiveRegion] = useState("all");
-  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+interface Props {
+  locale: Locale;
+  categories: OverseasCategoryRow[];
+  projects: OverseasProjectRow[];
+}
 
-  const filteredProjects = activeRegion === "all"
-    ? overseasProjects
-    : overseasProjects.filter((p) => p.category === activeRegion);
+export default function OverseasClient({ locale, categories, projects }: Props) {
+  const [activeCategory, setActiveCategory] = useState<number | "all">("all");
+  const t = (ko: string, en: string | null | undefined) => (locale === "en" && en ? en : ko);
+
+  const catMap = new Map(categories.map((c) => [c.id, c]));
+  const filtered = activeCategory === "all"
+    ? projects
+    : projects.filter((p) => p.category_id === activeCategory);
 
   return (
     <>
@@ -48,40 +51,64 @@ export default function OverseasClient({ locale }: { locale: Locale }) {
       <section className="py-16 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-3 mb-12 justify-center">
-            {regions.map((region) => (
+            <button
+              onClick={() => setActiveCategory("all")}
+              className={`px-5 py-2.5 rounded-full text-sm transition-all ${
+                activeCategory === "all"
+                  ? "bg-[#4A90D9] text-white"
+                  : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
+              }`}
+            >
+              {t("전체", "All")}
+            </button>
+            {categories.map((cat) => (
               <button
-                key={region.id}
-                onClick={() => setActiveRegion(region.id)}
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
                 className={`px-5 py-2.5 rounded-full text-sm transition-all ${
-                  activeRegion === region.id
+                  activeCategory === cat.id
                     ? "bg-[#4A90D9] text-white"
                     : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
                 }`}
               >
-                {t(region.name_ko, region.name_en)}
+                {t(cat.name_ko, cat.name_en)}
               </button>
             ))}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => (
-              <div key={project.id} className="group bg-[#1a1a1a] rounded-xl overflow-hidden hover:bg-[#222] transition-all">
-                <div className="h-48 bg-gradient-to-br from-[#2a3a4a] to-[#1a2a3a] flex items-center justify-center">
-                  <span className="text-white/20 text-5xl font-bold">{t(project.location_ko, project.location_en)}</span>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[#4A90D9] text-xs">{t(project.location_ko, project.location_en)}</span>
-                    <span className="text-[#666] text-xs">{project.year}</span>
+            {filtered.map((project) => {
+              const cat = project.category_id ? catMap.get(project.category_id) : null;
+              const region = cat ? t(cat.name_ko, cat.name_en) : "";
+              return (
+                <div key={project.id} className="group bg-[#1a1a1a] rounded-xl overflow-hidden hover:bg-[#222] transition-all">
+                  <div className="relative h-48 bg-gradient-to-br from-[#2a3a4a] to-[#1a2a3a] flex items-center justify-center overflow-hidden">
+                    {project.image_url ? (
+                      <Image src={project.image_url} alt={project.title_ko} fill className="object-cover" unoptimized />
+                    ) : (
+                      <span className="text-white/20 text-5xl font-bold">{region}</span>
+                    )}
                   </div>
-                  <h3 className="text-white text-lg font-bold mb-2 group-hover:text-[#4A90D9] transition-colors">
-                    {t(project.title_ko, project.title_en)}
-                  </h3>
-                  <p className="text-[#888] text-sm">{t(project.description_ko, project.description_en)}</p>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[#4A90D9] text-xs">{region}</span>
+                    </div>
+                    <h3 className="text-white text-lg font-bold mb-2 group-hover:text-[#4A90D9] transition-colors">
+                      {t(project.title_ko, project.title_en)}
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-[#666]">
+                {t("이 지역에 등록된 프로젝트가 없습니다.", "No projects registered in this region.")}
+              </p>
+            </div>
+          )}
         </div>
       </section>
     </>
