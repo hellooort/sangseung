@@ -9,21 +9,23 @@ import HistorySection from "@/components/sections/HistorySection";
 import BusinessSection from "@/components/sections/BusinessSection";
 import PartnersSection from "@/components/sections/PartnersSection";
 import CTASection from "@/components/sections/CTASection";
+import { getLocale } from "@/lib/locale.server";
 
-export default function Home() {
+export default async function Home() {
+  const locale = await getLocale();
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
       <main className="flex flex-col">
-        <HeroSection />
-        <ServicesSection />
-        <AboutSection />
-        <ResultSection />
-        <WorksSection />
-        <HistorySection />
-        <BusinessSection />
-        <PartnersSection />
-        <CTASection />
+        <HeroSection locale={locale} />
+        <ServicesSection locale={locale} />
+        <AboutSection locale={locale} />
+        <ResultSection locale={locale} />
+        <WorksSection locale={locale} />
+        <HistorySection locale={locale} />
+        <BusinessSection locale={locale} />
+        <PartnersSection locale={locale} />
+        <CTASection locale={locale} />
       </main>
       <Footer />
     </div>

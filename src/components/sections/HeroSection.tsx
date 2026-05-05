@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSiteSetting } from "@/lib/supabase/public";
+import { tr, type Locale } from "@/lib/locale";
 
 interface HeroData {
   youtubeUrl: string;
@@ -21,10 +22,11 @@ const fallback: HeroData = {
     "https://www.youtube.com/embed/3GzbSKluk3A?autoplay=1&mute=1&loop=1&playlist=3GzbSKluk3A&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1",
   badge: "ONE-STOP SOLUTION",
   titleKo: "네트워크에서 LED까지\n디지털 인프라의 새로운 기준",
-  titleEn: "",
+  titleEn: "From Network to LED\nThe New Standard for Digital Infrastructure",
   descriptionKo:
     "상승종합통신㈜는 네트워크 통합시스템 및 IBS 구축, LED DISPLAY 전문 제조업체입니다.\n디자인, 설계, 제작, 시공까지 전 과정을 수행하는 One-Stop Solution 업체입니다.",
-  descriptionEn: "",
+  descriptionEn:
+    "Sangseung Communications specializes in integrated network systems, IBS, and LED display manufacturing.\nWe deliver One-Stop Solutions covering design, engineering, production, and installation.",
   button1Ko: "문의하기",
   button1En: "Contact us",
   button1Link: "/contact",
@@ -33,7 +35,7 @@ const fallback: HeroData = {
   button2Link: "/works",
 };
 
-export default async function HeroSection() {
+export default async function HeroSection({ locale }: { locale: Locale }) {
   const data = await getSiteSetting<HeroData>("hero", fallback);
 
   return (
@@ -61,11 +63,11 @@ export default async function HeroSection() {
           )}
 
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight mb-8 drop-shadow-lg whitespace-pre-line">
-            {data.titleKo}
+            {tr(locale, data.titleKo, data.titleEn)}
           </h1>
 
           <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md whitespace-pre-line">
-            {data.descriptionKo}
+            {tr(locale, data.descriptionKo, data.descriptionEn)}
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center">
@@ -73,13 +75,13 @@ export default async function HeroSection() {
               href={data.button1Link || "/contact"}
               className="bg-white text-black px-8 py-4 rounded text-base font-semibold hover:bg-white/90 transition-colors"
             >
-              {data.button1Ko}
+              {tr(locale, data.button1Ko, data.button1En)}
             </Link>
             <Link
               href={data.button2Link || "/works"}
               className="border border-white/50 text-white px-8 py-4 rounded text-base font-medium hover:bg-white/10 backdrop-blur-sm transition-colors"
             >
-              {data.button2Ko}
+              {tr(locale, data.button2Ko, data.button2En)}
             </Link>
           </div>
         </div>

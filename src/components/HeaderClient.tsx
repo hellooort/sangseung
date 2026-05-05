@@ -152,8 +152,11 @@ export default function HeaderClient({ navItems, locale }: HeaderClientProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locale: next }),
       });
+      // RSC 다시 받아오는 동안에도 isSwitching 유지 → 오버레이 표시.
+      // router.refresh 는 Promise 를 반환하지 않아 setTimeout 으로 보수적으로 풀어준다.
       router.refresh();
-    } finally {
+      setTimeout(() => setIsSwitching(false), 1500);
+    } catch {
       setIsSwitching(false);
     }
   };
@@ -214,6 +217,21 @@ export default function HeaderClient({ navItems, locale }: HeaderClientProps) {
   };
 
   return (
+    <>
+      {isSwitching && (
+        <div
+          aria-live="polite"
+          aria-busy="true"
+          className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-[2px] flex items-center justify-center"
+        >
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span className="text-white/80 text-xs tracking-widest">
+              {locale === "ko" ? "SWITCHING TO ENGLISH…" : "한국어로 전환 중…"}
+            </span>
+          </div>
+        </div>
+      )}
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled
         ? "bg-black/95 backdrop-blur-md border-b border-white/10 shadow-lg"
@@ -424,5 +442,6 @@ export default function HeaderClient({ navItems, locale }: HeaderClientProps) {
         )}
       </div>
     </header>
+    </>
   );
 }

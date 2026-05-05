@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import type { Locale } from "@/lib/locale";
 
 function useCountUp(end: number, duration: number = 2000) {
   const [count, setCount] = useState(0);
@@ -47,9 +48,10 @@ function useCountUp(end: number, duration: number = 2000) {
   return { count, ref };
 }
 
-export default function ResultSection() {
+export default function ResultSection({ locale }: { locale: Locale }) {
   const projects = useCountUp(200, 2000);
   const clients = useCountUp(120, 2000);
+  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-6 lg:px-20">
@@ -60,26 +62,27 @@ export default function ResultSection() {
               RESULT
             </span>
             <p className="text-[#888] text-sm leading-loose">
-              2001년 창립 이후, 다양한 산업 분야에서 사이트 환경에 최적화된 솔루션과 높은
-              품질의 서비스를 제공하며 새로운 고객경험을 창출하고 역량을 입증해왔으며,
-              현재는 사업 영역을 확장하며 지속적인 성장을 이어가고 있습니다.
+              {t(
+                "2001년 창립 이후, 다양한 산업 분야에서 사이트 환경에 최적화된 솔루션과 높은 품질의 서비스를 제공하며 새로운 고객경험을 창출하고 역량을 입증해왔으며, 현재는 사업 영역을 확장하며 지속적인 성장을 이어가고 있습니다.",
+                "Since our founding in 2001, we have proven our capability across diverse industries by delivering site-optimized solutions and high-quality service. Today we continue to grow by expanding our business areas.",
+              )}
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-16 lg:gap-24">
             <div ref={projects.ref} className="text-center">
-              <span className="text-[#888] text-sm block mb-2">프로젝트</span>
+              <span className="text-[#888] text-sm block mb-2">{t("프로젝트", "Projects")}</span>
               <span className="text-white text-6xl md:text-7xl lg:text-8xl font-bold block">
                 {projects.count}+
               </span>
-              <span className="text-[#888] text-lg block mt-2">건</span>
+              <span className="text-[#888] text-lg block mt-2">{t("건", "")}</span>
             </div>
             <div ref={clients.ref} className="text-center">
-              <span className="text-[#888] text-sm block mb-2">고객사</span>
+              <span className="text-[#888] text-sm block mb-2">{t("고객사", "Clients")}</span>
               <span className="text-[#4A90D9] text-6xl md:text-7xl lg:text-8xl font-bold block">
                 {clients.count}+
               </span>
-              <span className="text-[#888] text-lg block mt-2">개사</span>
+              <span className="text-[#888] text-lg block mt-2">{t("개사", "")}</span>
             </div>
           </div>
         </div>

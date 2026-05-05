@@ -1,4 +1,5 @@
 import { getList } from "@/lib/supabase/public";
+import { tr, type Locale } from "@/lib/locale";
 
 interface HistoryRow {
   id: number;
@@ -10,21 +11,21 @@ interface HistoryRow {
 }
 
 const fallback: HistoryRow[] = [
-  { id: 1, year: "2020", month: null, text_ko: "IT 스마트코리아 표창", text_en: null, sort_order: 0 },
-  { id: 2, year: "2020", month: null, text_ko: "기업부설연구소 설립", text_en: null, sort_order: 1 },
-  { id: 3, year: "2020", month: null, text_ko: "직접생산확인증명 취득", text_en: null, sort_order: 2 },
-  { id: 4, year: "2019", month: null, text_ko: "공장등록 (일산공장이전)", text_en: null, sort_order: 0 },
-  { id: 5, year: "2019", month: null, text_ko: "태국지사 설립", text_en: null, sort_order: 1 },
-  { id: 6, year: "2019", month: null, text_ko: "일본지사 설립", text_en: null, sort_order: 2 },
-  { id: 7, year: "2018", month: null, text_ko: "우수기술기업 인증", text_en: null, sort_order: 0 },
-  { id: 8, year: "2018", month: null, text_ko: "중국공장 설립", text_en: null, sort_order: 1 },
-  { id: 9, year: "2017", month: null, text_ko: "미디어시스템사업부 설립", text_en: null, sort_order: 0 },
-  { id: 10, year: "2008", month: null, text_ko: "소프트웨어 사업자등록", text_en: null, sort_order: 0 },
-  { id: 11, year: "2005", month: null, text_ko: "한화 S&C 파트너체결", text_en: null, sort_order: 0 },
-  { id: 12, year: "2001", month: null, text_ko: "상승종합통신㈜ 설립", text_en: null, sort_order: 0 },
+  { id: 1,  year: "2020", month: null, text_ko: "IT 스마트코리아 표창",      text_en: "IT Smart Korea Award",                   sort_order: 0 },
+  { id: 2,  year: "2020", month: null, text_ko: "기업부설연구소 설립",       text_en: "Established In-house R&D Institute",     sort_order: 1 },
+  { id: 3,  year: "2020", month: null, text_ko: "직접생산확인증명 취득",     text_en: "Direct Production Certification",        sort_order: 2 },
+  { id: 4,  year: "2019", month: null, text_ko: "공장등록 (일산공장이전)",   text_en: "Factory registration (Ilsan relocation)", sort_order: 0 },
+  { id: 5,  year: "2019", month: null, text_ko: "태국지사 설립",             text_en: "Established Thailand branch",            sort_order: 1 },
+  { id: 6,  year: "2019", month: null, text_ko: "일본지사 설립",             text_en: "Established Japan branch",               sort_order: 2 },
+  { id: 7,  year: "2018", month: null, text_ko: "우수기술기업 인증",         text_en: "Excellent Technology Enterprise",        sort_order: 0 },
+  { id: 8,  year: "2018", month: null, text_ko: "중국공장 설립",             text_en: "China factory established",              sort_order: 1 },
+  { id: 9,  year: "2017", month: null, text_ko: "미디어시스템사업부 설립",    text_en: "Media System Division established",      sort_order: 0 },
+  { id: 10, year: "2008", month: null, text_ko: "소프트웨어 사업자등록",     text_en: "Software business registration",         sort_order: 0 },
+  { id: 11, year: "2005", month: null, text_ko: "한화 S&C 파트너체결",       text_en: "Hanwha S&C partnership",                 sort_order: 0 },
+  { id: 12, year: "2001", month: null, text_ko: "상승종합통신㈜ 설립",       text_en: "Founded SANGSEUNG Co., Ltd.",            sort_order: 0 },
 ];
 
-export default async function HistorySection() {
+export default async function HistorySection({ locale }: { locale: Locale }) {
   const rows = await getList<HistoryRow>(
     "histories",
     { orderBy: "sort_order" },
@@ -33,18 +34,19 @@ export default async function HistorySection() {
 
   const grouped = rows.reduce<Record<string, string[]>>((acc, row) => {
     if (!acc[row.year]) acc[row.year] = [];
-    acc[row.year].push(row.text_ko);
+    acc[row.year].push(tr(locale, row.text_ko, row.text_en));
     return acc;
   }, {});
 
   const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+  const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
           <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">HISTORY</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">연혁</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white">{t("연혁", "History")}</h2>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8">
