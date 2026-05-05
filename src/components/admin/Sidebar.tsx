@@ -30,6 +30,11 @@ const menuItems: MenuItem[] = [
     ),
     children: [
       { label: "히어로 섹션 (영상/문구)", href: "/admin/main/hero" },
+      { label: "핵심 사업 영역 (서비스)", href: "/admin/main/services" },
+      { label: "회사 소개 섹션", href: "/admin/main/about" },
+      { label: "실적 통계 (카운트)", href: "/admin/main/result" },
+      { label: "사업분야 카드 (6개)", href: "/admin/main/business" },
+      { label: "하단 CTA", href: "/admin/main/cta" },
     ],
   },
   {
@@ -43,6 +48,7 @@ const menuItems: MenuItem[] = [
     children: [
       { label: "인사말", href: "/admin/about/greeting" },
       { label: "연혁", href: "/admin/about/history" },
+      { label: "조직도", href: "/admin/about/organization" },
       { label: "인증서", href: "/admin/about/certificates" },
       { label: "오시는 길", href: "/admin/about/locations" },
     ],
@@ -62,6 +68,7 @@ const menuItems: MenuItem[] = [
       { label: "공사실적", href: "/admin/business/projects" },
       { label: "제품 라인업", href: "/admin/business/products" },
       { label: "Video-Wall", href: "/admin/business/ip-wall" },
+      { label: "유지보수 페이지", href: "/admin/business/maintenance" },
     ],
   },
   {
