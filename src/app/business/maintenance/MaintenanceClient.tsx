@@ -6,36 +6,36 @@ import { useState } from "react";
 import type { Locale } from "@/lib/locale";
 
 const benefits = [
-  { title_ko: "????", title_en: "Performance",  description_ko: "??? ??? ?? ??",   description_en: "Keep systems running at peak performance", image: "/image/reference/work_1.jpg" },
-  { title_ko: "???",   title_en: "Security",     description_ko: "??? ???? ?? ??", description_en: "Strict security for stronger protection",  image: "/image/reference/work_2.jpg" },
-  { title_ko: "????", title_en: "Prevention",   description_ko: "?? ???? ?? ??",   description_en: "Proactive checks prevent failures",        image: "/image/reference/work_3.jpg" },
-  { title_ko: "???",   title_en: "Reliability",  description_ko: "?? ??? ??? ??",   description_en: "Stable operation through continuous care", image: "/image/reference/work_4.jpg" },
-  { title_ko: "????", title_en: "Cost Saving",  description_ko: "?? ??? ??? ??",   description_en: "Efficient management lowers OPEX",         image: "/image/reference/work_5.jpg" },
+  { title_ko: "성능 보장", title_en: "Performance",  description_ko: "최상의 성능으로 시스템 운영", description_en: "Keep systems running at peak performance", image: "/image/reference/work_1.jpg" },
+  { title_ko: "보안 강화", title_en: "Security",     description_ko: "철저한 보안으로 안전 보호",   description_en: "Strict security for stronger protection",  image: "/image/reference/work_2.jpg" },
+  { title_ko: "장애 예방", title_en: "Prevention",   description_ko: "선제적 점검으로 장애 예방",   description_en: "Proactive checks prevent failures",        image: "/image/reference/work_3.jpg" },
+  { title_ko: "안정 운영", title_en: "Reliability",  description_ko: "지속 관리로 안정적인 운영",   description_en: "Stable operation through continuous care", image: "/image/reference/work_4.jpg" },
+  { title_ko: "비용 절감", title_en: "Cost Saving",  description_ko: "효율적 관리로 운영비 절감",   description_en: "Efficient management lowers OPEX",         image: "/image/reference/work_5.jpg" },
 ];
 
 const expertiseCards = [
   {
-    title_ko: "??/??/??/????\n?? ?? ??",
+    title_ko: "설계/시공/감리/유지보수\n통합 보유 면허",
     title_en: "Integrated Licenses\nDesign / Build / Supervision / Maintenance",
-    items_ko: ["???????", "??????????", "???????"],
+    items_ko: ["정보통신공사업", "정보통신엔지니어링", "소프트웨어사업"],
     items_en: ["ICT Construction", "ICT Engineering", "Software Business"],
   },
   {
-    title_ko: "??????? ???? ??",
+    title_ko: "정보통신 시스템 직접 생산",
     title_en: "Direct ICT System Production",
-    items_ko: ["????? ?????", "????? ???????", "????? ?? ? ?????", "????? ?????"],
+    items_ko: ["IT 시스템 개발", "IT 시스템 유지보수", "소프트웨어 지원 및 컨설팅", "IT 인프라 구축"],
     items_en: ["IT System Development", "IT System Maintenance", "Software Support", "IT Infrastructure Build"],
   },
   {
-    title_ko: "??? ICT ???\n?? ??? ??? ????",
+    title_ko: "최신 ICT 기술과\n현장 경험을 갖춘 전문가",
     title_en: "Experts in Cutting-edge ICT\nand Hands-on Skill",
-    items_ko: ["??????? ??", "20? ?? ??? ???", "?? ?? ?? ?? ??"],
+    items_ko: ["기업부설 연구소", "20년 이상 축적된 노하우", "전문 자격 보유 인력"],
     items_en: ["In-house R&D Institute", "20+ Years of Know-how", "Certified Specialists"],
   },
   {
-    title_ko: "??? ???? ??\n???/???",
+    title_ko: "검증된 안전관리 체계\n무사고/무재해",
     title_en: "Proven Safety Management\nZero Incidents",
-    items_ko: ["ISO 45001 ?????????", "ISO 9001 ???????", "ISO 14001 ???????"],
+    items_ko: ["ISO 45001 안전보건경영시스템", "ISO 9001 품질경영시스템", "ISO 14001 환경경영시스템"],
     items_en: ["ISO 45001 OHS Management", "ISO 9001 Quality Management", "ISO 14001 Environmental Management"],
   },
 ];
@@ -46,22 +46,22 @@ const performanceTabs = [
     label_ko: "정보통신 유지보수 · 관리",
     label_en: "ICT Maintenance & Management",
     items: [
-      { title_ko: "??? ??? ?? ????",     title_en: "University Campus Maintenance",  subtitle_ko: "?? ?? 5.3??", subtitle_en: "53,000 m�/yr", image: "/image/reference/work_6.jpg" },
-      { title_ko: "??/?? ?? ???? ????", title_en: "Food/Beverage Plant Network",   subtitle_ko: "?? ?? 3.6??", subtitle_en: "36,000 m�/yr", image: "/image/reference/work_7.jpg" },
-      { title_ko: "???? ???? ????",       title_en: "Consumer Goods Factory",        subtitle_ko: "?? ?? 2.7??", subtitle_en: "27,000 m�/yr", image: "/image/reference/work_8.jpg" },
-      { title_ko: "?? ???? ????",           title_en: "Steel Manufacturing Plant",     subtitle_ko: "?? ?? 1.5??", subtitle_en: "15,000 m�/yr", image: "/image/reference/work_9.jpg" },
-      { title_ko: "???? ?? ????",           title_en: "Public Institution Maintenance", subtitle_ko: "?? ?? 4.2??", subtitle_en: "42,000 m�/yr", image: "/image/reference/work_10.jpg" },
+      { title_ko: "대학 캠퍼스 유지보수",       title_en: "University Campus Maintenance",  subtitle_ko: "연 면적 5.3만㎡", subtitle_en: "53,000 m²/yr", image: "/image/reference/work_6.jpg" },
+      { title_ko: "식음료 공장 네트워크 구축", title_en: "Food/Beverage Plant Network",   subtitle_ko: "연 면적 3.6만㎡", subtitle_en: "36,000 m²/yr", image: "/image/reference/work_7.jpg" },
+      { title_ko: "생활용품 제조사 유지보수",   title_en: "Consumer Goods Factory",        subtitle_ko: "연 면적 2.7만㎡", subtitle_en: "27,000 m²/yr", image: "/image/reference/work_8.jpg" },
+      { title_ko: "철강 제조 공장 유지보수",   title_en: "Steel Manufacturing Plant",     subtitle_ko: "연 면적 1.5만㎡", subtitle_en: "15,000 m²/yr", image: "/image/reference/work_9.jpg" },
+      { title_ko: "공공기관 시설 유지보수",     title_en: "Public Institution Maintenance", subtitle_ko: "연 면적 4.2만㎡", subtitle_en: "42,000 m²/yr", image: "/image/reference/work_10.jpg" },
     ],
   },
   {
     id: "ict",
-    label_ko: "???? ??",
+    label_ko: "정보통신 프로젝트",
     label_en: "ICT Projects",
     items: [
-      { title_ko: "?? ??? LED ??? ??", title_en: "Mall LED Display Build",       subtitle_ko: "?? LED 600?",   subtitle_en: "600 m� Outdoor LED", image: "/image/reference/work_11.jpg" },
-      { title_ko: "???? Video-Wall ??",   title_en: "Control Center Video-Wall",   subtitle_ko: "CALICO PRO ??",  subtitle_en: "Powered by CALICO PRO", image: "/image/reference/work_12.jpg" },
-      { title_ko: "?? ?? IBS ?????",   title_en: "Corporate HQ IBS",            subtitle_ko: "??? ?? ???", subtitle_en: "Intelligent Building System", image: "/image/reference/work_13.jpg" },
-      { title_ko: "?? ?? ???? ???",  title_en: "Overseas Hotel Network",      subtitle_ko: "GUAM / Thailand",   subtitle_en: "Guam / Thailand", image: "/image/reference/work_14.jpg" },
+      { title_ko: "쇼핑몰 옥외 LED 디스플레이 구축", title_en: "Mall LED Display Build",       subtitle_ko: "옥외 LED 600㎡",       subtitle_en: "600 m² Outdoor LED",          image: "/image/reference/work_11.jpg" },
+      { title_ko: "관제센터 Video-Wall 구축",         title_en: "Control Center Video-Wall",     subtitle_ko: "CALICO PRO 적용",      subtitle_en: "Powered by CALICO PRO",       image: "/image/reference/work_12.jpg" },
+      { title_ko: "기업 본사 IBS 구축",               title_en: "Corporate HQ IBS",              subtitle_ko: "지능형 빌딩 시스템",   subtitle_en: "Intelligent Building System", image: "/image/reference/work_13.jpg" },
+      { title_ko: "해외 호텔 네트워크 구축",          title_en: "Overseas Hotel Network",        subtitle_ko: "GUAM / Thailand",      subtitle_en: "Guam / Thailand",             image: "/image/reference/work_14.jpg" },
     ],
   },
 ];
@@ -83,16 +83,16 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
             Specialists in Reliable ICT
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            {t("ICT ???? ? ??", "ICT Maintenance & Management")}
+            {t("ICT 유지보수 및 관리", "ICT Maintenance & Management")}
           </h1>
           <p className="text-white/85 text-base md:text-lg mb-10 max-w-xl">
             {t(
-              "??????? ???? ?????? ??? ??? ?????.",
+              "상승종합통신은 최고의 품질로 신뢰를 제공하는 ICT 전문 기업입니다.",
               "SANGSEUNG is an ICT specialist delivering best-in-class quality.",
             )}
           </p>
           <Link href="/contact" className="inline-block border border-white text-white px-8 py-3 rounded text-sm font-medium hover:bg-white hover:text-black transition-colors">
-            {t("????", "Contact Us")}
+            {t("문의하기", "Contact Us")}
           </Link>
         </div>
       </section>
@@ -104,11 +104,11 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
             <div>
               <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Business</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
-                {t("?? ????", "Main Business Areas")}
+                {t("주요 사업 분야", "Main Business Areas")}
               </h2>
               <p className="text-white/70 text-sm md:text-base leading-relaxed">
                 {t(
-                  "??????? ??? ???\n???? ?????.",
+                  "상승종합통신이 최고의 품질과\n서비스를 제공합니다.",
                   "SANGSEUNG delivers the highest quality\nand service.",
                 ).split("\n").map((line, i, arr) => (
                   <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
@@ -121,7 +121,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
                 <h3 className="text-white text-lg md:text-xl font-bold leading-snug whitespace-pre-line">
-                  {t("??????\n???? ??", "ICT Facility\nMaintenance")}
+                  {t("ICT 시설\n유지보수", "ICT Facility\nMaintenance")}
                 </h3>
                 <svg className="w-6 h-6 text-white shrink-0 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -133,7 +133,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
               <Image src="/image/reference/work_17.jpg" alt="Network" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
-                <h3 className="text-white text-lg md:text-xl font-bold leading-snug">{t("????", "Network")}</h3>
+                <h3 className="text-white text-lg md:text-xl font-bold leading-snug">{t("네트워크", "Network")}</h3>
                 <svg className="w-6 h-6 text-white shrink-0 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -150,7 +150,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
               <div className="bg-[#3B2B8F] rounded-r-[80px] lg:rounded-r-[120px] -ml-6 lg:-ml-20 px-6 lg:px-20 py-16 lg:py-20">
                 <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
-                  {t("ICT ??\n???? ? ??", "ICT Facility\nMaintenance & Management")}
+                  {t("ICT 시설\n유지보수 및 관리", "ICT Facility\nMaintenance & Management")}
                 </h2>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
           <div className="text-center mb-14">
             <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Accumulated Expertise and Technology</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
-              {t("??? ??? ???", "Accumulated Expertise & Technology")}
+              {t("축적된 전문성과 기술력", "Accumulated Expertise & Technology")}
             </h2>
           </div>
 
@@ -202,7 +202,7 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
           <div className="text-center mb-10">
             <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Business performance</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
-              {t("?? ????", "Key Performance")}
+              {t("주요 시공 실적", "Key Performance")}
             </h2>
           </div>
 
@@ -235,15 +235,15 @@ export default function MaintenanceClient({ locale }: { locale: Locale }) {
         <div className="relative max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
             <div>
-              <p className="text-white/90 text-sm font-medium mb-2">{t("??/??/??", "Design / Build / Consulting")}</p>
+              <p className="text-white/90 text-sm font-medium mb-2">{t("설계 / 시공 / 컨설팅", "Design / Build / Consulting")}</p>
               <p className="text-white text-4xl md:text-5xl font-bold tracking-tight mb-3">02-953-0056</p>
               <p className="text-white/80 text-sm">
-                {t("??? ??? ?? ? ??? ?????",
+                {t("자세한 상담 및 견적 문의는 전화로 연락주세요",
                   "Call us for detailed consultation and quotation")}
               </p>
             </div>
             <Link href="/contact" className="inline-block bg-white text-[#0B1E3F] px-8 py-3 rounded font-semibold hover:bg-white/90 transition-colors">
-              {t("????", "Contact Us")}
+              {t("문의하기", "Contact Us")}
             </Link>
           </div>
         </div>

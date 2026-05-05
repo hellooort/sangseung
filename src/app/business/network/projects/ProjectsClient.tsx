@@ -24,11 +24,11 @@ export default function ProjectsClient({ projectsByYear, locale }: Props) {
             PROJECT HISTORY
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-white">
-            {t("????", "Project Records")}
+            {t("공사 실적", "Project Records")}
           </h1>
           <p className="text-[#888] text-sm mt-4">
             {t(
-              "2014??? ???? ??????? ??? ?????? ?????.",
+              "2014년부터 현재까지 상승종합통신이 수행한 ICT 프로젝트입니다.",
               "ICT projects executed by SANGSEUNG from 2014 to the present.",
             )}
           </p>
@@ -46,7 +46,7 @@ export default function ProjectsClient({ projectsByYear, locale }: Props) {
                   : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white"
               }`}
             >
-              {t("??", "All")}
+              {t("전체", "All")}
             </button>
             {years.map((year) => (
               <button
@@ -73,7 +73,7 @@ export default function ProjectsClient({ projectsByYear, locale }: Props) {
                     {data.capacity && (
                       <p className="text-[#ccc] text-sm">
                         <span className="text-[#888]">
-                          {t("??????? ???????", "ICT Construction Capacity Rating")}
+                          {t("정보통신공사업 시공능력평가", "ICT Construction Capacity Rating")}
                         </span>{" "}
                         <span className="text-white font-semibold">{data.capacity}</span>
                       </p>

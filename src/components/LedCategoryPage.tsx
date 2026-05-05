@@ -40,7 +40,7 @@ export default function LedCategoryPage({
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 text-sm text-[#666] mb-4">
             <Link href="/business/led" className="hover:text-[#4A90D9]">
-              {t("LED ?????", "LED Display")}
+              {t("LED 디스플레이", "LED Display")}
             </Link>
             <span>/</span>
             <span className="text-[#4A90D9]">{categoryLabel}</span>
@@ -81,7 +81,7 @@ export default function LedCategoryPage({
                     {locale === "en" && product.description_en ? product.description_en : product.description_ko}
                   </p>
                   <span className="text-[#4A90D9] text-sm font-medium flex items-center gap-2">
-                    {t("??? ??", "Learn More")}
+                    {t("자세히 보기", "Learn More")}
                     <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -96,17 +96,17 @@ export default function LedCategoryPage({
       <section className="py-20 px-6 lg:px-20 bg-gradient-to-r from-[#4A90D9] to-[#3A7BC8]">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            {t("??? ?? ???????", "Want to learn more about our products?")}
+            {t("제품에 대해 더 알고 싶으신가요?", "Want to learn more about our products?")}
           </h2>
           <p className="text-white/80 mb-8">
-            {t("?? ??? ?? ??? LED ???? ??? ????.",
+            {t("설치 환경에 맞는 최적의 LED 솔루션을 제안해 드립니다.",
               "We will propose the optimal LED solution for your installation environment.")}
           </p>
           <Link
             href="/contact"
             className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors"
           >
-            {t("????", "Contact Us")}
+            {t("문의하기", "Contact Us")}
           </Link>
         </div>
       </section>

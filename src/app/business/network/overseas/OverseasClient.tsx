@@ -4,22 +4,22 @@ import { useState } from "react";
 import type { Locale } from "@/lib/locale";
 
 const overseasProjects = [
-  { id: 1, title_ko: "????",       title_en: "Lotte Hotel",          location_ko: "GUAM",       location_en: "Guam",        year: "2014", description_ko: "???? ??? ????", description_en: "Network infrastructure build", category: "guam" },
-  { id: 2, title_ko: "??????",   title_en: "Arai Resort",          location_ko: "??",       location_en: "Japan",       year: "2017", description_ko: "???? ??? ????", description_en: "Network infrastructure build", category: "japan" },
-  { id: 3, title_ko: "???????", title_en: "Hanwha World Resort",  location_ko: "???",     location_en: "Saipan",      year: "2019", description_ko: "???? ?????",     description_en: "Network redundancy build",      category: "saipan" },
-  { id: 4, title_ko: "????",       title_en: "Hanwha E&C",           location_ko: "???????", location_en: "Saudi Arabia", year: "2018", description_ko: "???? ??? ??",     description_en: "Network infrastructure build",  category: "saudi" },
-  { id: 5, title_ko: "?????",     title_en: "Hanwha Chemical",      location_ko: "??",       location_en: "Thailand",    year: "2018", description_ko: "???? ??? ??",     description_en: "Network infrastructure build",  category: "thailand" },
-  { id: 6, title_ko: "?????",     title_en: "Lotte Chemical",       location_ko: "?????", location_en: "Malaysia",    year: "2018", description_ko: "???? ??? ??",     description_en: "Network infrastructure build",  category: "malaysia" },
+  { id: 1, title_ko: "롯데호텔",         title_en: "Lotte Hotel",         location_ko: "괌",          location_en: "Guam",         year: "2014", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build", category: "guam" },
+  { id: 2, title_ko: "아라이 리조트",   title_en: "Arai Resort",         location_ko: "일본",        location_en: "Japan",        year: "2017", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build", category: "japan" },
+  { id: 3, title_ko: "한화 월드 리조트", title_en: "Hanwha World Resort", location_ko: "사이판",      location_en: "Saipan",       year: "2019", description_ko: "네트워크 이중화 구축",  description_en: "Network redundancy build",      category: "saipan" },
+  { id: 4, title_ko: "한화 건설",         title_en: "Hanwha E&C",          location_ko: "사우디아라비아", location_en: "Saudi Arabia", year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "saudi" },
+  { id: 5, title_ko: "한화 케미칼",       title_en: "Hanwha Chemical",     location_ko: "태국",        location_en: "Thailand",     year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "thailand" },
+  { id: 6, title_ko: "롯데 케미칼",       title_en: "Lotte Chemical",      location_ko: "말레이시아", location_en: "Malaysia",     year: "2018", description_ko: "네트워크 인프라 구축",   description_en: "Network infrastructure build",  category: "malaysia" },
 ];
 
 const regions = [
-  { id: "all",      name_ko: "??",            name_en: "All" },
-  { id: "guam",     name_ko: "GUAM",            name_en: "Guam" },
-  { id: "japan",    name_ko: "??",            name_en: "Japan" },
-  { id: "saipan",   name_ko: "???",          name_en: "Saipan" },
-  { id: "saudi",    name_ko: "???????",  name_en: "Saudi Arabia" },
-  { id: "thailand", name_ko: "??",            name_en: "Thailand" },
-  { id: "malaysia", name_ko: "?????",      name_en: "Malaysia" },
+  { id: "all",      name_ko: "전체",            name_en: "All" },
+  { id: "guam",     name_ko: "괌",              name_en: "Guam" },
+  { id: "japan",    name_ko: "일본",            name_en: "Japan" },
+  { id: "saipan",   name_ko: "사이판",          name_en: "Saipan" },
+  { id: "saudi",    name_ko: "사우디아라비아", name_en: "Saudi Arabia" },
+  { id: "thailand", name_ko: "태국",            name_en: "Thailand" },
+  { id: "malaysia", name_ko: "말레이시아",      name_en: "Malaysia" },
 ];
 
 export default function OverseasClient({ locale }: { locale: Locale }) {
@@ -40,7 +40,7 @@ export default function OverseasClient({ locale }: { locale: Locale }) {
             OVERSEAS PROJECTS
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-white">
-            {t("?? ????", "Overseas Projects")}
+            {t("해외 프로젝트", "Overseas Projects")}
           </h1>
         </div>
       </section>

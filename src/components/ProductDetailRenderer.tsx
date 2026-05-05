@@ -110,7 +110,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
             href={detail.hero?.cta_link ?? "/contact"}
             className="inline-block bg-white text-black px-8 py-3.5 rounded font-semibold text-sm hover:bg-white/90 transition-colors"
           >
-            {tr(locale, detail.hero?.cta_label_ko, detail.hero?.cta_label_en) || t("????", "Get a Quote")}
+            {tr(locale, detail.hero?.cta_label_ko, detail.hero?.cta_label_en) || t("견적 문의", "Get a Quote")}
           </Link>
         </div>
       </section>
@@ -159,7 +159,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                 {detail.gallery?.options && detail.gallery.options.length > 0 && (
                   <div className="mb-8">
                     <span className="text-gray-900 font-bold text-sm mb-3 block">
-                      {tr(locale, detail.gallery?.options_label_ko, detail.gallery?.options_label_en) || t("?? ??", "Pixel Pitch")}
+                      {tr(locale, detail.gallery?.options_label_ko, detail.gallery?.options_label_en) || t("픽셀 피치", "Pixel Pitch")}
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {detail.gallery.options.map((opt) => (
@@ -183,11 +183,11 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                   href="/contact"
                   className="inline-block bg-gray-900 text-white px-8 py-3.5 rounded-lg font-semibold text-sm hover:bg-black transition-colors w-full text-center mb-6"
                 >
-                  {t("????", "Get a Quote")}
+                  {t("견적 문의", "Get a Quote")}
                 </Link>
 
                 <p className="text-gray-400 text-xs text-center leading-relaxed">
-                  {t("???? ??? ??? ?????. ??? ????? ??? ?? ? ???? ???? ??? ??????.",
+                  {t("온라인으로 문의를 남겨 주세요. 담당자가 신속하게 검토 후 맞춤형 제안서를 제공해 드립니다.",
                     "Submit your inquiry online. Our team will respond quickly with a tailored proposal.")}
                 </p>
               </div>
@@ -270,7 +270,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
               </table>
             </div>
             <p className="text-gray-400 text-xs text-center mt-4">
-              {t("* ??? ?? ??? ?? ?? ?? ?? ??? ? ????.",
+              {t("* 제품 사양은 사전 고지 없이 변경될 수 있습니다.",
                 "* Specifications are subject to change without prior notice.")}
             </p>
           </div>
@@ -283,7 +283,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">{t("Applications", "Applications")}</h2>
             <p className="text-gray-500 text-center mb-12">
-              {t("??? ???? ??? ?? ???? ?????.", "Optimal video solutions for diverse spaces.")}
+              {t("다양한 공간에 최적화된 영상 솔루션을 제공합니다.", "Optimal video solutions for diverse spaces.")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {detail.applications.map((app, index) => (
@@ -317,13 +317,13 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                 href="/contact"
                 className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors"
               >
-                {t("????", "Get a Quote")}
+                {t("견적 문의", "Get a Quote")}
               </Link>
               <Link
                 href="/works"
                 className="inline-block border-2 border-white text-white px-8 py-4 rounded font-semibold hover:bg-white/10 transition-colors"
               >
-                {t("???? ??", "View Projects")}
+                {t("시공 사례 보기", "View Projects")}
               </Link>
             </div>
           </div>
