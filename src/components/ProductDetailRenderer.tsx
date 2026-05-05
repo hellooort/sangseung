@@ -61,10 +61,18 @@ interface Props {
 }
 
 export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(detail.gallery?.options?.[0] ?? null);
+  // detail 안의 배열 필드가 admin/DB 측 실수로 배열이 아닐 가능성을 막는다.
+  const galleryImages    = Array.isArray(detail.gallery?.images)      ? (detail.gallery!.images as string[]) : [];
+  const galleryOptions   = Array.isArray(detail.gallery?.options)     ? (detail.gallery!.options as string[]) : [];
+  const heroSummary      = Array.isArray(detail.hero?.summary)        ? detail.hero!.summary! : [];
+  const featuresArr      = Array.isArray(detail.features)             ? detail.features! : [];
+  const specsArr         = Array.isArray(detail.specs)                ? detail.specs! : [];
+  const applicationsArr  = Array.isArray(detail.applications)         ? detail.applications! : [];
+
+  const [selectedOption, setSelectedOption] = useState<string | null>(galleryOptions[0] ?? null);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const images = detail.gallery?.images?.length ? detail.gallery.images : detail.hero?.image ? [detail.hero.image] : [];
+  const images = galleryImages.length ? galleryImages : detail.hero?.image ? [detail.hero.image] : [];
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
   return (
@@ -92,9 +100,9 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
             </p>
           )}
 
-          {detail.hero?.summary && detail.hero.summary.length > 0 && (
+          {heroSummary.length > 0 && (
             <div className="flex flex-wrap items-center gap-6 text-sm text-white/60 mb-10">
-              {detail.hero.summary.map((s, i) => (
+              {heroSummary.map((s, i) => (
                 <div key={i} className="flex items-center gap-6">
                   {i > 0 && <div className="w-px h-8 bg-white/10" />}
                   <div>
@@ -156,13 +164,13 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                   </p>
                 )}
 
-                {detail.gallery?.options && detail.gallery.options.length > 0 && (
+                {galleryOptions.length > 0 && (
                   <div className="mb-8">
                     <span className="text-gray-900 font-bold text-sm mb-3 block">
                       {tr(locale, detail.gallery?.options_label_ko, detail.gallery?.options_label_en) || t("픽셀 피치", "Pixel Pitch")}
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      {detail.gallery.options.map((opt) => (
+                      {galleryOptions.map((opt) => (
                         <button
                           key={opt}
                           onClick={() => setSelectedOption(opt)}
@@ -220,10 +228,10 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
       )}
 
       {/* Section 4: Tech Features */}
-      {detail.features && detail.features.length > 0 && (
+      {featuresArr.length > 0 && (
         <section className="py-24 px-6 lg:px-20 bg-white">
           <div className="max-w-6xl mx-auto">
-            {detail.features.map((feature, index) => (
+            {featuresArr.map((feature, index) => (
               <div
                 key={index}
                 className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-12 items-center ${index > 0 ? "mt-32" : ""}`}
@@ -253,14 +261,14 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
       )}
 
       {/* Section 5: Specifications */}
-      {detail.specs && detail.specs.length > 0 && (
+      {specsArr.length > 0 && (
         <section className="py-24 px-6 lg:px-20 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">{t("Specifications", "Specifications")}</h2>
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
               <table className="w-full">
                 <tbody>
-                  {detail.specs.map((spec, index) => (
+                  {specsArr.map((spec, index) => (
                     <tr key={index} className="border-b border-gray-100 last:border-0">
                       <td className="px-6 py-4 text-gray-700 font-medium bg-gray-50 w-2/5 text-sm">{spec.label}</td>
                       <td className="px-6 py-4 text-gray-600 text-center text-sm">{spec.value}</td>
@@ -278,7 +286,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
       )}
 
       {/* Section 6: Applications */}
-      {detail.applications && detail.applications.length > 0 && (
+      {applicationsArr.length > 0 && (
         <section className="py-24 px-6 lg:px-20 bg-white">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">{t("Applications", "Applications")}</h2>
@@ -286,7 +294,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
               {t("다양한 공간에 최적화된 영상 솔루션을 제공합니다.", "Optimal video solutions for diverse spaces.")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {detail.applications.map((app, index) => (
+              {applicationsArr.map((app, index) => (
                 <div key={index} className="bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
                   <span className="text-[#4A90D9] text-xs font-bold mb-3 block">
                     {String(index + 1).padStart(2, "0")}
