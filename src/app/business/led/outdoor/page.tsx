@@ -1,7 +1,19 @@
-import LedCategoryPage from "@/components/LedCategoryPage";
+import LedCategoryPage, { type LedCategoryProduct } from "@/components/LedCategoryPage";
 import { getLocale } from "@/lib/locale.server";
+import { getList } from "@/lib/supabase/public";
 
-const products = [
+interface DbProductRow {
+  slug: string | null;
+  name: string | null;
+  name_ko: string | null;
+  name_en: string | null;
+  description_ko: string | null;
+  description_en: string | null;
+  image_url: string | null;
+  sort_order: number;
+}
+
+const fallback: LedCategoryProduct[] = [
   { slug: "sod",  name: "SOD Series",  name_en: "SOD Series",
     description_ko: "고휘도 실외용 LED 디스플레이",
     description_en: "High-brightness outdoor LED display",
@@ -14,6 +26,24 @@ const products = [
 
 export default async function OutdoorFixedPage() {
   const locale = await getLocale();
+  const rows = await getList<DbProductRow>(
+    "products",
+    { orderBy: "sort_order", filter: { column: "category_slug", value: "outdoor" } },
+    [],
+  );
+  const products: LedCategoryProduct[] = rows.length > 0
+    ? rows
+        .filter((r) => r.slug)
+        .map((r) => ({
+          slug: r.slug as string,
+          name: r.name_ko ?? r.name ?? "",
+          name_en: r.name_en ?? undefined,
+          description_ko: r.description_ko ?? "",
+          description_en: r.description_en ?? undefined,
+          image: r.image_url ?? "/image/SOD-C/SOD-C_main_img_sample.jpg",
+        }))
+    : fallback;
+
   return (
     <LedCategoryPage
       locale={locale}

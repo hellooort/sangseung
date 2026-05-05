@@ -1,7 +1,19 @@
-import LedCategoryPage from "@/components/LedCategoryPage";
+import LedCategoryPage, { type LedCategoryProduct } from "@/components/LedCategoryPage";
 import { getLocale } from "@/lib/locale.server";
+import { getList } from "@/lib/supabase/public";
 
-const products = [
+interface DbProductRow {
+  slug: string | null;
+  name: string | null;
+  name_ko: string | null;
+  name_en: string | null;
+  description_ko: string | null;
+  description_en: string | null;
+  image_url: string | null;
+  sort_order: number;
+}
+
+const fallback: LedCategoryProduct[] = [
   { slug: "ad-sign",   name: "AD Sign",            name_en: "AD Sign",
     description_ko: "클라우드 LED 사이니지",
     description_en: "Cloud-based LED signage",
@@ -14,6 +26,24 @@ const products = [
 
 export default async function AdSignPage() {
   const locale = await getLocale();
+  const rows = await getList<DbProductRow>(
+    "products",
+    { orderBy: "sort_order", filter: { column: "category_slug", value: "adsign" } },
+    [],
+  );
+  const products: LedCategoryProduct[] = rows.length > 0
+    ? rows
+        .filter((r) => r.slug)
+        .map((r) => ({
+          slug: r.slug as string,
+          name: r.name_ko ?? r.name ?? "",
+          name_en: r.name_en ?? undefined,
+          description_ko: r.description_ko ?? "",
+          description_en: r.description_en ?? undefined,
+          image: r.image_url ?? "/image/AD Cloud/AD Cloud_main.jpg",
+        }))
+    : fallback;
+
   return (
     <LedCategoryPage
       locale={locale}

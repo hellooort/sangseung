@@ -1,30 +1,58 @@
 "use client";
 
 import Link from "next/link";
-
-const stats = [
-  { label: "시공사례", value: "23", href: "/admin/works" },
-  { label: "인증서", value: "27", href: "/admin/about/certificates" },
-  { label: "파트너사", value: "12", href: "/admin/partners" },
-  { label: "자료실", value: "8", href: "/admin/resources" },
-];
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const quickLinks = [
-  { label: "인사말 수정", href: "/admin/about/greeting", color: "bg-blue-500" },
-  { label: "시공사례 관리", href: "/admin/works", color: "bg-green-500" },
-  { label: "인증서 관리", href: "/admin/about/certificates", color: "bg-purple-500" },
-  { label: "자료실 관리", href: "/admin/resources", color: "bg-orange-500" },
-  { label: "파트너사 관리", href: "/admin/partners", color: "bg-pink-500" },
-  { label: "사이트 설정", href: "/admin/settings/footer", color: "bg-gray-500" },
+  { label: "인사말 수정",     href: "/admin/about/greeting",       color: "bg-blue-500" },
+  { label: "시공사례 관리",   href: "/admin/works",                color: "bg-green-500" },
+  { label: "인증서 관리",     href: "/admin/about/certificates",   color: "bg-purple-500" },
+  { label: "자료실 관리",     href: "/admin/resources/downloads",  color: "bg-orange-500" },
+  { label: "파트너사 관리",   href: "/admin/partners",             color: "bg-pink-500" },
+  { label: "사이트 설정",     href: "/admin/settings/footer",      color: "bg-gray-500" },
+];
+
+interface StatCard {
+  label: string;
+  value: string;
+  href: string;
+}
+
+const STAT_DEFS: { label: string; href: string; table: string }[] = [
+  { label: "시공사례", href: "/admin/works",                table: "works" },
+  { label: "인증서",   href: "/admin/about/certificates",   table: "certificates" },
+  { label: "파트너사", href: "/admin/partners",             table: "partners" },
+  { label: "자료실",   href: "/admin/resources/downloads",  table: "resources" },
+  { label: "보도자료", href: "/admin/resources/press",      table: "press_releases" },
+  { label: "제품",     href: "/admin/business/products",    table: "products" },
 ];
 
 export default function DashboardPage() {
+  const [stats, setStats] = useState<StatCard[]>(
+    STAT_DEFS.map((s) => ({ label: s.label, value: "—", href: s.href })),
+  );
+
+  useEffect(() => {
+    const sb = createClient();
+    let cancelled = false;
+    (async () => {
+      const results = await Promise.all(
+        STAT_DEFS.map(async (s) => {
+          const { count } = await sb.from(s.table).select("id", { count: "exact", head: true });
+          return { label: s.label, href: s.href, value: String(count ?? 0) };
+        }),
+      );
+      if (!cancelled) setStats(results);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-8">대시보드</h1>
 
-      {/* 통계 카드 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
         {stats.map((stat) => (
           <Link
             key={stat.label}
@@ -37,7 +65,6 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* 바로가기 */}
       <h2 className="text-lg font-semibold text-gray-900 mb-4">바로가기</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {quickLinks.map((link) => (

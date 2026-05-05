@@ -1,11 +1,34 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
+import { getList } from "@/lib/supabase/public";
+import { tr } from "@/lib/locale";
 
-const products = [
+interface DbProductRow {
+  slug: string | null;
+  name: string | null;
+  name_ko: string | null;
+  name_en: string | null;
+  description_ko: string | null;
+  description_en: string | null;
+  image_url: string | null;
+  sort_order: number;
+}
+
+interface CobProduct {
+  slug: string;
+  name: string;
+  name_en: string;
+  description_ko: string;
+  description_en: string;
+  image: string;
+}
+
+const fallback: CobProduct[] = [
   {
     slug: "lflex",
     name: "LFlex",
+    name_en: "LFlex",
     description_ko: "COB 기술이 적용된 고화질 플렉시블 LED 디스플레이",
     description_en: "High-quality flexible LED display with COB technology",
     image: "/image/LFlex/LFlex_01.jpg",
@@ -13,6 +36,7 @@ const products = [
   {
     slug: "sco-wall",
     name: "SCO-Wall Series",
+    name_en: "SCO-Wall Series",
     description_ko: "프리미엄 COB 패키징 기술의 고급형 LED 월",
     description_en: "Premium LED wall built with COB packaging technology",
     image: "/image/SCO-Wall/1-1.png",
@@ -22,6 +46,23 @@ const products = [
 export default async function COBLEDPage() {
   const locale = await getLocale();
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+  const rows = await getList<DbProductRow>(
+    "products",
+    { orderBy: "sort_order", filter: { column: "category_slug", value: "cob" } },
+    [],
+  );
+  const products: CobProduct[] = rows.length > 0
+    ? rows
+        .filter((r) => r.slug)
+        .map((r) => ({
+          slug: r.slug as string,
+          name: r.name_ko ?? r.name ?? "",
+          name_en: r.name_en ?? r.name_ko ?? r.name ?? "",
+          description_ko: r.description_ko ?? "",
+          description_en: r.description_en ?? "",
+          image: r.image_url ?? "/image/LFlex/LFlex_01.jpg",
+        }))
+    : fallback;
 
   return (
     <>
@@ -63,10 +104,10 @@ export default async function COBLEDPage() {
                 </div>
                 <div className="p-6">
                   <h3 className="text-white text-2xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
-                    {product.name}
+                    {tr(locale, product.name, product.name_en)}
                   </h3>
                   <p className="text-[#888] leading-relaxed mb-4">
-                    {locale === "en" ? product.description_en : product.description_ko}
+                    {tr(locale, product.description_ko, product.description_en)}
                   </p>
                   <span className="text-[#4A90D9] text-sm font-medium flex items-center gap-2">
                     {t("자세히 보기", "Learn More")}
