@@ -227,7 +227,7 @@ export default function HeaderClient({ navItems, locale }: HeaderClientProps) {
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             <span className="text-white/80 text-xs tracking-widest">
-              {locale === "ko" ? "SWITCHING TO ENGLISH…" : "한국어로 전환 중…"}
+              {locale === "ko" ? "영어로 전환 중…" : "SWITCHING TO KOREAN…"}
             </span>
           </div>
         </div>
