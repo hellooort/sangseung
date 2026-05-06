@@ -3,7 +3,9 @@ import { getList } from "@/lib/supabase/public";
 import { getLocale } from "@/lib/locale.server";
 import ProductDetailRenderer, { type ProductDetail } from "@/components/ProductDetailRenderer";
 
-export const revalidate = 60;
+// cookies() 를 쓰는 getLocale 호출과 ISR(revalidate) 가 함께 있을 때
+// Next.js 15 가 일부 환경에서 충돌을 던질 수 있어 명시적으로 dynamic 으로 둔다.
+export const dynamic = "force-dynamic";
 
 // row 자체에 detail/slug/category_slug 컬럼이 없는 환경(=마이그레이션 미적용)에서도
 // 죽지 않도록 모든 필드를 옵셔널로 받는다. 알 수 없는 컬럼은 그냥 무시.
