@@ -136,7 +136,7 @@ export default function AdminProjectsPage() {
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">공사명 (EN)</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-32">카테고리</th>
               <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-24">년도</th>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-32">규모/금액</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 w-32">공사 금액 (억)</th>
               <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 w-16">삭제</th>
             </tr>
           </thead>
@@ -159,7 +159,18 @@ export default function AdminProjectsPage() {
                   <input type="text" value={record.year ?? ""} onChange={(e) => updateRecord(record.id, "year", e.target.value)} placeholder="2024" className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500 text-center" />
                 </td>
                 <td className="px-4 py-2">
-                  <input type="text" value={record.capacity ?? ""} onChange={(e) => updateRecord(record.id, "capacity", e.target.value)} placeholder="예: 5억원" className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500" />
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      value={record.capacity ?? ""}
+                      onChange={(e) => updateRecord(record.id, "capacity", e.target.value)}
+                      placeholder="5"
+                      className="w-full px-2 py-1.5 text-sm text-gray-900 outline-none border-b border-transparent focus:border-blue-500 text-right"
+                    />
+                    <span className="text-xs text-gray-500 whitespace-nowrap">억</span>
+                  </div>
                 </td>
                 <td className="px-4 py-2 text-center">
                   <button onClick={() => { if (confirm("삭제하시겠습니까?")) records.remove(record.id); }} className="text-red-400 hover:text-red-600">
