@@ -10,9 +10,15 @@ interface VideoWallData {
   descriptionKo: string;
   descriptionEn: string;
   mainImage: string;
-  button1Label: string;
+  /** @deprecated 이전 단일 라벨 — 신규에는 button1Label_ko/en 사용 */
+  button1Label?: string;
+  button1Label_ko?: string;
+  button1Label_en?: string;
   button1Link: string;
-  button2Label: string;
+  /** @deprecated */
+  button2Label?: string;
+  button2Label_ko?: string;
+  button2Label_en?: string;
   button2Link: string;
   ctaTitleKo: string;
   ctaTitleEn: string;
@@ -30,9 +36,11 @@ const fallback: VideoWallData = {
   descriptionEn:
     "Step into a new era of performance and clarity. CALICO PRO delivers unmatched flexibility with support for hundreds of 4K60 video windows and stunning 10-bit color depth — enabling smooth, lifelike visuals at scale.\n\nWhether you're powering control rooms, broadcast environments, or immersive experiences, CALICO PRO redefines what's possible in professional video processing.",
   mainImage: "/image/calico-pro.png",
-  button1Label: "CALICO PRO 2200",
+  button1Label_ko: "CALICO PRO 2200",
+  button1Label_en: "CALICO PRO 2200",
   button1Link: "https://tvone.com/",
-  button2Label: "CALICO PRO 1200",
+  button2Label_ko: "CALICO PRO 1200",
+  button2Label_en: "CALICO PRO 1200",
   button2Link: "https://tvone.com/",
   ctaTitleKo: "Video-Wall 도입을 검토하고 계신가요?",
   ctaTitleEn: "Considering a Video-Wall solution?",
@@ -78,26 +86,34 @@ export default async function IPWallPage() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                {data.button1Label && (
-                  <a
-                    href={data.button1Link || "#"}
-                    target={data.button1Link?.startsWith("http") ? "_blank" : undefined}
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
-                  >
-                    {data.button1Label}
-                  </a>
-                )}
-                {data.button2Label && (
-                  <a
-                    href={data.button2Link || "#"}
-                    target={data.button2Link?.startsWith("http") ? "_blank" : undefined}
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
-                  >
-                    {data.button2Label}
-                  </a>
-                )}
+                {(() => {
+                  const btn1 = tr(locale, data.button1Label_ko ?? data.button1Label, data.button1Label_en ?? data.button1Label);
+                  const btn2 = tr(locale, data.button2Label_ko ?? data.button2Label, data.button2Label_en ?? data.button2Label);
+                  return (
+                    <>
+                      {btn1 && (
+                        <a
+                          href={data.button1Link || "#"}
+                          target={data.button1Link?.startsWith("http") ? "_blank" : undefined}
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
+                        >
+                          {btn1}
+                        </a>
+                      )}
+                      {btn2 && (
+                        <a
+                          href={data.button2Link || "#"}
+                          target={data.button2Link?.startsWith("http") ? "_blank" : undefined}
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-3 border-2 border-[#4A90D9] text-[#4A90D9] hover:bg-[#4A90D9] hover:text-white px-7 py-3.5 rounded font-semibold transition-colors"
+                        >
+                          {btn2}
+                        </a>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

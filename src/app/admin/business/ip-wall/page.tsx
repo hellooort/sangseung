@@ -11,9 +11,15 @@ interface VideoWallData {
   descriptionKo: string;
   descriptionEn: string;
   mainImage: string;
-  button1Label: string;
+  /** @deprecated 하위 호환용 — 신규 데이터에는 button1Label_ko/en 사용 */
+  button1Label?: string;
+  button1Label_ko: string;
+  button1Label_en: string;
   button1Link: string;
-  button2Label: string;
+  /** @deprecated 하위 호환용 — 신규 데이터에는 button2Label_ko/en 사용 */
+  button2Label?: string;
+  button2Label_ko: string;
+  button2Label_en: string;
   button2Link: string;
   ctaTitleKo: string;
   ctaTitleEn: string;
@@ -31,9 +37,11 @@ const defaultData: VideoWallData = {
   descriptionEn:
     "Step into a new era of performance and clarity. CALICO PRO delivers unmatched flexibility with support for hundreds of 4K60 video windows and stunning 10-bit color depth enabling smooth, lifelike visuals at scale.\n\nWhether you're powering control rooms, broadcast environments, or immersive experiences, CALICO PRO redefines what's possible in professional video processing.",
   mainImage: "/image/calico-pro.png",
-  button1Label: "CALICO PRO 2200",
+  button1Label_ko: "CALICO PRO 2200",
+  button1Label_en: "CALICO PRO 2200",
   button1Link: "https://tvone.com/",
-  button2Label: "CALICO PRO 1200",
+  button2Label_ko: "CALICO PRO 1200",
+  button2Label_en: "CALICO PRO 1200",
   button2Link: "https://tvone.com/",
   ctaTitleKo: "Video-Wall 솔루션을 고려 중이신가요?",
   ctaTitleEn: "Considering a Video-Wall solution?",
@@ -149,15 +157,21 @@ export default function AdminVideoWallPage() {
         <div className="pt-4 border-t border-gray-100">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">제품 링크 버튼</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="block text-xs font-medium text-gray-600">버튼 1</label>
-              <input type="text" value={value.button1Label} onChange={(e) => update("button1Label", e.target.value)} placeholder="버튼 텍스트" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-              <input type="text" value={value.button1Link} onChange={(e) => update("button1Link", e.target.value)} placeholder="링크 URL" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+            <div className="space-y-2 border border-gray-100 rounded-lg p-3">
+              <label className="block text-xs font-semibold text-gray-700">버튼 1</label>
+              <div className="grid grid-cols-2 gap-2">
+                <input type="text" value={value.button1Label_ko ?? value.button1Label ?? ""} onChange={(e) => update("button1Label_ko", e.target.value)} placeholder="버튼 텍스트 (KO)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                <input type="text" value={value.button1Label_en ?? ""} onChange={(e) => update("button1Label_en", e.target.value)} placeholder="Button text (EN)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <input type="text" value={value.button1Link} onChange={(e) => update("button1Link", e.target.value)} placeholder="링크 URL" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs" />
             </div>
-            <div className="space-y-2">
-              <label className="block text-xs font-medium text-gray-600">버튼 2</label>
-              <input type="text" value={value.button2Label} onChange={(e) => update("button2Label", e.target.value)} placeholder="버튼 텍스트" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-              <input type="text" value={value.button2Link} onChange={(e) => update("button2Link", e.target.value)} placeholder="링크 URL" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+            <div className="space-y-2 border border-gray-100 rounded-lg p-3">
+              <label className="block text-xs font-semibold text-gray-700">버튼 2</label>
+              <div className="grid grid-cols-2 gap-2">
+                <input type="text" value={value.button2Label_ko ?? value.button2Label ?? ""} onChange={(e) => update("button2Label_ko", e.target.value)} placeholder="버튼 텍스트 (KO)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                <input type="text" value={value.button2Label_en ?? ""} onChange={(e) => update("button2Label_en", e.target.value)} placeholder="Button text (EN)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <input type="text" value={value.button2Link} onChange={(e) => update("button2Link", e.target.value)} placeholder="링크 URL" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs" />
             </div>
           </div>
         </div>
