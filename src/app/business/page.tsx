@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
 import { getList } from "@/lib/supabase/public";
 import { tr } from "@/lib/locale";
@@ -123,40 +124,49 @@ export default async function BusinessPage() {
             {rows.map((area) => {
               const features = area.features ?? [];
               const href = HREF_BY_ID[area.id] ?? "/business";
+              const hasImage = typeof area.hero_image === "string" && area.hero_image.trim().length > 0;
               return (
-                <div key={area.id} className="bg-[#111] rounded-2xl p-8 lg:p-12">
-                  <div className="flex flex-col lg:flex-row justify-between gap-8">
-                    <div className="lg:w-1/2">
-                      {area.subtitle_ko && (
-                        <span className="text-[#4A90D9] text-sm mb-2 block">
-                          {tr(locale, area.subtitle_ko, area.subtitle_en)}
-                        </span>
-                      )}
-                      <h2 className="text-3xl font-bold text-white mb-4">
-                        {tr(locale, area.title_ko, area.title_en)}
-                      </h2>
-                      <p className="text-[#888] leading-relaxed mb-6">
-                        {tr(locale, area.description_ko, area.description_en)}
-                      </p>
-                      <Link
-                        href={href}
-                        className="inline-block border border-[#444] text-white px-6 py-3 rounded text-sm hover:border-white/50 transition-colors"
-                      >
-                        {tr(locale, area.cta_label_ko, area.cta_label_en) || t("자세히 보기", "Learn More")}
-                      </Link>
+                <div key={area.id} className="bg-[#111] rounded-2xl overflow-hidden">
+                  {hasImage && (
+                    <div className="relative w-full aspect-[21/9] bg-[#1a1a1a]">
+                      <Image src={area.hero_image as string} alt={area.title_ko ?? ""} fill className="object-cover" unoptimized />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/30 to-transparent" />
                     </div>
-                    {features.length > 0 && (
+                  )}
+                  <div className="p-8 lg:p-12">
+                    <div className="flex flex-col lg:flex-row justify-between gap-8">
                       <div className="lg:w-1/2">
-                        <h3 className="text-white font-semibold mb-4">{t("주요 서비스", "Key Services")}</h3>
-                        <div className="grid grid-cols-2 gap-3">
-                          {features.map((f, i) => (
-                            <div key={f.id ?? i} className="bg-[#1a1a1a] rounded px-4 py-3 text-[#888] text-sm">
-                              {tr(locale, f.title_ko ?? "", f.title_en ?? "")}
-                            </div>
-                          ))}
-                        </div>
+                        {area.subtitle_ko && (
+                          <span className="text-[#4A90D9] text-sm mb-2 block">
+                            {tr(locale, area.subtitle_ko, area.subtitle_en)}
+                          </span>
+                        )}
+                        <h2 className="text-3xl font-bold text-white mb-4">
+                          {tr(locale, area.title_ko, area.title_en)}
+                        </h2>
+                        <p className="text-[#888] leading-relaxed mb-6">
+                          {tr(locale, area.description_ko, area.description_en)}
+                        </p>
+                        <Link
+                          href={href}
+                          className="inline-block border border-[#444] text-white px-6 py-3 rounded text-sm hover:border-white/50 transition-colors"
+                        >
+                          {tr(locale, area.cta_label_ko, area.cta_label_en) || t("자세히 보기", "Learn More")}
+                        </Link>
                       </div>
-                    )}
+                      {features.length > 0 && (
+                        <div className="lg:w-1/2">
+                          <h3 className="text-white font-semibold mb-4">{t("주요 서비스", "Key Services")}</h3>
+                          <div className="grid grid-cols-2 gap-3">
+                            {features.map((f, i) => (
+                              <div key={f.id ?? i} className="bg-[#1a1a1a] rounded px-4 py-3 text-[#888] text-sm">
+                                {tr(locale, f.title_ko ?? "", f.title_en ?? "")}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );

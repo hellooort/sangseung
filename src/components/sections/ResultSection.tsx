@@ -35,6 +35,10 @@ const fallback: MainResultData = {
 
 export default async function ResultSection({ locale }: { locale: Locale }) {
   const data = await getSiteSetting<MainResultData>("main_result", fallback);
+  // 단위(suffix) 는 영문에서 의도적으로 빈 값일 수 있으므로 trim 후 그대로 사용 (tr 의 fallback 사용 안 함).
+  const stat1Suffix = (locale === "en" ? data.stat1Suffix_en : data.stat1Suffix_ko) ?? "";
+  const stat2Suffix = (locale === "en" ? data.stat2Suffix_en : data.stat2Suffix_ko) ?? "";
+
   return (
     <section className="w-full bg-[#0A0A0A] py-24 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto">
@@ -51,13 +55,13 @@ export default async function ResultSection({ locale }: { locale: Locale }) {
           <div className="flex flex-col sm:flex-row gap-16 lg:gap-24">
             <ResultCounter
               label={tr(locale, data.stat1Label_ko, data.stat1Label_en)}
-              suffix={tr(locale, data.stat1Suffix_ko, data.stat1Suffix_en)}
+              suffix={stat1Suffix}
               end={data.stat1Value}
               color="text-white"
             />
             <ResultCounter
               label={tr(locale, data.stat2Label_ko, data.stat2Label_en)}
-              suffix={tr(locale, data.stat2Suffix_ko, data.stat2Suffix_en)}
+              suffix={stat2Suffix}
               end={data.stat2Value}
               color="text-[#4A90D9]"
             />

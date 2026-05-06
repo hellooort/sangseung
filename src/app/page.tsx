@@ -9,10 +9,19 @@ import HistorySection from "@/components/sections/HistorySection";
 import BusinessSection from "@/components/sections/BusinessSection";
 import PartnersSection from "@/components/sections/PartnersSection";
 import CTASection from "@/components/sections/CTASection";
+import PopupModal, { type PopupItem } from "@/components/PopupModal";
 import { getLocale } from "@/lib/locale.server";
+import { getSiteSetting } from "@/lib/supabase/public";
+
+interface PopupsData {
+  popups: PopupItem[];
+}
 
 export default async function Home() {
-  const locale = await getLocale();
+  const [locale, popupsData] = await Promise.all([
+    getLocale(),
+    getSiteSetting<PopupsData>("popups", { popups: [] }),
+  ]);
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
@@ -28,6 +37,7 @@ export default async function Home() {
         <CTASection locale={locale} />
       </main>
       <Footer />
+      <PopupModal popups={popupsData.popups ?? []} locale={locale} />
     </div>
   );
 }

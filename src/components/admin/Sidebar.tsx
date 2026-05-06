@@ -35,6 +35,7 @@ const menuItems: MenuItem[] = [
       { label: "실적 통계 (카운트)", href: "/admin/main/result" },
       { label: "사업분야 카드 (6개)", href: "/admin/main/business" },
       { label: "하단 CTA", href: "/admin/main/cta" },
+      { label: "팝업 관리", href: "/admin/main/popups" },
     ],
   },
   {
