@@ -1,177 +1,184 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
+import { getSiteSetting } from "@/lib/supabase/public";
+import { tr } from "@/lib/locale";
 
-const networkCategories = [
-  {
-    title_ko: "IBS 통합시스템",
-    title_en: "IBS Integrated System",
-    description_ko: "통합배선공사, CCTV, CATV, AV, 서버실 구축 등 건물 인프라 전반을 담당합니다.",
-    description_en: "Comprehensive building infrastructure including structured cabling, CCTV, CATV, AV, and server room construction.",
-    href: "/business/network/ibs",
-    image: "/image/reference/work_3.jpg",
-  },
-  {
-    title_ko: "해외 프로젝트",
-    title_en: "Overseas Projects",
-    description_ko: "GUAM, 일본, 사이판, 사우디아라비아, 태국, 말레이시아 등 글로벌 프로젝트를 수행합니다.",
-    description_en: "Global delivery in Guam, Japan, Saipan, Saudi Arabia, Thailand, Malaysia, and more.",
-    href: "/business/network/overseas",
-    image: "/image/reference/work_5.jpg",
-  },
-  {
-    title_ko: "공사실적",
-    title_en: "Project Records",
-    description_ko: "2003년부터 현재까지 수행한 국내외 네트워크 인프라 구축 실적입니다.",
-    description_en: "Domestic and overseas network infrastructure projects delivered since 2003.",
-    href: "/business/network/projects",
-    image: "/image/reference/work_7.jpg",
-  },
-];
+interface NetworkServiceItem {
+  id?: string;
+  title_ko: string;
+  title_en: string;
+  description_ko: string;
+  description_en: string;
+}
 
-const services = [
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-      </svg>
-    ),
-    title_ko: "통합배선공사 (UTP/광)",
-    title_en: "Structured Cabling (UTP/Fiber)",
-    description_ko: "카테고리6 이상 UTP 케이블 및 광케이블 인프라 구축",
-    description_en: "Cat 6+ UTP and fiber-optic cabling infrastructure",
+interface NetworkSubCategory {
+  id?: string;
+  title_ko: string;
+  title_en: string;
+  description_ko: string;
+  description_en: string;
+  href: string;
+  image: string;
+}
+
+interface NetworkPageData {
+  hero: {
+    badge_en: string;
+    title_ko: string;
+    title_en: string;
+    description_ko: string;
+    description_en: string;
+    image: string;
+  };
+  servicesHeading_ko: string;
+  servicesHeading_en: string;
+  services: NetworkServiceItem[];
+  categoriesHeading_ko: string;
+  categoriesHeading_en: string;
+  categories: NetworkSubCategory[];
+  cta: {
+    title_ko: string;
+    title_en: string;
+    description_ko: string;
+    description_en: string;
+    button_ko: string;
+    button_en: string;
+    button_href: string;
+  };
+}
+
+const fallback: NetworkPageData = {
+  hero: {
+    badge_en: "NETWORK BUSINESS",
+    title_ko: "네트워크 사업",
+    title_en: "Network Business",
+    description_ko: "IBS 통합시스템부터 글로벌 프로젝트까지, 최고의 네트워크 인프라 솔루션을 제공합니다.",
+    description_en: "From IBS integration to global projects — best-in-class network infrastructure solutions.",
+    image: "/image/reference/work_4.jpg",
   },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-      </svg>
-    ),
-    title_ko: "CCTV / CATV",
-    title_en: "CCTV / CATV",
-    description_ko: "보안 감시 시스템 및 방송 설비 구축",
-    description_en: "Security surveillance and broadcast facility installation",
+  servicesHeading_ko: "주요 서비스",
+  servicesHeading_en: "Key Services",
+  services: [
+    { title_ko: "통합배선공사 (UTP/광)", title_en: "Structured Cabling (UTP/Fiber)", description_ko: "카테고리6 이상 UTP 케이블 및 광케이블 인프라 구축", description_en: "Cat 6+ UTP and fiber-optic cabling infrastructure" },
+    { title_ko: "CCTV / CATV",          title_en: "CCTV / CATV",                description_ko: "보안 감시 시스템 및 방송 설비 구축",                          description_en: "Security surveillance and broadcast facility installation" },
+    { title_ko: "서버실 구축",          title_en: "Server Room Build-out",      description_ko: "항온항습, 전원, 보안이 완비된 전산실 구축",                  description_en: "Server rooms with HVAC, power, and security" },
+    { title_ko: "AV 시스템",            title_en: "AV Systems",                 description_ko: "영상 회의, 전자칠판, 디지털 사이니지 등 시청각 시스템",       description_en: "Video conferencing, interactive boards, digital signage, and more" },
+    { title_ko: "유지보수",             title_en: "Maintenance",                description_ko: "정보통신설비 성능/보안/안정성 지속 관리 및 장애 예방",         description_en: "Ongoing performance, security, and stability management for ICT facilities" },
+  ],
+  categoriesHeading_ko: "사업 분야",
+  categoriesHeading_en: "Business Areas",
+  categories: [
+    { title_ko: "IBS 통합시스템",  title_en: "IBS Integrated System", description_ko: "통합배선공사, CCTV, CATV, AV, 서버실 구축 등 건물 인프라 전반을 담당합니다.", description_en: "Comprehensive building infrastructure including structured cabling, CCTV, CATV, AV, and server room construction.", href: "/business/network/ibs", image: "/image/reference/work_3.jpg" },
+    { title_ko: "해외 프로젝트",  title_en: "Overseas Projects",     description_ko: "GUAM, 일본, 사이판, 사우디아라비아, 태국, 말레이시아 등 글로벌 프로젝트를 수행합니다.", description_en: "Global delivery in Guam, Japan, Saipan, Saudi Arabia, Thailand, Malaysia, and more.", href: "/business/network/overseas", image: "/image/reference/work_5.jpg" },
+    { title_ko: "공사실적",        title_en: "Project Records",       description_ko: "2003년부터 현재까지 수행한 국내외 네트워크 인프라 구축 실적입니다.", description_en: "Domestic and overseas network infrastructure projects delivered since 2003.", href: "/business/network/projects", image: "/image/reference/work_7.jpg" },
+  ],
+  cta: {
+    title_ko: "네트워크 인프라 구축이 필요하신가요?",
+    title_en: "Need network infrastructure built?",
+    description_ko: "20년 이상의 경험을 바탕으로 최적의 솔루션을 제안해 드립니다.",
+    description_en: "Drawing on 20+ years of experience, we propose the optimal solution.",
+    button_ko: "문의하기",
+    button_en: "Contact Us",
+    button_href: "/contact",
   },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-      </svg>
-    ),
-    title_ko: "서버실 구축",
-    title_en: "Server Room Build-out",
-    description_ko: "항온항습, 전원, 보안이 완비된 전산실 구축",
-    description_en: "Server rooms with HVAC, power, and security",
-  },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
-    ),
-    title_ko: "AV 시스템",
-    title_en: "AV Systems",
-    description_ko: "영상 회의, 전자칠판, 디지털 사이니지 등 시청각 시스템",
-    description_en: "Video conferencing, interactive boards, digital signage, and more",
-  },
-  {
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-    title_ko: "유지보수",
-    title_en: "Maintenance",
-    description_ko: "정보통신설비 성능/보안/안정성 지속 관리 및 장애 예방",
-    description_en: "Ongoing performance, security, and stability management for ICT facilities",
-  },
-];
+};
 
 export default async function NetworkBusinessPage() {
-  const locale = await getLocale();
+  const [locale, data] = await Promise.all([
+    getLocale(),
+    getSiteSetting<NetworkPageData>("page_network", fallback),
+  ]);
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
   return (
     <>
       <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/image/reference/work_4.jpg" alt="Network Infrastructure" fill className="object-cover" />
+          {data.hero.image && (
+            <Image src={data.hero.image} alt={data.hero.title_ko} fill className="object-cover" unoptimized />
+          )}
           <div className="absolute inset-0 bg-black/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
         </div>
         <div className="relative z-20 text-center px-6">
-          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">NETWORK BUSINESS</span>
+          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">{data.hero.badge_en}</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            {t("네트워크 사업", "Network Business")}
+            {tr(locale, data.hero.title_ko, data.hero.title_en)}
           </h1>
           <p className="text-[#ccc] text-lg max-w-2xl mx-auto">
-            {t(
-              "IBS 통합시스템부터 글로벌 프로젝트까지, 최고의 네트워크 인프라 솔루션을 제공합니다.",
-              "From IBS integration to global projects — best-in-class network infrastructure solutions.",
-            )}
+            {tr(locale, data.hero.description_ko, data.hero.description_en)}
           </p>
         </div>
       </section>
 
-      <section className="py-20 px-6 lg:px-20 bg-[#111]">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-12 text-center">
-            {t("주요 서비스", "Key Services")}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {services.map((service, index) => (
-              <div key={index} className="text-center p-6">
-                <div className="text-[#4A90D9] mb-4 flex justify-center">{service.icon}</div>
-                <h3 className="text-white font-bold mb-2">{t(service.title_ko, service.title_en)}</h3>
-                <p className="text-[#888] text-sm">{t(service.description_ko, service.description_en)}</p>
-              </div>
-            ))}
+      {data.services.length > 0 && (
+        <section className="py-20 px-6 lg:px-20 bg-[#111]">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-12 text-center">
+              {tr(locale, data.servicesHeading_ko, data.servicesHeading_en)}
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {data.services.map((service, index) => (
+                <div key={service.id ?? index} className="text-center p-6">
+                  <div className="text-[#4A90D9] mb-4 flex justify-center">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-bold mb-2">{tr(locale, service.title_ko, service.title_en)}</h3>
+                  <p className="text-[#888] text-sm">{tr(locale, service.description_ko, service.description_en)}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="py-24 px-6 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-12 text-center">
-            {t("사업 분야", "Business Areas")}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {networkCategories.map((category) => (
-              <Link
-                key={category.title_ko}
-                href={category.href}
-                className="group block bg-[#1a1a1a] rounded-2xl overflow-hidden hover:bg-[#222] transition-all"
-              >
-                <div className="relative h-48 bg-[#2a2a2a]">
-                  <Image src={category.image} alt={category.title_ko} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-white text-xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
-                    {t(category.title_ko, category.title_en)}
-                  </h3>
-                  <p className="text-[#888] text-sm leading-relaxed">
-                    {t(category.description_ko, category.description_en)}
-                  </p>
-                </div>
-              </Link>
-            ))}
+      {data.categories.length > 0 && (
+        <section className="py-24 px-6 lg:px-20">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-12 text-center">
+              {tr(locale, data.categoriesHeading_ko, data.categoriesHeading_en)}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {data.categories.map((category, i) => (
+                <Link
+                  key={category.id ?? i}
+                  href={category.href || "#"}
+                  className="group block bg-[#1a1a1a] rounded-2xl overflow-hidden hover:bg-[#222] transition-all"
+                >
+                  <div className="relative h-48 bg-[#2a2a2a]">
+                    {category.image && (
+                      <Image src={category.image} alt={category.title_ko} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
+                    )}
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-white text-xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
+                      {tr(locale, category.title_ko, category.title_en)}
+                    </h3>
+                    <p className="text-[#888] text-sm leading-relaxed">
+                      {tr(locale, category.description_ko, category.description_en)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="py-24 px-6 lg:px-20 bg-gradient-to-r from-[#4A90D9] to-[#3A7BC8]">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            {t("네트워크 인프라 구축이 필요하신가요?", "Need network infrastructure built?")}
+            {tr(locale, data.cta.title_ko, data.cta.title_en)}
           </h2>
           <p className="text-white/80 mb-8">
-            {t("20년 이상의 경험을 바탕으로 최적의 솔루션을 제안해 드립니다.",
-              "Drawing on 20+ years of experience, we propose the optimal solution.")}
+            {tr(locale, data.cta.description_ko, data.cta.description_en)}
           </p>
-          <Link href="/contact" className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors">
-            {t("문의하기", "Contact Us")}
+          <Link href={data.cta.button_href || "/contact"} className="inline-block bg-white text-[#4A90D9] px-8 py-4 rounded font-semibold hover:bg-white/90 transition-colors">
+            {tr(locale, data.cta.button_ko, data.cta.button_en) || t("문의하기", "Contact Us")}
           </Link>
         </div>
       </section>

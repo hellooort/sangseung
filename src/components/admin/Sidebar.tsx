@@ -64,6 +64,8 @@ const menuItems: MenuItem[] = [
     ),
     children: [
       { label: "사업소개 텍스트", href: "/admin/business/overview" },
+      { label: "네트워크 사업 페이지", href: "/admin/business/network" },
+      { label: "LED 디스플레이 페이지", href: "/admin/business/led" },
       { label: "IBS 통합시스템", href: "/admin/business/ibs" },
       { label: "해외 프로젝트", href: "/admin/business/overseas" },
       { label: "공사실적", href: "/admin/business/projects" },
