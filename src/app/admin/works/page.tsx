@@ -279,7 +279,8 @@ export default function AdminWorksPage() {
                       )}
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
-                      투명 배경(PNG)을 권장합니다. 시공사례 카드와 상세 모달에 표시됩니다.
+                      <b>투명 배경 PNG 권장.</b> 업로드 시 시공사례 카드/모달의 대표 이미지가 살짝 어두워지고
+                      그 위 가운데에 로고가 크게 표시됩니다 (가로/세로 자동 정렬).
                     </p>
                   </div>
 

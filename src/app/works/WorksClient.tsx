@@ -80,18 +80,21 @@ export default function WorksClient({ categories, works, locale }: Props) {
                         />
                       )}
                       {work.logo_url && (
-                        <div className="absolute top-3 left-3 bg-white/95 rounded-md px-2 py-1 shadow-md">
-                          <div className="relative h-6 w-16">
-                            <Image
-                              src={work.logo_url}
-                              alt={`${title} logo`}
-                              fill
-                              className="object-contain"
-                              sizes="64px"
-                              unoptimized
-                            />
+                        <>
+                          <div className="absolute inset-0 bg-black/40" />
+                          <div className="absolute inset-0 flex items-center justify-center p-8">
+                            <div className="relative w-3/4 h-2/5 max-w-[260px]">
+                              <Image
+                                src={work.logo_url}
+                                alt={`${title} logo`}
+                                fill
+                                className="object-contain drop-shadow-2xl"
+                                sizes="260px"
+                                unoptimized
+                              />
+                            </div>
                           </div>
-                        </div>
+                        </>
                       )}
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 pointer-events-none">
@@ -120,31 +123,32 @@ export default function WorksClient({ categories, works, locale }: Props) {
                   unoptimized
                 />
               )}
+              {selectedWork.logo_url && (
+                <>
+                  <div className="absolute inset-0 bg-black/40" />
+                  <div className="absolute inset-0 flex items-center justify-center p-10">
+                    <div className="relative w-1/2 h-2/5 max-w-[360px]">
+                      <Image
+                        src={selectedWork.logo_url}
+                        alt="logo"
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                        sizes="360px"
+                        unoptimized
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="p-6">
-              <div className="flex items-start gap-4 mb-4">
-                {selectedWork.logo_url && (
-                  <div className="relative h-10 w-24 flex-shrink-0 bg-white rounded p-1">
-                    <Image
-                      src={selectedWork.logo_url}
-                      alt="logo"
-                      fill
-                      className="object-contain"
-                      sizes="96px"
-                      unoptimized
-                    />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-1 flex-wrap">
-                    {selectedWork.size && <span className="text-[#4A90D9] text-sm">{selectedWork.size}</span>}
-                    <span className="text-[#666] text-sm">{catLabel(selectedWork.category_id)}</span>
-                  </div>
-                  <h2 className="text-white text-2xl font-bold">
-                    {tr(locale, selectedWork.title_ko, selectedWork.title_en)}
-                  </h2>
-                </div>
+              <div className="flex items-center gap-4 mb-1 flex-wrap">
+                {selectedWork.size && <span className="text-[#4A90D9] text-sm">{selectedWork.size}</span>}
+                <span className="text-[#666] text-sm">{catLabel(selectedWork.category_id)}</span>
               </div>
+              <h2 className="text-white text-2xl font-bold">
+                {tr(locale, selectedWork.title_ko, selectedWork.title_en)}
+              </h2>
             </div>
             <button
               onClick={() => setSelectedWork(null)}

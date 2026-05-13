@@ -83,18 +83,21 @@ export default async function WorksSection({ locale }: { locale: Locale }) {
                       />
                     )}
                     {work.logo_url && (
-                      <div className="absolute top-3 left-3 bg-white/95 rounded-md px-2 py-1 shadow-md">
-                        <div className="relative h-6 w-16">
-                          <Image
-                            src={work.logo_url}
-                            alt={`${title} logo`}
-                            fill
-                            className="object-contain"
-                            sizes="64px"
-                            unoptimized
-                          />
+                      <>
+                        <div className="absolute inset-0 bg-black/40" />
+                        <div className="absolute inset-0 flex items-center justify-center p-8">
+                          <div className="relative w-3/4 h-2/5 max-w-[260px]">
+                            <Image
+                              src={work.logo_url}
+                              alt={`${title} logo`}
+                              fill
+                              className="object-contain drop-shadow-2xl"
+                              sizes="260px"
+                              unoptimized
+                            />
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )}
                   </div>
 
