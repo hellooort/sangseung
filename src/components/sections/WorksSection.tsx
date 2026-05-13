@@ -85,14 +85,14 @@ export default async function WorksSection({ locale }: { locale: Locale }) {
                     {work.logo_url && (
                       <>
                         <div className="absolute inset-0 bg-black/45" />
-                        <div className="absolute inset-0 flex items-center justify-center p-6">
-                          <div className="relative w-[85%] h-[55%] max-w-[380px]">
+                        <div className="absolute inset-0 flex items-center justify-center p-5">
+                          <div className="relative w-[90%] h-[65%] max-w-[440px]">
                             <Image
                               src={work.logo_url}
                               alt={`${title} logo`}
                               fill
-                              className="object-contain brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
-                              sizes="(max-width: 640px) 85vw, (max-width: 1024px) 42vw, 28vw"
+                              className="object-contain brightness-0 invert"
+                              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 32vw"
                               unoptimized
                             />
                           </div>

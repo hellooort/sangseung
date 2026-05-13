@@ -139,7 +139,7 @@ export default async function Footer() {
           { name: "LED 디스플레이", href: "/business/led" },
         ],
         고객지원: [
-          { name: "설치사례", href: "/works" },
+          { name: "시공사례", href: "/works" },
           { name: "자료실", href: "/resources/downloads" },
           { name: "문의하기", href: "/contact" },
         ],

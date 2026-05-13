@@ -37,7 +37,7 @@ export default function WorksClient({ categories, works, locale }: Props) {
         <div className="max-w-7xl mx-auto">
           <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">PORTFOLIO</span>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">
-            {t("설치사례", "Projects")}
+            {t("시공사례", "Projects")}
           </h1>
 
           <div className="flex flex-wrap gap-3 mb-12">
@@ -82,14 +82,14 @@ export default function WorksClient({ categories, works, locale }: Props) {
                       {work.logo_url && (
                         <>
                           <div className="absolute inset-0 bg-black/45" />
-                          <div className="absolute inset-0 flex items-center justify-center p-6">
-                            <div className="relative w-[85%] h-[55%] max-w-[420px]">
+                          <div className="absolute inset-0 flex items-center justify-center p-5">
+                            <div className="relative w-[90%] h-[65%] max-w-[500px]">
                               <Image
                                 src={work.logo_url}
                                 alt={`${title} logo`}
                                 fill
-                                className="object-contain brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
-                                sizes="(max-width: 640px) 85vw, (max-width: 1024px) 42vw, 22vw"
+                                className="object-contain brightness-0 invert"
+                                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 26vw"
                                 unoptimized
                               />
                             </div>
@@ -126,14 +126,14 @@ export default function WorksClient({ categories, works, locale }: Props) {
               {selectedWork.logo_url && (
                 <>
                   <div className="absolute inset-0 bg-black/45" />
-                  <div className="absolute inset-0 flex items-center justify-center p-8">
-                    <div className="relative w-[70%] h-[55%] max-w-[560px]">
+                  <div className="absolute inset-0 flex items-center justify-center p-6">
+                    <div className="relative w-[78%] h-[65%] max-w-[680px]">
                       <Image
                         src={selectedWork.logo_url}
                         alt="logo"
                         fill
-                        className="object-contain brightness-0 invert drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
-                        sizes="560px"
+                        className="object-contain brightness-0 invert"
+                        sizes="680px"
                         unoptimized
                       />
                     </div>

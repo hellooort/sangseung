@@ -47,7 +47,7 @@ const fallback: NavItem[] = [
       { name: "유지보수", name_en: "Maintenance", href: "/business/maintenance" },
     ],
   },
-  { name: "설치사례", name_en: "Projects", href: "/works" },
+  { name: "시공사례", name_en: "Projects", href: "/works" },
   { name: "자료실", name_en: "Downloads", href: "/resources/downloads" },
   { name: "보도자료", name_en: "Press", href: "/resources/press" },
   { name: "파트너사", name_en: "Partners", href: "/partners" },
