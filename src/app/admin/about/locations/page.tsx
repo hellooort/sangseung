@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { useTableList } from "@/lib/supabase/hooks";
 
+async function geocodeAddress(address: string): Promise<{ lat: number; lng: number; roadAddress?: string | null }> {
+  const res = await fetch(`/api/geocode?address=${encodeURIComponent(address)}`, { cache: "no-store" });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error || "주소 검색 실패");
+  return data;
+}
+
 interface Office {
   id: number;
   name_ko: string;
@@ -24,9 +31,37 @@ export default function AdminLocationsPage() {
     { orderBy: "sort_order" },
   );
   const [savedMsg, setSavedMsg] = useState(false);
+  const [geocodingId, setGeocodingId] = useState<number | null>(null);
 
   const localUpdate = (id: number, field: keyof Office, value: string | number | null) => {
     setItems(items.map((o) => (o.id === id ? { ...o, [field]: value } : o)));
+  };
+
+  const lookupCoords = async (id: number) => {
+    const office = items.find((o) => o.id === id);
+    if (!office) return;
+    const addr = (office.address_ko ?? "").trim();
+    if (!addr) {
+      alert("먼저 주소(KO) 를 입력하세요.");
+      return;
+    }
+    setGeocodingId(id);
+    try {
+      const { lat, lng, roadAddress } = await geocodeAddress(addr);
+      setItems((prev) =>
+        prev.map((o) => (o.id === id ? { ...o, lat, lng } : o)),
+      );
+      // 좌표만 즉시 DB 저장 (사용자가 별도 저장 안 눌러도 반영)
+      await update(id, { lat, lng });
+      if (roadAddress) {
+        // 검색 결과로 도로명을 안내 (덮어쓰진 않음)
+        console.log("[geocode] matched:", roadAddress);
+      }
+    } catch (e) {
+      alert((e as Error).message);
+    } finally {
+      setGeocodingId(null);
+    }
   };
 
   const localUpdateNumeric = (id: number, field: "lat" | "lng", raw: string) => {
@@ -133,7 +168,7 @@ export default function AdminLocationsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
                 <input type="text" value={office.email ?? ""} onChange={(e) => localUpdate(office.id, "email", e.target.value)} placeholder="info@example.com" className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
-              <div className="md:col-span-2 grid grid-cols-2 gap-3">
+              <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-3 items-end">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">위도 (Latitude)</label>
                   <input
@@ -156,9 +191,18 @@ export default function AdminLocationsPage() {
                     className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <p className="col-span-2 text-xs text-gray-500 -mt-1">
-                  네이버 지도(map.naver.com)에서 해당 주소 검색 → 마커 우클릭 → &quot;좌표 보기&quot; 로
-                  위도/경도를 확인해 입력하세요. 비워두면 지도가 표시되지 않습니다.
+                <button
+                  type="button"
+                  onClick={() => lookupCoords(office.id)}
+                  disabled={geocodingId === office.id}
+                  className="h-[42px] px-4 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 disabled:opacity-60 whitespace-nowrap"
+                  title="주소(KO)를 NAVER Geocoding 으로 변환해 좌표 자동 입력"
+                >
+                  {geocodingId === office.id ? "검색 중..." : "주소로 좌표 검색"}
+                </button>
+                <p className="sm:col-span-3 text-xs text-gray-500 -mt-1">
+                  주소(KO) 입력 후 <b>주소로 좌표 검색</b> 버튼을 누르면 자동으로 위·경도가 채워지고 즉시 DB 에 저장됩니다.
+                  (필요 시 수동으로 미세 조정 가능)
                 </p>
               </div>
             </div>
