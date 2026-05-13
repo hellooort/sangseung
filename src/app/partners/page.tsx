@@ -57,11 +57,13 @@ export default async function PartnersPage() {
                     key={partner.id ?? partner.name_ko}
                     href={url}
                     {...(linkable ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="relative overflow-hidden bg-[#1a1a1a] rounded-xl h-40 group block"
+                    className={`relative overflow-hidden rounded-xl h-40 group block ${
+                      hasLogo ? "bg-white" : "bg-[#1a1a1a]"
+                    }`}
                     aria-label={name}
                   >
                     {hasLogo ? (
-                      <div className="absolute inset-0 p-3 sm:p-4 flex items-center justify-center bg-white">
+                      <div className="absolute inset-0 p-4 sm:p-5 flex items-center justify-center">
                         <div className="relative w-full h-full grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                           <Image
                             src={partner.logo_url as string}
