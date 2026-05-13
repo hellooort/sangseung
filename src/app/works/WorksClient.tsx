@@ -81,15 +81,15 @@ export default function WorksClient({ categories, works, locale }: Props) {
                       )}
                       {work.logo_url && (
                         <>
-                          <div className="absolute inset-0 bg-black/40" />
-                          <div className="absolute inset-0 flex items-center justify-center p-8">
-                            <div className="relative w-3/4 h-2/5 max-w-[260px]">
+                          <div className="absolute inset-0 bg-black/45" />
+                          <div className="absolute inset-0 flex items-center justify-center p-6">
+                            <div className="relative w-[85%] h-[55%] max-w-[420px]">
                               <Image
                                 src={work.logo_url}
                                 alt={`${title} logo`}
                                 fill
-                                className="object-contain drop-shadow-2xl"
-                                sizes="260px"
+                                className="object-contain brightness-0 invert drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+                                sizes="(max-width: 640px) 85vw, (max-width: 1024px) 42vw, 22vw"
                                 unoptimized
                               />
                             </div>
@@ -125,15 +125,15 @@ export default function WorksClient({ categories, works, locale }: Props) {
               )}
               {selectedWork.logo_url && (
                 <>
-                  <div className="absolute inset-0 bg-black/40" />
-                  <div className="absolute inset-0 flex items-center justify-center p-10">
-                    <div className="relative w-1/2 h-2/5 max-w-[360px]">
+                  <div className="absolute inset-0 bg-black/45" />
+                  <div className="absolute inset-0 flex items-center justify-center p-8">
+                    <div className="relative w-[70%] h-[55%] max-w-[560px]">
                       <Image
                         src={selectedWork.logo_url}
                         alt="logo"
                         fill
-                        className="object-contain drop-shadow-2xl"
-                        sizes="360px"
+                        className="object-contain brightness-0 invert drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
+                        sizes="560px"
                         unoptimized
                       />
                     </div>
