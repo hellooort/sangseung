@@ -57,30 +57,39 @@ export default async function PartnersPage() {
                     key={partner.id ?? partner.name_ko}
                     href={url}
                     {...(linkable ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="bg-[#1a1a1a] rounded-xl p-6 flex flex-col items-center justify-center h-40 hover:bg-[#222] transition-colors group"
+                    className="relative overflow-hidden bg-[#1a1a1a] rounded-xl h-40 group block"
+                    aria-label={name}
                   >
                     {hasLogo ? (
-                      <div className="relative w-full h-16 mb-2 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-all">
-                        <Image
-                          src={partner.logo_url as string}
-                          alt={name}
-                          fill
-                          className="object-contain"
-                          unoptimized
-                        />
+                      <div className="absolute inset-0 p-3 sm:p-4 flex items-center justify-center bg-white">
+                        <div className="relative w-full h-full grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                          <Image
+                            src={partner.logo_url as string}
+                            alt={name}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            unoptimized
+                          />
+                        </div>
                       </div>
                     ) : (
-                      <span className="text-white text-xl font-bold mb-2 group-hover:text-[#4A90D9] transition-colors text-center">
-                        {name}
-                      </span>
+                      <div className="absolute inset-0 flex items-center justify-center px-3">
+                        <span className="text-white text-xl font-bold group-hover:text-[#4A90D9] transition-colors text-center">
+                          {name}
+                        </span>
+                      </div>
                     )}
+
                     {linkable && (
-                      <span className="text-[#4A90D9] text-xs mt-3 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                        {t("사이트 방문", "Visit Site")}
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-gradient-to-t from-black/95 to-black/70 backdrop-blur-sm px-4 py-2.5 flex items-center justify-between text-white">
+                        <span className="text-xs font-medium tracking-wide">
+                          {t("사이트 방문하기", "Visit Site")}
+                        </span>
+                        <svg className="w-3.5 h-3.5 text-[#4A90D9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
-                      </span>
+                      </div>
                     )}
                   </a>
                 );
