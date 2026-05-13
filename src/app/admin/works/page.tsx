@@ -109,6 +109,18 @@ export default function AdminWorksPage() {
     await works.update(id, { extra_images: next });
   };
 
+  const removeLogo = async (id: number) => {
+    if (!confirm("로고 이미지를 삭제하시겠습니까?")) return;
+    updateProject(id, "logo_url", null);
+    await works.update(id, { logo_url: null });
+  };
+
+  const removeMainImage = async (id: number) => {
+    if (!confirm("메인 이미지를 삭제하시겠습니까?")) return;
+    updateProject(id, "image_url", null);
+    await works.update(id, { image_url: null });
+  };
+
   const filtered = activeCategory !== null ? works.items.filter((p) => p.category_id === activeCategory) : works.items;
 
   const saveAll = async () => {
@@ -241,7 +253,7 @@ export default function AdminWorksPage() {
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-2">로고 이미지</label>
                     <div className="flex items-center gap-3">
-                      <div className="relative w-20 h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="relative w-20 h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-200">
                         {project.logo_url ? (
                           <Image src={project.logo_url} alt="logo" fill className="object-contain p-1" unoptimized />
                         ) : (
@@ -249,16 +261,32 @@ export default function AdminWorksPage() {
                         )}
                       </div>
                       <label className="text-blue-600 text-sm cursor-pointer hover:underline">
-                        {uploadingTarget === `${project.id}-logo-` ? "업로드중..." : "업로드"}
+                        {uploadingTarget === `${project.id}-logo-`
+                          ? "업로드중..."
+                          : project.logo_url
+                            ? "변경"
+                            : "업로드"}
                         <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(project.id, "logo", e)} />
                       </label>
+                      {project.logo_url && (
+                        <button
+                          type="button"
+                          onClick={() => removeLogo(project.id)}
+                          className="text-red-500 text-sm hover:underline"
+                        >
+                          삭제
+                        </button>
+                      )}
                     </div>
+                    <p className="mt-1 text-xs text-gray-400">
+                      투명 배경(PNG)을 권장합니다. 시공사례 카드와 상세 모달에 표시됩니다.
+                    </p>
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-2">메인 이미지 (썸네일)</label>
                     <div className="flex items-center gap-3">
-                      <div className="relative w-28 h-20 bg-gray-100 rounded-lg overflow-hidden">
+                      <div className="relative w-28 h-20 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
                         {project.image_url ? (
                           <Image src={project.image_url} alt="" fill className="object-cover" unoptimized />
                         ) : (
@@ -266,9 +294,22 @@ export default function AdminWorksPage() {
                         )}
                       </div>
                       <label className="text-blue-600 text-sm cursor-pointer hover:underline">
-                        {uploadingTarget === `${project.id}-main-` ? "업로드중..." : "업로드/변경"}
+                        {uploadingTarget === `${project.id}-main-`
+                          ? "업로드중..."
+                          : project.image_url
+                            ? "변경"
+                            : "업로드"}
                         <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(project.id, "main", e)} />
                       </label>
+                      {project.image_url && (
+                        <button
+                          type="button"
+                          onClick={() => removeMainImage(project.id)}
+                          className="text-red-500 text-sm hover:underline"
+                        >
+                          삭제
+                        </button>
+                      )}
                     </div>
                   </div>
 

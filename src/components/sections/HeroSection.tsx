@@ -30,7 +30,7 @@ const fallback: HeroData = {
   button1Ko: "문의하기",
   button1En: "Contact us",
   button1Link: "/contact",
-  button2Ko: "시공사례 보기",
+  button2Ko: "설치사례 보기",
   button2En: "View Projects",
   button2Link: "/works",
 };
@@ -39,7 +39,7 @@ export default async function HeroSection({ locale }: { locale: Locale }) {
   const data = await getSiteSetting<HeroData>("hero", fallback);
 
   return (
-    <section className="relative w-full h-screen bg-[#0A0A0A]">
+    <section className="relative w-full h-screen min-h-[100svh] supports-[height:100dvh]:h-[100dvh] bg-[#0A0A0A]">
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <div className="absolute inset-0 bg-black/0 z-10" />
         <iframe
@@ -62,24 +62,24 @@ export default async function HeroSection({ locale }: { locale: Locale }) {
             </div>
           )}
 
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight mb-8 drop-shadow-lg whitespace-pre-line">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight mb-6 sm:mb-8 drop-shadow-lg whitespace-pre-line break-keep">
             {tr(locale, data.titleKo, data.titleEn)}
           </h1>
 
-          <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md whitespace-pre-line">
+          <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 drop-shadow-md whitespace-pre-line break-keep">
             {tr(locale, data.descriptionKo, data.descriptionEn)}
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
             <Link
               href={data.button1Link || "/contact"}
-              className="bg-white text-black px-8 py-4 rounded text-base font-semibold hover:bg-white/90 transition-colors"
+              className="bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded text-sm sm:text-base font-semibold hover:bg-white/90 transition-colors"
             >
               {tr(locale, data.button1Ko, data.button1En)}
             </Link>
             <Link
               href={data.button2Link || "/works"}
-              className="border border-white/50 text-white px-8 py-4 rounded text-base font-medium hover:bg-white/10 backdrop-blur-sm transition-colors"
+              className="border border-white/50 text-white px-6 sm:px-8 py-3 sm:py-4 rounded text-sm sm:text-base font-medium hover:bg-white/10 backdrop-blur-sm transition-colors"
             >
               {tr(locale, data.button2Ko, data.button2En)}
             </Link>

@@ -111,6 +111,8 @@ export interface OfficeLocation {
   fax: string | null;
   email: string | null;
   map_embed_url: string | null;
+  lat: number | null;
+  lng: number | null;
   sort_order: number;
 }
 

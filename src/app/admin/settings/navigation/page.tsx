@@ -47,11 +47,34 @@ const fallback: NavItem[] = [
       { name: "유지보수", name_en: "Maintenance", href: "/business/maintenance" },
     ],
   },
-  { name: "시공사례", name_en: "Projects", href: "/works" },
+  { name: "설치사례", name_en: "Projects", href: "/works" },
   { name: "자료실", name_en: "Downloads", href: "/resources/downloads" },
   { name: "보도자료", name_en: "Press", href: "/resources/press" },
   { name: "파트너사", name_en: "Partners", href: "/partners" },
 ];
+
+// DB 에 저장된 navigation 이 array 가 아니거나 (예: { items: [...] } 처럼 wrap)
+// 또는 일부 필드가 누락된 경우에도 화면이 뜨도록 정규화.
+function normalizeNav(raw: unknown, fb: NavItem[]): NavItem[] {
+  const arr: unknown[] = Array.isArray(raw)
+    ? raw
+    : Array.isArray((raw as { items?: unknown[] } | null)?.items)
+      ? ((raw as { items: unknown[] }).items)
+      : Array.isArray((raw as { nav?: unknown[] } | null)?.nav)
+        ? ((raw as { nav: unknown[] }).nav)
+        : [];
+  if (arr.length === 0) return fb;
+  const toItem = (x: unknown): NavItem => {
+    const o = (x && typeof x === "object" ? (x as Record<string, unknown>) : {}) as Partial<NavItem>;
+    return {
+      name: typeof o.name === "string" ? o.name : "",
+      name_en: typeof o.name_en === "string" ? o.name_en : "",
+      href: typeof o.href === "string" ? o.href : "/",
+      submenu: Array.isArray(o.submenu) ? o.submenu.map(toItem) : undefined,
+    };
+  };
+  return arr.map(toItem);
+}
 
 // 깊은 복사 후 path([인덱스 경로]) 위치의 항목을 patch.
 function updateAtPath(tree: NavItem[], path: number[], patch: Partial<NavItem>): NavItem[] {
@@ -166,6 +189,7 @@ export default function AdminNavigationPage() {
   const { value: nav, setValue: setNav, loading, saving, save, error } = useSiteSetting<NavItem[]>(
     "navigation",
     fallback,
+    { normalize: normalizeNav },
   );
   const [savedMsg, setSavedMsg] = useState(false);
 

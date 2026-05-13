@@ -13,6 +13,8 @@ interface Office {
   fax: string | null;
   email: string | null;
   map_embed_url: string | null;
+  lat: number | null;
+  lng: number | null;
   sort_order: number;
 }
 
@@ -23,8 +25,18 @@ export default function AdminLocationsPage() {
   );
   const [savedMsg, setSavedMsg] = useState(false);
 
-  const localUpdate = (id: number, field: keyof Office, value: string) => {
+  const localUpdate = (id: number, field: keyof Office, value: string | number | null) => {
     setItems(items.map((o) => (o.id === id ? { ...o, [field]: value } : o)));
+  };
+
+  const localUpdateNumeric = (id: number, field: "lat" | "lng", raw: string) => {
+    if (raw.trim() === "") {
+      localUpdate(id, field, null);
+      return;
+    }
+    const num = Number(raw);
+    if (Number.isNaN(num)) return;
+    localUpdate(id, field, num);
   };
 
   const addOffice = async () => {
@@ -37,6 +49,8 @@ export default function AdminLocationsPage() {
       fax: "",
       email: "",
       map_embed_url: "",
+      lat: null,
+      lng: null,
       sort_order: items.length,
     });
   };
@@ -52,6 +66,8 @@ export default function AdminLocationsPage() {
         fax: o.fax ?? "",
         email: o.email ?? "",
         map_embed_url: o.map_embed_url ?? "",
+        lat: o.lat,
+        lng: o.lng,
         sort_order: idx,
       }),
     );
@@ -117,9 +133,33 @@ export default function AdminLocationsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
                 <input type="text" value={office.email ?? ""} onChange={(e) => localUpdate(office.id, "email", e.target.value)} placeholder="info@example.com" className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Google 지도 Embed URL</label>
-                <input type="text" value={office.map_embed_url ?? ""} onChange={(e) => localUpdate(office.id, "map_embed_url", e.target.value)} placeholder="https://www.google.com/maps/embed?pb=..." className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+              <div className="md:col-span-2 grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">위도 (Latitude)</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={office.lat ?? ""}
+                    onChange={(e) => localUpdateNumeric(office.id, "lat", e.target.value)}
+                    placeholder="37.5454"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">경도 (Longitude)</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={office.lng ?? ""}
+                    onChange={(e) => localUpdateNumeric(office.id, "lng", e.target.value)}
+                    placeholder="126.8516"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-gray-900 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <p className="col-span-2 text-xs text-gray-500 -mt-1">
+                  네이버 지도(map.naver.com)에서 해당 주소 검색 → 마커 우클릭 → &quot;좌표 보기&quot; 로
+                  위도/경도를 확인해 입력하세요. 비워두면 지도가 표시되지 않습니다.
+                </p>
               </div>
             </div>
           </div>

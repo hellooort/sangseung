@@ -33,10 +33,37 @@ const defaultFooter: FooterData = {
   ],
 };
 
+// DB 의 footer JSON 이 과거 형식(예: offices 누락, 구버전 키 사용 등) 으로
+// 저장돼 있어도 안전하게 화면이 뜨도록 정규화한다.
+function normalizeFooter(raw: unknown, fb: FooterData): FooterData {
+  const r = (raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {}) as Partial<FooterData> & Record<string, unknown>;
+  const officesRaw = Array.isArray(r.offices) ? (r.offices as unknown[]) : fb.offices;
+  const offices: OfficeInfo[] = officesRaw.map((o, i) => {
+    const oo = (o && typeof o === "object" ? (o as Record<string, unknown>) : {}) as Partial<OfficeInfo>;
+    return {
+      id: typeof oo.id === "number" ? oo.id : i + 1,
+      nameKo:    typeof oo.nameKo    === "string" ? oo.nameKo    : "",
+      nameEn:    typeof oo.nameEn    === "string" ? oo.nameEn    : "",
+      addressKo: typeof oo.addressKo === "string" ? oo.addressKo : "",
+      addressEn: typeof oo.addressEn === "string" ? oo.addressEn : "",
+      tel:       typeof oo.tel       === "string" ? oo.tel       : "",
+      fax:       typeof oo.fax       === "string" ? oo.fax       : "",
+    };
+  });
+  return {
+    companyName:   typeof r.companyName   === "string" ? r.companyName   : fb.companyName,
+    companyNameEn: typeof r.companyNameEn === "string" ? r.companyNameEn : fb.companyNameEn,
+    copyright:     typeof r.copyright     === "string" ? r.copyright     : fb.copyright,
+    copyrightEn:   typeof r.copyrightEn   === "string" ? r.copyrightEn   : fb.copyrightEn,
+    offices,
+  };
+}
+
 export default function AdminFooterPage() {
   const { value, setValue, loading, saving, save, error } = useSiteSetting<FooterData>(
     "footer",
     defaultFooter,
+    { normalize: normalizeFooter },
   );
   const [savedMsg, setSavedMsg] = useState(false);
 

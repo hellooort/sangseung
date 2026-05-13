@@ -16,7 +16,10 @@ export interface WorkRow {
   category_id: number | null;
   title_ko: string;
   title_en: string | null;
+  subtitle_ko?: string | null;
+  subtitle_en?: string | null;
   size: string | null;
+  logo_url: string | null;
   image_url: string | null;
   sort_order: number;
 }
@@ -34,6 +37,7 @@ const fallbackWorks: WorkRow[] = Array.from({ length: 23 }).map((_, i) => ({
   title_ko: `시공사례 ${i + 1}`,
   title_en: `Project ${i + 1}`,
   size: null,
+  logo_url: null,
   image_url: `/image/reference/work_${i + 1}.jpg`,
   sort_order: i,
 }));

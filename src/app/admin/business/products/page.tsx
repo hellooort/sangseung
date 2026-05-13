@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTableList } from "@/lib/supabase/hooks";
+import { createClient } from "@/lib/supabase/client";
 import { uploadImage } from "@/lib/supabase/storage";
 
 interface Category {
@@ -38,8 +39,12 @@ export default function AdminProductsPage() {
   const [savedMsg, setSavedMsg] = useState(false);
   const [uploadingId, setUploadingId] = useState<number | null>(null);
 
+  // 제품 추가는 직접 supabase 호출로 처리해 에러 메시지를 즉시 사용자에게 표시.
+  // useTableList.insert 는 에러 시 setError 만 호출하고 상태가 비동기로 갱신되어
+  // 호출 직후 메시지를 띄우기 어렵기 때문.
   const addProduct = async () => {
-    await products.insert({
+    const sb = createClient();
+    const insertRow: Record<string, unknown> = {
       category_id: activeCategory ?? cats.items[0]?.id ?? null,
       name: "새 제품",
       name_ko: "새 제품",
@@ -47,12 +52,50 @@ export default function AdminProductsPage() {
       description_ko: "",
       description_en: "",
       specs: "",
-      image_url: "",
-      detail_url: "",
-      slug: "",
-      category_slug: "",
+      image_url: null,
+      detail_url: null,
+      slug: null,
+      category_slug: null,
       sort_order: products.items.length,
-    });
+    };
+
+    const tryInsert = async (row: Record<string, unknown>) => {
+      const { data, error } = await sb.from("products").insert(row).select().single();
+      return { data, error };
+    };
+
+    let { data, error } = await tryInsert(insertRow);
+
+    // 새 컬럼(name_ko/name_en/slug/category_slug)이 아직 마이그레이션 안 된 환경
+    // 대비: 누락 컬럼을 빼고 한 번 더 시도.
+    if (error && /column .* does not exist|Could not find the .* column/i.test(error.message)) {
+      const fallback: Record<string, unknown> = { ...insertRow };
+      ["name_ko", "name_en", "slug", "category_slug"].forEach((k) => delete fallback[k]);
+      const retry = await tryInsert(fallback);
+      data = retry.data;
+      error = retry.error;
+      if (!error) {
+        alert(
+          "제품은 추가되었지만 supabase 에 누락된 컬럼이 있습니다.\n" +
+            "supabase/add-product-detail-columns.sql 을 한 번 적용해주세요.",
+        );
+      }
+    }
+
+    if (error) {
+      alert(
+        "제품 추가 실패\n\n" +
+          error.message +
+          "\n\n[해결 가이드]\n" +
+          "1) supabase/add-product-detail-columns.sql 을 SQL Editor 에서 실행했는지 확인\n" +
+          "2) 적용했다면 Supabase Dashboard → API → 'Reload schema cache'",
+      );
+      return;
+    }
+
+    if (data) {
+      products.setItems([...products.items, data as Product]);
+    }
   };
 
   const updateProduct = (id: number, field: keyof Product, value: string | number | null) => {

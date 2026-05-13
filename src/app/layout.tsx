@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 
@@ -12,6 +12,15 @@ export const metadata: Metadata = {
   title: "상승종합통신㈜ | ONE-STOP SOLUTION",
   description: "네트워크 통합시스템 및 IBS 구축, LED DISPLAY 전문 제조업체. 디자인, 설계, 제작, 시공까지 전 과정을 수행하는 One-Stop Solution 업체입니다.",
   keywords: "상승종합통신, LED 디스플레이, 네트워크, IBS, 미디어 파사드, 전광판",
+};
+
+// 모바일 안정화: 사용자 줌 허용 + iOS Safari 노치 대응
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#0A0A0A",
 };
 
 // 공개 페이지 ISR 캐시 — 5분(300초)마다 재생성. admin 저장 후 즉시 반영을 원하면

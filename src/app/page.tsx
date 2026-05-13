@@ -5,7 +5,6 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ResultSection from "@/components/sections/ResultSection";
 import WorksSection from "@/components/sections/WorksSection";
-import HistorySection from "@/components/sections/HistorySection";
 import BusinessSection from "@/components/sections/BusinessSection";
 import PartnersSection from "@/components/sections/PartnersSection";
 import CTASection from "@/components/sections/CTASection";
@@ -31,7 +30,6 @@ export default async function Home() {
         <AboutSection locale={locale} />
         <ResultSection locale={locale} />
         <WorksSection locale={locale} />
-        <HistorySection locale={locale} />
         <BusinessSection locale={locale} />
         <PartnersSection locale={locale} />
         <CTASection locale={locale} />

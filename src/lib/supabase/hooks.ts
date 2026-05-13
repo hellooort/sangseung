@@ -11,15 +11,23 @@ const getSupabase = (): SupabaseClient => {
 };
 
 // =============================================================================
-// useSiteSetting<T>(key, defaultValue)
+// useSiteSetting<T>(key, defaultValue, options?)
 //   - site_settings 테이블의 단일 JSON row 로드/저장 (upsert)
+//   - options.normalize: 로드된 raw value 를 정상화/마이그레이션. 잘못된 형식이면
+//     defaultValue 와 머지된 안전 값으로 변환할 수 있음.
 // =============================================================================
-export function useSiteSetting<T>(key: string, defaultValue: T) {
+export function useSiteSetting<T>(
+  key: string,
+  defaultValue: T,
+  options?: { normalize?: (raw: unknown, fallback: T) => T },
+) {
   const [value, setValueState] = useState<T>(defaultValue);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const initialized = useRef(false);
+  const normalizeRef = useRef(options?.normalize);
+  normalizeRef.current = options?.normalize;
 
   useEffect(() => {
     let cancelled = false;
@@ -33,8 +41,14 @@ export function useSiteSetting<T>(key: string, defaultValue: T) {
       if (cancelled) return;
       if (error) {
         setError(error.message);
-      } else if (data?.value) {
-        setValueState(data.value as T);
+      } else if (data?.value !== undefined && data?.value !== null) {
+        const normalize = normalizeRef.current;
+        try {
+          setValueState(normalize ? normalize(data.value, defaultValue) : (data.value as T));
+        } catch (e) {
+          setError(`데이터 형식 오류: ${(e as Error).message}`);
+          setValueState(defaultValue);
+        }
       }
       setLoading(false);
       initialized.current = true;
@@ -42,6 +56,8 @@ export function useSiteSetting<T>(key: string, defaultValue: T) {
     return () => {
       cancelled = true;
     };
+    // defaultValue 는 컴포넌트마다 안정적인 객체일 수 있으므로 의존성에서 제외
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   const setValue = useCallback((updater: T | ((prev: T) => T)) => {

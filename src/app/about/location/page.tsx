@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NaverMap from "@/components/NaverMap";
 import { getList } from "@/lib/supabase/public";
 import { getLocale } from "@/lib/locale.server";
 import { tr } from "@/lib/locale";
@@ -13,13 +14,15 @@ interface OfficeRow {
   phone: string | null;
   fax: string | null;
   map_embed_url: string | null;
+  lat: number | null;
+  lng: number | null;
   sort_order: number;
 }
 
 const fallback: OfficeRow[] = [
-  { id: 1, name_ko: "본사",                 name_en: "Head Office",            address_ko: "서울시 강서구 양천로 551-24 한화비즈메트로 2차 903호",                            address_en: "#903, Hanwha Bizmetro 2, 551-24 Yangcheon-ro, Gangseo-gu, Seoul",                                  phone: "02-953-0056",  fax: "02-953-0118",  map_embed_url: null, sort_order: 0 },
-  { id: 2, name_ko: "미디어시스템사업부",   name_en: "Media System Division",  address_ko: "경기도 구리시 갈매순환로166번길 46 금강펜테리움IX타워 제5층 020, 021호",         address_en: "#020-021, 5F Geumgang Penterium IX Tower, 46 Galmaesunhwan-ro 166beon-gil, Guri-si, Gyeonggi-do",  phone: "031-512-0110", fax: "031-512-0120", map_embed_url: null, sort_order: 1 },
-  { id: 3, name_ko: "양주공장",             name_en: "Yangju Factory",         address_ko: "경기도 양주시 율정로 20(옥정동) 양주옥정메타엑스 지식산업센터 514, 515호",          address_en: "#514-515, Yangju Okjeong Metax, 20 Yuljeong-ro (Okjeong-dong), Yangju-si, Gyeonggi-do",            phone: "031-512-0110", fax: "031-512-0120", map_embed_url: null, sort_order: 2 },
+  { id: 1, name_ko: "본사",                 name_en: "Head Office",            address_ko: "서울시 강서구 양천로 551-24 한화비즈메트로 2차 903호",                            address_en: "#903, Hanwha Bizmetro 2, 551-24 Yangcheon-ro, Gangseo-gu, Seoul",                                  phone: "02-953-0056",  fax: "02-953-0118",  map_embed_url: null, lat: 37.5454, lng: 126.8516, sort_order: 0 },
+  { id: 2, name_ko: "미디어시스템사업부",   name_en: "Media System Division",  address_ko: "경기도 구리시 갈매순환로166번길 46 금강펜테리움IX타워 제5층 020, 021호",         address_en: "#020-021, 5F Geumgang Penterium IX Tower, 46 Galmaesunhwan-ro 166beon-gil, Guri-si, Gyeonggi-do",  phone: "031-512-0110", fax: "031-512-0120", map_embed_url: null, lat: 37.6147, lng: 127.1465, sort_order: 1 },
+  { id: 3, name_ko: "양주공장",             name_en: "Yangju Factory",         address_ko: "경기도 양주시 율정로 20(옥정동) 양주옥정메타엑스 지식산업센터 514, 515호",          address_en: "#514-515, Yangju Okjeong Metax, 20 Yuljeong-ro (Okjeong-dong), Yangju-si, Gyeonggi-do",            phone: "031-512-0110", fax: "031-512-0120", map_embed_url: null, lat: 37.8262, lng: 127.0535, sort_order: 2 },
 ];
 
 export default async function LocationPage() {
@@ -44,16 +47,20 @@ export default async function LocationPage() {
               {offices.map((office, index) => {
                 const officeName = tr(locale, office.name_ko, office.name_en);
                 const address = tr(locale, office.address_ko, office.address_en);
+                const hasCoords =
+                  typeof office.lat === "number" &&
+                  typeof office.lng === "number" &&
+                  !Number.isNaN(office.lat) &&
+                  !Number.isNaN(office.lng);
                 return (
                   <div key={office.id} className="bg-[#111] rounded-2xl overflow-hidden">
                     <div className="aspect-video md:aspect-[21/9] bg-[#1a1a1a] relative">
-                      {office.map_embed_url ? (
-                        <iframe
-                          src={office.map_embed_url}
-                          className="w-full h-full"
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
+                      {hasCoords ? (
+                        <NaverMap
+                          lat={office.lat as number}
+                          lng={office.lng as number}
+                          title={officeName}
+                          searchQuery={office.address_ko ?? officeName}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-center">

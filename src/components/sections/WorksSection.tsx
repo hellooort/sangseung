@@ -9,6 +9,7 @@ interface WorkRow {
   title_en: string | null;
   size: string | null;
   category_id: number | null;
+  logo_url: string | null;
   image_url: string | null;
   sort_order: number;
 }
@@ -21,12 +22,12 @@ interface WorkCatRow {
 }
 
 const fallbackWorks: WorkRow[] = [
-  { id: 1, title_ko: "LH 컨퍼런스 LED 포스터",                title_en: "LH Conference LED Poster",                  size: "S-Poster P2.5mm",     category_id: 1, image_url: "/image/reference/work_1.jpg",  sort_order: 0 },
-  { id: 2, title_ko: "호주 SUN CORP 실내 COB LED 스크린",     title_en: "Australia SUN CORP Indoor COB LED Screen",  size: "SCO-Wall P0.93mm",    category_id: 1, image_url: "/image/reference/work_4.jpg",  sort_order: 1 },
-  { id: 3, title_ko: "서울시청 다목적홀 LED 스크린",          title_en: "Seoul City Hall Multi-purpose Hall LED",    size: "SI640 P2.5mm",        category_id: 1, image_url: "/image/reference/work_6.jpg",  sort_order: 2 },
-  { id: 4, title_ko: "김해 금관가야휴게소 LED 미디어 파사드", title_en: "Gimhae Geumgwan Gaya Rest Area LED Facade", size: "SMI P7.8mm",          category_id: 4, image_url: "/image/reference/work_8.jpg",  sort_order: 3 },
-  { id: 5, title_ko: "일본 방재훈련소 LED 스크린",            title_en: "Japan Disaster Training Center LED Screen", size: "SOD-R P3.91mm",       category_id: 3, image_url: "/image/reference/work_22.jpg", sort_order: 4 },
-  { id: 6, title_ko: "중국 스포츠 스타디움 LED 미디어파사드", title_en: "China Sports Stadium LED Media Facade",     size: "SMO P31.25mm",        category_id: 4, image_url: "/image/reference/work_9.jpg",  sort_order: 5 },
+  { id: 1, title_ko: "LH 컨퍼런스 LED 포스터",                title_en: "LH Conference LED Poster",                  size: "S-Poster P2.5mm",     category_id: 1, logo_url: null, image_url: "/image/reference/work_1.jpg",  sort_order: 0 },
+  { id: 2, title_ko: "호주 SUN CORP 실내 COB LED 스크린",     title_en: "Australia SUN CORP Indoor COB LED Screen",  size: "SCO-Wall P0.93mm",    category_id: 1, logo_url: null, image_url: "/image/reference/work_4.jpg",  sort_order: 1 },
+  { id: 3, title_ko: "서울시청 다목적홀 LED 스크린",          title_en: "Seoul City Hall Multi-purpose Hall LED",    size: "SI640 P2.5mm",        category_id: 1, logo_url: null, image_url: "/image/reference/work_6.jpg",  sort_order: 2 },
+  { id: 4, title_ko: "김해 금관가야휴게소 LED 미디어 파사드", title_en: "Gimhae Geumgwan Gaya Rest Area LED Facade", size: "SMI P7.8mm",          category_id: 4, logo_url: null, image_url: "/image/reference/work_8.jpg",  sort_order: 3 },
+  { id: 5, title_ko: "일본 방재훈련소 LED 스크린",            title_en: "Japan Disaster Training Center LED Screen", size: "SOD-R P3.91mm",       category_id: 3, logo_url: null, image_url: "/image/reference/work_22.jpg", sort_order: 4 },
+  { id: 6, title_ko: "중국 스포츠 스타디움 LED 미디어파사드", title_en: "China Sports Stadium LED Media Facade",     size: "SMO P31.25mm",        category_id: 4, logo_url: null, image_url: "/image/reference/work_9.jpg",  sort_order: 5 },
 ];
 
 const fallbackCats: WorkCatRow[] = [
@@ -80,6 +81,20 @@ export default async function WorksSection({ locale }: { locale: Locale }) {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         unoptimized
                       />
+                    )}
+                    {work.logo_url && (
+                      <div className="absolute top-3 left-3 bg-white/95 rounded-md px-2 py-1 shadow-md">
+                        <div className="relative h-6 w-16">
+                          <Image
+                            src={work.logo_url}
+                            alt={`${title} logo`}
+                            fill
+                            className="object-contain"
+                            sizes="64px"
+                            unoptimized
+                          />
+                        </div>
+                      </div>
                     )}
                   </div>
 

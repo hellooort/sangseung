@@ -65,7 +65,7 @@ const fallback: LedPageData = {
     description_ko: "설계부터 제작, 시공, 유지보수까지 LED 디스플레이의 모든 것을 제공하는 원스톱 솔루션 전문 기업입니다.",
     description_en: "A one-stop solution specialist covering everything from design and manufacturing to installation and maintenance of LED displays.",
     image: "/image/reference/work_8.jpg",
-    cta_label_ko: "시공사례 보기",
+    cta_label_ko: "설치사례 보기",
     cta_label_en: "View Projects",
     cta_href: "/works",
   },
