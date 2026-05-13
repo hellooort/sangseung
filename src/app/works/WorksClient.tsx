@@ -37,7 +37,7 @@ export default function WorksClient({ categories, works, locale }: Props) {
         <div className="max-w-7xl mx-auto">
           <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">PORTFOLIO</span>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-12">
-            {t("시공사례", "Projects")}
+            {t("설치사례", "Projects")}
           </h1>
 
           <div className="flex flex-wrap gap-3 mb-12">

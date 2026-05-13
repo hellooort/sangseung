@@ -30,7 +30,7 @@ const fallback: HeroData = {
   button1Ko: "문의하기",
   button1En: "Contact us",
   button1Link: "/contact",
-  button2Ko: "시공사례 보기",
+  button2Ko: "설치사례 보기",
   button2En: "View Projects",
   button2Link: "/works",
 };
