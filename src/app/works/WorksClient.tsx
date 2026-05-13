@@ -83,16 +83,21 @@ export default function WorksClient({ categories, works, locale }: Props) {
                         <>
                           <div className="absolute inset-0 bg-black/45" />
                           <div className="absolute inset-0 flex items-center justify-center p-5">
-                            <div className="relative w-[90%] h-[65%] max-w-[500px]">
-                              <Image
-                                src={work.logo_url}
-                                alt={`${title} logo`}
-                                fill
-                                className="object-contain brightness-0 invert"
-                                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 26vw"
-                                unoptimized
-                              />
-                            </div>
+                            <div
+                              className="w-[90%] h-[65%] max-w-[500px] bg-white"
+                              role="img"
+                              aria-label={`${title} logo`}
+                              style={{
+                                WebkitMaskImage: `url("${work.logo_url}")`,
+                                maskImage: `url("${work.logo_url}")`,
+                                WebkitMaskRepeat: "no-repeat",
+                                maskRepeat: "no-repeat",
+                                WebkitMaskPosition: "center",
+                                maskPosition: "center",
+                                WebkitMaskSize: "contain",
+                                maskSize: "contain",
+                              }}
+                            />
                           </div>
                         </>
                       )}
@@ -127,16 +132,21 @@ export default function WorksClient({ categories, works, locale }: Props) {
                 <>
                   <div className="absolute inset-0 bg-black/45" />
                   <div className="absolute inset-0 flex items-center justify-center p-6">
-                    <div className="relative w-[78%] h-[65%] max-w-[680px]">
-                      <Image
-                        src={selectedWork.logo_url}
-                        alt="logo"
-                        fill
-                        className="object-contain brightness-0 invert"
-                        sizes="680px"
-                        unoptimized
-                      />
-                    </div>
+                    <div
+                      className="w-[78%] h-[65%] max-w-[680px] bg-white"
+                      role="img"
+                      aria-label="logo"
+                      style={{
+                        WebkitMaskImage: `url("${selectedWork.logo_url}")`,
+                        maskImage: `url("${selectedWork.logo_url}")`,
+                        WebkitMaskRepeat: "no-repeat",
+                        maskRepeat: "no-repeat",
+                        WebkitMaskPosition: "center",
+                        maskPosition: "center",
+                        WebkitMaskSize: "contain",
+                        maskSize: "contain",
+                      }}
+                    />
                   </div>
                 </>
               )}

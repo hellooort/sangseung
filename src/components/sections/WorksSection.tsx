@@ -86,16 +86,21 @@ export default async function WorksSection({ locale }: { locale: Locale }) {
                       <>
                         <div className="absolute inset-0 bg-black/45" />
                         <div className="absolute inset-0 flex items-center justify-center p-5">
-                          <div className="relative w-[90%] h-[65%] max-w-[440px]">
-                            <Image
-                              src={work.logo_url}
-                              alt={`${title} logo`}
-                              fill
-                              className="object-contain brightness-0 invert"
-                              sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 32vw"
-                              unoptimized
-                            />
-                          </div>
+                          <div
+                            className="w-[90%] h-[65%] max-w-[440px] bg-white"
+                            role="img"
+                            aria-label={`${title} logo`}
+                            style={{
+                              WebkitMaskImage: `url("${work.logo_url}")`,
+                              maskImage: `url("${work.logo_url}")`,
+                              WebkitMaskRepeat: "no-repeat",
+                              maskRepeat: "no-repeat",
+                              WebkitMaskPosition: "center",
+                              maskPosition: "center",
+                              WebkitMaskSize: "contain",
+                              maskSize: "contain",
+                            }}
+                          />
                         </div>
                       </>
                     )}
