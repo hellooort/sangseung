@@ -57,18 +57,6 @@ export default async function IPWallPage() {
 
   return (
     <>
-      <section className="pt-16 px-6 lg:px-20 bg-[#0A0A0A]">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 text-sm text-[#666] mb-8">
-            <Link href="/business" className="hover:text-[#4A90D9] transition-colors">
-              {t("사업소개", "Business")}
-            </Link>
-            <span>/</span>
-            <span className="text-[#4A90D9]">Video-Wall</span>
-          </div>
-        </div>
-      </section>
-
       <section className="py-20 px-6 lg:px-20 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">

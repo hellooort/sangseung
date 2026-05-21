@@ -99,7 +99,8 @@ export default function CategoryItemAdmin({ pageTitle, catTable, itemTable, uplo
         title_en: i.title_en ?? "",
       }),
     );
-    await Promise.all([...catUpdates, ...itemUpdates]);
+    const results = await Promise.all([...catUpdates, ...itemUpdates]);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

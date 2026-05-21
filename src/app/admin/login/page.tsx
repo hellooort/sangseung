@@ -29,7 +29,8 @@ function LoginForm() {
       return;
     }
 
-    const redirectTo = searchParams.get("redirectTo") ?? "/admin";
+    const raw = searchParams.get("redirectTo") ?? "/admin";
+    const redirectTo = raw.startsWith("/admin") ? raw : "/admin";
     router.replace(redirectTo);
     router.refresh();
   };

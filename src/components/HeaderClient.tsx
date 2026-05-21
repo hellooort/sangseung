@@ -367,7 +367,7 @@ export default function HeaderClient({ navItems, locale }: HeaderClientProps) {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="lg:hidden py-4 border-t border-white/10">
+          <nav className="lg:hidden py-4 border-t border-white/10 max-h-[calc(100vh-5rem)] overflow-y-auto">
             {navItems.map((item) => (
               <div key={item.name}>
                 <Link

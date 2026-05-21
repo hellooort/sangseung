@@ -4,6 +4,8 @@ import { getList } from "@/lib/supabase/public";
 import { getLocale } from "@/lib/locale.server";
 import WorksClient from "./WorksClient";
 
+export const dynamic = "force-dynamic";
+
 export interface WorkCat {
   id: number;
   name_ko: string;
@@ -21,6 +23,7 @@ export interface WorkRow {
   size: string | null;
   logo_url: string | null;
   image_url: string | null;
+  extra_images: string[];
   sort_order: number;
 }
 
@@ -39,13 +42,14 @@ const fallbackWorks: WorkRow[] = Array.from({ length: 23 }).map((_, i) => ({
   size: null,
   logo_url: null,
   image_url: `/image/reference/work_${i + 1}.jpg`,
+  extra_images: [],
   sort_order: i,
 }));
 
 export default async function WorksPage() {
   const [cats, works, locale] = await Promise.all([
     getList<WorkCat>("work_categories", { orderBy: "sort_order" }, fallbackCats),
-    getList<WorkRow>("works", { orderBy: "sort_order" }, fallbackWorks),
+    getList<WorkRow>("works", { orderBy: "id", ascending: false }, fallbackWorks),
     getLocale(),
   ]);
 

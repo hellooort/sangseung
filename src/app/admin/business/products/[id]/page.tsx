@@ -86,7 +86,11 @@ export default function AdminProductDetailPage() {
   const [cats, setCats] = useState<CategoryRow[]>([]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!Number.isFinite(id) || id <= 0) {
+      setError("잘못된 제품 ID입니다.");
+      setLoading(false);
+      return;
+    }
     const sb = createClient();
     (async () => {
       try {

@@ -135,7 +135,8 @@ export default function AdminWorksPage() {
         size: p.size ?? "",
       }),
     );
-    await Promise.all([...catUpdates, ...workUpdates]);
+    const results = await Promise.all([...catUpdates, ...workUpdates]);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

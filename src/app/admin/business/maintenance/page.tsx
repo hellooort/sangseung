@@ -214,8 +214,8 @@ export default function AdminMaintenancePage() {
                   <div className="flex gap-3 mb-3">
                     <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden flex-shrink-0">
                       {b.image && <Image src={b.image} alt="" fill className="object-cover" unoptimized />}
-                      <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                        {uploadingKey === `b-${b.id}` ? "업로드중" : "변경"}
+                      <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${b.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
+                        {uploadingKey === `b-${b.id}` ? "업로드중" : b.image ? "변경" : "업로드"}
                         <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`b-${b.id}`, e, (url) => updateBenefit(b.id, { image: url }))} />
                       </label>
                     </div>
@@ -279,15 +279,15 @@ export default function AdminMaintenancePage() {
                   </div>
                   <div className="space-y-2 pl-3 border-l-2 border-blue-200">
                     {tabRow.items.map((item) => (
-                      <div key={item.id} className="border border-gray-100 rounded p-3">
-                        <div className="flex gap-3">
-                          <div className="relative w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                            {item.image && <Image src={item.image} alt="" fill className="object-cover" unoptimized />}
-                            <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                              {uploadingKey === `p-${item.id}` ? "..." : "변경"}
-                              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`p-${item.id}`, e, (url) => updatePerfItem(tabRow.id, item.id, { image: url }))} />
-                            </label>
-                          </div>
+                        <div key={item.id} className="border border-gray-100 rounded p-3">
+                          <div className="flex gap-3">
+                            <div className="relative w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                              {item.image && <Image src={item.image} alt="" fill className="object-cover" unoptimized />}
+                              <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${item.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
+                                {uploadingKey === `p-${item.id}` ? "..." : item.image ? "변경" : "업로드"}
+                                <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`p-${item.id}`, e, (url) => updatePerfItem(tabRow.id, item.id, { image: url }))} />
+                              </label>
+                            </div>
                           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
                             <input type="text" value={item.title_ko}    onChange={(e) => updatePerfItem(tabRow.id, item.id, { title_ko: e.target.value })}    placeholder="제목 (KO)"    className={inputCls} />
                             <input type="text" value={item.title_en}    onChange={(e) => updatePerfItem(tabRow.id, item.id, { title_en: e.target.value })}    placeholder="Title (EN)"   className={inputCls} />

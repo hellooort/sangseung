@@ -169,7 +169,8 @@ export default function AdminProductsPage() {
         category_slug: p.category_slug ?? "",
       }),
     );
-    await Promise.all([...catUpdates, ...productUpdates]);
+    const results = await Promise.all([...catUpdates, ...productUpdates]);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

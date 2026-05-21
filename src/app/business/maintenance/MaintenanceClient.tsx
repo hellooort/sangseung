@@ -175,7 +175,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {currentTab.items.slice(0, 4).map((item) => (
+              {currentTab.items.map((item) => (
                 <div key={item.id} className="bg-white rounded-xl overflow-hidden">
                   <div className="relative aspect-[4/3] bg-gray-100">
                     {item.image && <Image src={item.image} alt={item.title_ko} fill className="object-cover" unoptimized />}

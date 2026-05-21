@@ -60,15 +60,17 @@ export default function AdminDownloadsPage() {
   };
 
   const saveAll = async () => {
-    const updates = items.map((r) =>
-      update(r.id, {
-        title_ko: r.title_ko,
-        title_en: r.title_en ?? "",
-        description_ko: r.description_ko ?? "",
-        description_en: r.description_en ?? "",
-      }),
+    const results = await Promise.all(
+      items.map((r) =>
+        update(r.id, {
+          title_ko: r.title_ko,
+          title_en: r.title_en ?? "",
+          description_ko: r.description_ko ?? "",
+          description_en: r.description_en ?? "",
+        }),
+      ),
     );
-    await Promise.all(updates);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

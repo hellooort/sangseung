@@ -60,16 +60,17 @@ export default function AdminPartnersPage() {
   };
 
   const saveAll = async () => {
-    const updates = items.map((p, idx) =>
-      update(p.id, {
-        name_ko: p.name_ko,
-        name_en: p.name_en ?? "",
-        website_url: p.website_url ?? "",
-        sort_order: idx,
-      }),
+    const results = await Promise.all(
+      items.map((p, idx) =>
+        update(p.id, {
+          name_ko: p.name_ko,
+          name_en: p.name_en ?? "",
+          website_url: p.website_url ?? "",
+          sort_order: idx,
+        }),
+      ),
     );
-    await Promise.all(updates);
-    await persistOrder();
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

@@ -96,7 +96,8 @@ export default function AdminCertificatesPage() {
         title_en: c.title_en ?? "",
       }),
     );
-    await Promise.all([...catUpdates, ...certUpdates]);
+    const results = await Promise.all([...catUpdates, ...certUpdates]);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

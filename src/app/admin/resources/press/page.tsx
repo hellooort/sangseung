@@ -63,19 +63,21 @@ export default function AdminPressPage() {
   };
 
   const saveAll = async () => {
-    const updates = items.map((r) =>
-      update(r.id, {
-        title_ko: r.title_ko,
-        title_en: r.title_en ?? "",
-        summary_ko: r.summary_ko ?? "",
-        summary_en: r.summary_en ?? "",
-        content_ko: r.content_ko ?? "",
-        content_en: r.content_en ?? "",
-        external_link: r.external_link ?? "",
-        published_at: r.published_at,
-      }),
+    const results = await Promise.all(
+      items.map((r) =>
+        update(r.id, {
+          title_ko: r.title_ko,
+          title_en: r.title_en ?? "",
+          summary_ko: r.summary_ko ?? "",
+          summary_en: r.summary_en ?? "",
+          content_ko: r.content_ko ?? "",
+          content_en: r.content_en ?? "",
+          external_link: r.external_link ?? "",
+          published_at: r.published_at,
+        }),
+      ),
     );
-    await Promise.all(updates);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

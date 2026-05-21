@@ -91,22 +91,24 @@ export default function AdminLocationsPage() {
   };
 
   const saveAll = async () => {
-    const updates = items.map((o, idx) =>
-      update(o.id, {
-        name_ko: o.name_ko,
-        name_en: o.name_en ?? "",
-        address_ko: o.address_ko ?? "",
-        address_en: o.address_en ?? "",
-        phone: o.phone ?? "",
-        fax: o.fax ?? "",
-        email: o.email ?? "",
-        map_embed_url: o.map_embed_url ?? "",
-        lat: o.lat,
-        lng: o.lng,
-        sort_order: idx,
-      }),
+    const results = await Promise.all(
+      items.map((o, idx) =>
+        update(o.id, {
+          name_ko: o.name_ko,
+          name_en: o.name_en ?? "",
+          address_ko: o.address_ko ?? "",
+          address_en: o.address_en ?? "",
+          phone: o.phone ?? "",
+          fax: o.fax ?? "",
+          email: o.email ?? "",
+          map_embed_url: o.map_embed_url ?? "",
+          lat: o.lat,
+          lng: o.lng,
+          sort_order: idx,
+        }),
+      ),
     );
-    await Promise.all(updates);
+    if (results.some((r) => r === false)) return;
     setSavedMsg(true);
     setTimeout(() => setSavedMsg(false), 2000);
   };

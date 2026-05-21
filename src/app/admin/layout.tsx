@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/admin/Sidebar";
 import { createClient } from "@/lib/supabase/client";
 
@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [email, setEmail] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
   const isLoginPage = pathname === "/admin/login";
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     let cancelled = false;
