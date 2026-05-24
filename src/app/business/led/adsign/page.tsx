@@ -13,36 +13,21 @@ interface DbProductRow {
   sort_order: number;
 }
 
-const fallback: LedCategoryProduct[] = [
-  { slug: "ad-sign",   name: "AD Sign",            name_en: "AD Sign",
-    description_ko: "클라우드 LED 사이니지",
-    description_en: "Cloud-based LED signage",
-    image: "/image/AD Cloud/AD Cloud_main.jpg" },
-  { slug: "cloud-iot", name: "Cloud IoT Solution", name_en: "Cloud IoT Solution",
-    description_ko: "IoT 기반 통합 관제 솔루션",
-    description_en: "IoT-based integrated control solution",
-    image: "/image/AD Cloud/AD Cloud_main.jpg" },
-];
-
 export default async function AdSignPage() {
   const locale = await getLocale();
   const rows = await getList<DbProductRow>(
     "products",
     { orderBy: "sort_order", filter: { column: "category_slug", value: "adsign" } },
-    [],
   );
-  const products: LedCategoryProduct[] = rows.length > 0
-    ? rows
-        .filter((r) => r.slug)
-        .map((r) => ({
-          slug: r.slug as string,
-          name: r.name_ko ?? r.name ?? "",
-          name_en: r.name_en ?? undefined,
-          description_ko: r.description_ko ?? "",
-          description_en: r.description_en ?? undefined,
-          image: r.image_url ?? "/image/AD Cloud/AD Cloud_main.jpg",
-        }))
-    : fallback;
+  const products: LedCategoryProduct[] = rows
+    .map((r) => ({
+      slug: r.slug as string,
+      name: r.name_ko ?? r.name ?? "",
+      name_en: r.name_en ?? undefined,
+      description_ko: r.description_ko ?? "",
+      description_en: r.description_en ?? undefined,
+      image: r.image_url ?? "/image/AD Cloud/AD Cloud_main.jpg",
+    }));
 
   return (
     <LedCategoryPage

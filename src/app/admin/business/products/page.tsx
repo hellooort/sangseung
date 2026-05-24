@@ -7,10 +7,25 @@ import { useTableList } from "@/lib/supabase/hooks";
 import { createClient } from "@/lib/supabase/client";
 import { uploadImage } from "@/lib/supabase/storage";
 
+// 카테고리 이름 → 공개 URL slug 매핑 (페이지 파일명과 1:1 대응)
+const CAT_SLUG_MAP: Record<string, string> = {
+  "COB LED": "cob",
+  "INDOOR FIXED": "indoor",
+  "OUTDOOR FIXED": "outdoor",
+  "RENTAL": "rental",
+  "MEDIA FACADE": "facade",
+  "AD SIGN": "adsign",
+};
+
+function getCategorySlug(cat: { name_ko: string; slug?: string }): string {
+  return CAT_SLUG_MAP[cat.name_ko] ?? cat.slug ?? "";
+}
+
 interface Category {
   id: number;
   name_ko: string;
   name_en: string | null;
+  slug: string;
   sort_order: number;
 }
 
@@ -44,8 +59,10 @@ export default function AdminProductsPage() {
   // 호출 직후 메시지를 띄우기 어렵기 때문.
   const addProduct = async () => {
     const sb = createClient();
+    const catId = activeCategory ?? cats.items[0]?.id ?? null;
+    const selectedCat = cats.items.find((c) => c.id === catId);
     const insertRow: Record<string, unknown> = {
-      category_id: activeCategory ?? cats.items[0]?.id ?? null,
+      category_id: catId,
       name: "새 제품",
       name_ko: "새 제품",
       name_en: "",
@@ -55,7 +72,7 @@ export default function AdminProductsPage() {
       image_url: null,
       detail_url: null,
       slug: null,
-      category_slug: null,
+      category_slug: selectedCat ? getCategorySlug(selectedCat) : null,
       sort_order: products.items.length,
     };
 
@@ -126,6 +143,18 @@ export default function AdminProductsPage() {
     cats.setItems(cats.items.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
   };
 
+  // 카테고리 선택 시 category_slug 자동 입력 (이름→slug 매핑)
+  const handleProductCategoryChange = (productId: number, catId: number | null) => {
+    const cat = cats.items.find((c) => c.id === catId);
+    products.setItems(
+      products.items.map((p) =>
+        p.id === productId
+          ? { ...p, category_id: catId, category_slug: cat ? getCategorySlug(cat) : p.category_slug }
+          : p,
+      ),
+    );
+  };
+
   const removeCategory = async (id: number) => {
     const cat = cats.items.find((c) => c.id === id);
     if (!cat) return;
@@ -153,10 +182,11 @@ export default function AdminProductsPage() {
 
   const saveAll = async () => {
     const catUpdates = cats.items.map((c, idx) =>
-      cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "", sort_order: idx }),
+      cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "", slug: c.slug ?? "", sort_order: idx }),
     );
-    const productUpdates = products.items.map((p) =>
-      products.update(p.id, {
+    const productUpdates = products.items.map((p) => {
+      const cat = cats.items.find((c) => c.id === p.category_id);
+      return products.update(p.id, {
         category_id: p.category_id,
         name: p.name_ko ?? p.name ?? "",
         name_ko: p.name_ko ?? p.name ?? "",
@@ -165,10 +195,12 @@ export default function AdminProductsPage() {
         description_en: p.description_en ?? "",
         specs: p.specs ?? "",
         detail_url: p.detail_url ?? "",
-        slug: p.slug ?? "",
-        category_slug: p.category_slug ?? "",
-      }),
-    );
+        // slug 없으면 id로 자동 생성
+        slug: p.slug || String(p.id),
+        // 카테고리 이름→slug 매핑으로 자동 동기화
+        category_slug: cat ? getCategorySlug(cat) : p.category_slug || "",
+      });
+    });
     const results = await Promise.all([...catUpdates, ...productUpdates]);
     if (results.some((r) => r === false)) return;
     setSavedMsg(true);
@@ -225,6 +257,9 @@ export default function AdminProductsPage() {
                 </div>
                 <input type="text" value={cat.name_ko} onChange={(e) => updateCategory(cat.id, "name_ko", e.target.value)} placeholder="카테고리명 (KO)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
                 <input type="text" value={cat.name_en ?? ""} onChange={(e) => updateCategory(cat.id, "name_en", e.target.value)} placeholder="Name (EN)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                <span className="text-xs font-mono text-gray-400 w-20 text-center shrink-0" title="URL slug (자동)">
+                  {getCategorySlug(cat) || "—"}
+                </span>
                 <span className="text-xs text-gray-400 w-16 text-right">
                   {products.items.filter((p) => p.category_id === cat.id).length}개
                 </span>
@@ -266,7 +301,7 @@ export default function AdminProductsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <input type="text" value={product.name_ko ?? product.name ?? ""} onChange={(e) => updateProduct(product.id, "name_ko", e.target.value)} placeholder="제품명 (KO)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 font-semibold outline-none focus:ring-2 focus:ring-blue-500" />
                   <input type="text" value={product.name_en ?? ""} onChange={(e) => updateProduct(product.id, "name_en", e.target.value)} placeholder="Product Name (EN)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                  <select value={product.category_id ?? ""} onChange={(e) => updateProduct(product.id, "category_id", e.target.value ? Number(e.target.value) : null)} className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-700 outline-none">
+                  <select value={product.category_id ?? ""} onChange={(e) => handleProductCategoryChange(product.id, e.target.value ? Number(e.target.value) : null)} className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-700 outline-none">
                     <option value="">카테고리 선택</option>
                     {cats.items.map((cat) => (<option key={cat.id} value={cat.id}>{cat.name_ko}</option>))}
                   </select>
@@ -275,18 +310,14 @@ export default function AdminProductsPage() {
                   <textarea value={product.description_ko ?? ""} onChange={(e) => updateProduct(product.id, "description_ko", e.target.value)} placeholder="제품 설명 (KO)" rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
                   <textarea value={product.description_en ?? ""} onChange={(e) => updateProduct(product.id, "description_en", e.target.value)} placeholder="Description (EN)" rows={2} className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   <input type="text" value={product.specs ?? ""} onChange={(e) => updateProduct(product.id, "specs", e.target.value)} placeholder="주요 스펙 (예: P0.93 / P1.25)" className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                  <div className="grid grid-cols-2 gap-2">
-                    <input type="text" value={product.category_slug ?? ""} onChange={(e) => updateProduct(product.id, "category_slug", e.target.value)} placeholder="카테고리 slug (indoor)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                    <input type="text" value={product.slug ?? ""} onChange={(e) => updateProduct(product.id, "slug", e.target.value)} placeholder="제품 slug (s-wall)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                  </div>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                   <span className="text-xs text-gray-400">
-                    {product.slug && product.category_slug
-                      ? `URL: /business/led/${product.category_slug}/${product.slug}`
-                      : "slug를 채우면 URL이 활성화됩니다"}
+                    {product.category_slug
+                      ? `URL: /business/led/${product.category_slug}/${product.slug || product.id}`
+                      : "카테고리를 선택하면 URL이 활성화됩니다"}
                   </span>
                   <Link
                     href={`/admin/business/products/${product.id}`}

@@ -24,45 +24,22 @@ interface CobProduct {
   image: string;
 }
 
-const fallback: CobProduct[] = [
-  {
-    slug: "lflex",
-    name: "LFlex",
-    name_en: "LFlex",
-    description_ko: "COB 기술이 적용된 고화질 플렉시블 LED 디스플레이",
-    description_en: "High-quality flexible LED display with COB technology",
-    image: "/image/LFlex/LFlex_01.jpg",
-  },
-  {
-    slug: "sco-wall",
-    name: "SCO-Wall Series",
-    name_en: "SCO-Wall Series",
-    description_ko: "프리미엄 COB 패키징 기술의 고급형 LED 월",
-    description_en: "Premium LED wall built with COB packaging technology",
-    image: "/image/SCO-Wall/1-1.png",
-  },
-];
-
 export default async function COBLEDPage() {
   const locale = await getLocale();
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
   const rows = await getList<DbProductRow>(
     "products",
     { orderBy: "sort_order", filter: { column: "category_slug", value: "cob" } },
-    [],
   );
-  const products: CobProduct[] = rows.length > 0
-    ? rows
-        .filter((r) => r.slug)
-        .map((r) => ({
-          slug: r.slug as string,
-          name: r.name_ko ?? r.name ?? "",
-          name_en: r.name_en ?? r.name_ko ?? r.name ?? "",
-          description_ko: r.description_ko ?? "",
-          description_en: r.description_en ?? "",
-          image: r.image_url ?? "/image/LFlex/LFlex_01.jpg",
-        }))
-    : fallback;
+  const products: CobProduct[] = rows
+    .map((r) => ({
+      slug: r.slug as string,
+      name: r.name_ko ?? r.name ?? "",
+      name_en: r.name_en ?? r.name_ko ?? r.name ?? "",
+      description_ko: r.description_ko ?? "",
+      description_en: r.description_en ?? "",
+      image: r.image_url ?? "/image/LFlex/LFlex_01.jpg",
+    }));
 
   return (
     <>
@@ -87,7 +64,7 @@ export default async function COBLEDPage() {
 
       <section className="py-24 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-3 gap-6">
             {products.map((product) => (
               <Link
                 key={product.slug}

@@ -30,7 +30,11 @@ export default function AdminProjectsPage() {
 
   const addCategory = async () => {
     if (!newCatName.trim()) return;
-    await cats.insert({ name_ko: newCatName.trim(), name_en: "", sort_order: cats.items.length });
+    const newCat = await cats.insert({ name_ko: newCatName.trim(), name_en: "", sort_order: -1 });
+    if (newCat) {
+      // insert()는 내부적으로 끝에 추가하므로 맨 앞으로 이동
+      cats.setItems([newCat, ...cats.items.filter((c) => c.id !== newCat.id)]);
+    }
     setNewCatName("");
   };
 
@@ -43,6 +47,14 @@ export default function AdminProjectsPage() {
 
   const updateCatName = (id: number, field: "name_ko" | "name_en", value: string) => {
     cats.setItems(cats.items.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
+  };
+
+  const moveCategory = (index: number, direction: "up" | "down") => {
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= cats.items.length) return;
+    const next = [...cats.items];
+    [next[index], next[target]] = [next[target], next[index]];
+    cats.setItems(next);
   };
 
   const addRecord = async () => {
@@ -89,7 +101,7 @@ export default function AdminProjectsPage() {
   const filtered = activeCategory !== null ? records.items.filter((r) => r.category_id === activeCategory) : records.items;
 
   const saveAll = async () => {
-    const catUpdates = cats.items.map((c) => cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "" }));
+    const catUpdates = cats.items.map((c, i) => cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "", sort_order: i }));
     const recordUpdates = records.items.map((r) => {
       // 카테고리 이름이 곧 년도이므로 항상 카테고리명으로 동기화
       const catName = getCatName(r.category_id);
@@ -131,8 +143,24 @@ export default function AdminProjectsPage() {
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <h2 className="text-sm font-semibold text-gray-900 mb-3">카테고리 관리</h2>
         <div className="space-y-2 mb-3">
-          {cats.items.map((cat) => (
+          {cats.items.map((cat, i) => (
             <div key={cat.id} className="flex items-center gap-2 bg-gray-50 rounded-lg p-2">
+              <div className="flex flex-col gap-0.5">
+                <button
+                  onClick={() => moveCategory(i, "up")}
+                  disabled={i === 0}
+                  className="text-gray-400 hover:text-gray-700 disabled:opacity-20 leading-none"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                </button>
+                <button
+                  onClick={() => moveCategory(i, "down")}
+                  disabled={i === cats.items.length - 1}
+                  className="text-gray-400 hover:text-gray-700 disabled:opacity-20 leading-none"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </button>
+              </div>
               <input type="text" value={cat.name_ko} onChange={(e) => updateCatName(cat.id, "name_ko", e.target.value)} placeholder="카테고리 (KO)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
               <input type="text" value={cat.name_en ?? ""} onChange={(e) => updateCatName(cat.id, "name_en", e.target.value)} placeholder="Category (EN)" className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500" />
               <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600 p-1">
