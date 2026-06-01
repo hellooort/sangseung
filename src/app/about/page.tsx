@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getLocale } from "@/lib/locale.server";
@@ -53,8 +54,8 @@ const companyInfo = [
   },
   {
     labelKo: "사업분야", labelEn: "Business Areas",
-    valueKo: "NI, LED Display, SI, Media Façade, Network, IBS",
-    valueEn: "NI, LED Display, SI, Media Façade, Network, IBS",
+    valueKo: "NI, LED Display, SI, Media Facade, Network, IBS",
+    valueEn: "NI, LED Display, SI, Media Facade, Network, IBS",
     icon: (
       <svg className={iconCls} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
     ),
@@ -75,7 +76,7 @@ const businessAreas = [
     ),
   },
   {
-    nameKo: "Media Façade", nameEn: "Media Façade", subKo: "미디어 파사드", subEn: "Media Façade",
+    nameKo: "Media Facade", nameEn: "Media Facade", subKo: "미디어 파사드", subEn: "Media Facade",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 21V5a2 2 0 012-2h12a2 2 0 012 2v16M4 21h16M9 7h.01M9 11h.01M9 15h.01M15 7h.01M15 11h.01M15 15h.01" /></svg>
     ),
@@ -97,28 +98,28 @@ const businessAreas = [
 const values = [
   {
     nameKo: "기술력", nameEn: "Technology",
-    descKo: "축적된 기술과 노하우로 최적의 솔루션 제공", descEn: "Optimal solutions from accumulated expertise",
+    descKo: "축적된 기술과 노하우로\n최적의 솔루션 제공", descEn: "Optimal solutions from\naccumulated expertise",
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 7h10v10H7z" /></svg>
     ),
   },
   {
     nameKo: "신뢰성", nameEn: "Reliability",
-    descKo: "정확한 책임을 바탕으로 높은 신뢰 구축", descEn: "Trust built on accountability",
+    descKo: "정직과 책임을 바탕으로\n높은 신뢰 구축", descEn: "Trust built on\nhonesty and accountability",
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
     ),
   },
   {
     nameKo: "전문성", nameEn: "Expertise",
-    descKo: "전문 인력과 체계적인 프로세스로 완벽히 수행", descEn: "Expert staff and systematic processes",
+    descKo: "전문 인력과 체계적인\n프로세스로 완벽히 수행", descEn: "Expert staff and\nsystematic processes",
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0v7m-5-9.5V17a5 3 0 0010 0v-2.5" /></svg>
     ),
   },
   {
     nameKo: "지속성", nameEn: "Sustainability",
-    descKo: "지속적인 연구개발과 미래 가치 창출", descEn: "Continuous R&D and future value",
+    descKo: "지속적인 연구개발과\n미래 가치 창출", descEn: "Continuous R&D and\nfuture value creation",
     icon: (
       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0A8.003 8.003 0 015.064 13m13.355 2H15" /></svg>
     ),
@@ -137,8 +138,19 @@ export default async function AboutPage() {
   return (
     <>
       <Header />
-      <main className="pt-20 min-h-screen bg-[#0A0A0A]">
-        <section className="py-24 px-6 lg:px-20">
+      <main className="pt-20 min-h-screen bg-[#0A0A0A] relative">
+        {/* 배경 이미지 추가 */}
+        <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
+          <Image
+            src="/image/bg-about.jpg"
+            alt="Background"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        
+        <section className="relative z-10 py-24 px-6 lg:px-20">
           <div className="max-w-7xl mx-auto">
             <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
               ABOUT US
@@ -226,12 +238,12 @@ export default async function AboutPage() {
                 </div>
                 <div className="lg:flex-1 grid grid-cols-2 sm:grid-cols-4 gap-6">
                   {values.map((v) => (
-                    <div key={v.nameKo} className="flex flex-col gap-1">
-                      <div className="flex items-center gap-2 text-white">
+                    <div key={v.nameKo} className="flex flex-col items-center text-center gap-2">
+                      <div className="flex flex-col items-center gap-1 text-white">
                         <span className="text-[#4A90D9]">{v.icon}</span>
                         <span className="text-sm font-semibold">{t(v.nameKo, v.nameEn)}</span>
                       </div>
-                      <p className="text-[#6b7d8f] text-xs leading-snug break-keep">{t(v.descKo, v.descEn)}</p>
+                      <p className="text-[#6b7d8f] text-xs leading-snug whitespace-pre-line break-keep">{t(v.descKo, v.descEn)}</p>
                     </div>
                   ))}
                 </div>
