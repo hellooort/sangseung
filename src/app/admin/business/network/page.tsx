@@ -149,10 +149,13 @@ export default function AdminNetworkPage() {
                   <div className="relative w-32 h-20 bg-gray-100 rounded overflow-hidden flex-shrink-0">
                     {value.hero.image && <Image src={value.hero.image} alt="" fill className="object-cover" unoptimized />}
                   </div>
-                  <label className="text-blue-600 text-xs cursor-pointer hover:underline">
-                    {uploadingKey === "hero" ? "업로드중" : "업로드"}
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload("hero", e, (url) => setValue({ ...value, hero: { ...value.hero, image: url } }))} />
-                  </label>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-blue-600 text-xs cursor-pointer hover:underline">
+                      {uploadingKey === "hero" ? "업로드중" : "업로드"}
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload("hero", e, (url) => setValue({ ...value, hero: { ...value.hero, image: url } }))} />
+                    </label>
+                    <span className="text-[10px] text-gray-400">가로형 이미지 권장 (1920 x 1080px)</span>
+                  </div>
                   <input value={value.hero.image} onChange={(e) => setValue({ ...value, hero: { ...value.hero, image: e.target.value } })} className={inputCls} />
                 </div>
               </div>

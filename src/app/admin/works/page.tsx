@@ -346,6 +346,9 @@ export default function AdminWorksPage() {
                         </button>
                       )}
                     </div>
+                    <p className="mt-1 text-xs text-gray-400">
+                      가로형 이미지 권장 (예: 1200 x 800px)
+                    </p>
                   </div>
 
                   <div>

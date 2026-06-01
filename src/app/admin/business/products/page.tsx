@@ -300,21 +300,24 @@ export default function AdminProductsPage() {
                   </button>
                 </div>
                 <div className="flex items-stretch gap-3 pl-8">
-                  <div className="relative w-28 h-20 bg-gray-100 rounded-lg shrink-0 flex items-center justify-center overflow-hidden">
-                    {cat.image_url ? (
-                      <>
-                        <Image src={cat.image_url} alt="" fill className="object-cover" unoptimized />
-                        <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                          변경
-                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} />
+                  <div className="flex flex-col items-center gap-1 shrink-0">
+                    <div className="relative w-28 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                      {cat.image_url ? (
+                        <>
+                          <Image src={cat.image_url} alt="" fill className="object-cover" unoptimized />
+                          <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                            변경
+                            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} />
+                          </label>
+                        </>
+                      ) : (
+                        <label className="cursor-pointer text-center px-2">
+                          <span className="text-xs text-gray-400">{catUploadingId === cat.id ? "업로드중" : "카드 이미지"}</span>
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} disabled={catUploadingId === cat.id} />
                         </label>
-                      </>
-                    ) : (
-                      <label className="cursor-pointer text-center px-2">
-                        <span className="text-xs text-gray-400">{catUploadingId === cat.id ? "업로드중" : "카드 이미지"}</span>
-                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} disabled={catUploadingId === cat.id} />
-                      </label>
-                    )}
+                      )}
+                    </div>
+                    <span className="text-[10px] text-gray-400">권장: 800 x 600px</span>
                   </div>
                   <textarea value={cat.specs_ko ?? ""} onChange={(e) => updateCategory(cat.id, "specs_ko", e.target.value)} rows={3} placeholder="카드 스펙 (KO) — 한 줄에 하나씩" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
                   <textarea value={cat.specs_en ?? ""} onChange={(e) => updateCategory(cat.id, "specs_en", e.target.value)} rows={3} placeholder="Card specs (EN) — one per line" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
@@ -332,22 +335,25 @@ export default function AdminProductsPage() {
         {filtered.map((product) => (
           <div key={product.id} className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex gap-6">
-              <div className="relative w-40 h-40 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
-                {product.image_url ? (
-                  <>
-                    <Image src={product.image_url} alt="" fill className="object-contain p-2" unoptimized />
-                    <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                      변경
-                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(product.id, e)} />
+              <div className="flex flex-col items-center gap-1 shrink-0">
+                <div className="relative w-40 h-40 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                  {product.image_url ? (
+                    <>
+                      <Image src={product.image_url} alt="" fill className="object-contain p-2" unoptimized />
+                      <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                        변경
+                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(product.id, e)} />
+                      </label>
+                    </>
+                  ) : (
+                    <label className="cursor-pointer text-center">
+                      <svg className="w-8 h-8 text-gray-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                      <span className="text-xs text-gray-400">{uploadingId === product.id ? "업로드중" : "이미지 업로드"}</span>
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(product.id, e)} disabled={uploadingId === product.id} />
                     </label>
-                  </>
-                ) : (
-                  <label className="cursor-pointer text-center">
-                    <svg className="w-8 h-8 text-gray-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    <span className="text-xs text-gray-400">{uploadingId === product.id ? "업로드중" : "이미지 업로드"}</span>
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(product.id, e)} disabled={uploadingId === product.id} />
-                  </label>
-                )}
+                  )}
+                </div>
+                <span className="text-[10px] text-gray-400">정방형 권장 (예: 600 x 600px)</span>
               </div>
 
               <div className="flex-1 space-y-3">

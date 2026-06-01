@@ -207,6 +207,7 @@ export default function AdminBusinessOverviewPage() {
                 {uploading ? "업로드 중..." : "이미지 업로드"}
                 <input type="file" className="hidden" accept="image/*" onChange={handleHeroUpload} disabled={uploading} />
               </label>
+              <span className="text-[10px] text-gray-400">가로형 이미지 권장 (1920 x 1080px)</span>
               <input type="text" value={active.hero_image} onChange={(e) => updateActive("hero_image", e.target.value)} placeholder="/image/..." className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
           </div>

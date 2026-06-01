@@ -124,6 +124,7 @@ export default function AdminVideoWallPage() {
                 {uploading ? "업로드 중..." : "이미지 업로드"}
                 <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={uploading} />
               </label>
+              <span className="text-[10px] text-gray-400">가로형 이미지 권장 (1920 x 1080px)</span>
               <input
                 type="text"
                 value={value.mainImage}

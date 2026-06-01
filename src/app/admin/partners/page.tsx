@@ -125,6 +125,9 @@ export default function AdminPartnersPage() {
                 </label>
               )}
             </div>
+            <div className="w-24 text-center mt-1">
+              <p className="text-[10px] text-gray-400">투명 배경 PNG 권장<br/>(예: 400 x 200px)</p>
+            </div>
 
             <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
               <input type="text" value={partner.name_ko} onChange={(e) => localUpdate(partner.id, "name_ko", e.target.value)} placeholder="파트너사 이름 (KO)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />

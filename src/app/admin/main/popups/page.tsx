@@ -125,10 +125,13 @@ export default function AdminPopupsPage() {
                 <div className="relative w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                   {p.image ? <Image src={p.image} alt="" fill className="object-cover" unoptimized /> : <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">이미지 없음</div>}
                 </div>
-                <label className="text-blue-600 text-xs cursor-pointer hover:underline">
-                  {uploadingId === p.id ? "업로드중" : "업로드"}
-                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(p.id, e)} />
-                </label>
+                <div className="flex flex-col gap-1">
+                  <label className="text-blue-600 text-xs cursor-pointer hover:underline">
+                    {uploadingId === p.id ? "업로드중" : "업로드"}
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(p.id, e)} />
+                  </label>
+                  <span className="text-[10px] text-gray-400">자유 비율 (예: 600 x 800px)</span>
+                </div>
                 <input type="text" value={p.image} onChange={(e) => updatePopup(p.id, { image: e.target.value })} placeholder="/image/..." className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             </div>

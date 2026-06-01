@@ -115,16 +115,19 @@ export default function AdminMainServicesPage() {
           {value.services.map((s, idx) => (
             <div key={s.id} className="border border-gray-100 rounded-lg p-4">
               <div className="flex gap-4 mb-3">
-                <div className="relative w-32 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                  {s.image ? (
-                    <Image src={s.image} alt="" fill className="object-cover" unoptimized />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">이미지 없음</div>
-                  )}
-                  <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                    {uploadingId === s.id ? "업로드중" : "변경"}
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(s.id, e)} />
-                  </label>
+                <div className="flex flex-col gap-1 shrink-0">
+                  <div className="relative w-32 h-24 bg-gray-100 rounded-lg overflow-hidden">
+                    {s.image ? (
+                      <Image src={s.image} alt="" fill className="object-cover" unoptimized />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">이미지 없음</div>
+                    )}
+                    <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                      {uploadingId === s.id ? "업로드중" : "변경"}
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(s.id, e)} />
+                    </label>
+                  </div>
+                  <span className="text-[10px] text-gray-400">가로형 권장 (예: 600 x 400px)</span>
                 </div>
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input type="text" value={s.label} onChange={(e) => updateService(s.id, { label: e.target.value })} placeholder="라벨 (예: LED DISPLAY)" className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 font-semibold outline-none focus:ring-2 focus:ring-blue-500" />

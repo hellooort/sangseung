@@ -183,10 +183,13 @@ export default function AdminMaintenancePage() {
                   <div className="relative w-32 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     {value.hero.image && <Image src={value.hero.image} alt="" fill className="object-cover" unoptimized />}
                   </div>
-                  <label className="text-blue-600 text-xs cursor-pointer hover:underline">
-                    {uploadingKey === "hero" ? "업로드중" : "업로드"}
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload("hero", e, (url) => setValue({ ...value, hero: { ...value.hero, image: url } }))} />
-                  </label>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-blue-600 text-xs cursor-pointer hover:underline">
+                      {uploadingKey === "hero" ? "업로드중" : "업로드"}
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload("hero", e, (url) => setValue({ ...value, hero: { ...value.hero, image: url } }))} />
+                    </label>
+                    <span className="text-[10px] text-gray-400">가로형 이미지 권장 (1920 x 1080px)</span>
+                  </div>
                   <input type="text" value={value.hero.image} onChange={(e) => setValue({ ...value, hero: { ...value.hero, image: e.target.value } })} className={inputCls} />
                 </div>
               </div>
@@ -212,12 +215,15 @@ export default function AdminMaintenancePage() {
               {value.benefits.map((b, idx) => (
                 <div key={b.id} className="border border-gray-100 rounded-lg p-4">
                   <div className="flex gap-3 mb-3">
-                    <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                      {b.image && <Image src={b.image} alt="" fill className="object-cover" unoptimized />}
-                      <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${b.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
-                        {uploadingKey === `b-${b.id}` ? "업로드중" : b.image ? "변경" : "업로드"}
-                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`b-${b.id}`, e, (url) => updateBenefit(b.id, { image: url }))} />
-                      </label>
+                    <div className="flex flex-col gap-1 shrink-0">
+                      <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden">
+                        {b.image && <Image src={b.image} alt="" fill className="object-cover" unoptimized />}
+                        <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${b.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
+                          {uploadingKey === `b-${b.id}` ? "업로드중" : b.image ? "변경" : "업로드"}
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`b-${b.id}`, e, (url) => updateBenefit(b.id, { image: url }))} />
+                        </label>
+                      </div>
+                      <span className="text-[10px] text-gray-400">가로형 권장 (예: 600 x 400px)</span>
                     </div>
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
                       <input type="text" value={b.title_ko}       onChange={(e) => updateBenefit(b.id, { title_ko: e.target.value })}       placeholder="제목 (KO)"       className={inputCls} />
@@ -281,12 +287,15 @@ export default function AdminMaintenancePage() {
                     {tabRow.items.map((item) => (
                         <div key={item.id} className="border border-gray-100 rounded p-3">
                           <div className="flex gap-3">
-                            <div className="relative w-24 h-16 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                              {item.image && <Image src={item.image} alt="" fill className="object-cover" unoptimized />}
-                              <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${item.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
-                                {uploadingKey === `p-${item.id}` ? "..." : item.image ? "변경" : "업로드"}
-                                <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`p-${item.id}`, e, (url) => updatePerfItem(tabRow.id, item.id, { image: url }))} />
-                              </label>
+                            <div className="flex flex-col gap-1 shrink-0">
+                              <div className="relative w-24 h-16 bg-gray-100 rounded overflow-hidden">
+                                {item.image && <Image src={item.image} alt="" fill className="object-cover" unoptimized />}
+                                <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${item.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
+                                  {uploadingKey === `p-${item.id}` ? "..." : item.image ? "변경" : "업로드"}
+                                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`p-${item.id}`, e, (url) => updatePerfItem(tabRow.id, item.id, { image: url }))} />
+                                </label>
+                              </div>
+                              <span className="text-[10px] text-gray-400">가로형 권장 (예: 600 x 400px)</span>
                             </div>
                           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
                             <input type="text" value={item.title_ko}    onChange={(e) => updatePerfItem(tabRow.id, item.id, { title_ko: e.target.value })}    placeholder="제목 (KO)"    className={inputCls} />

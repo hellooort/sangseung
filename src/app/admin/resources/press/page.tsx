@@ -127,6 +127,7 @@ export default function AdminPressPage() {
                     </label>
                   )}
                 </div>
+                <p className="text-[10px] text-gray-400 text-center mt-1">가로형 권장 (예: 600 x 400px)</p>
                 <input type="date" value={press.published_at ?? ""} onChange={(e) => localUpdate(press.id, "published_at", e.target.value)} className="w-full mt-2 px-2 py-1.5 rounded border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 

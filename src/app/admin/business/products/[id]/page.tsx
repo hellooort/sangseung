@@ -284,13 +284,16 @@ export default function AdminProductDetailPage() {
                 <input value={row.slug ?? ""} onChange={(e) => setRowField("slug", e.target.value)} placeholder="s-wall / lflex ..." className={inputCls} />
               </Field>
               <Field label="썸네일 이미지 URL (또는 업로드)">
-                <ImageInput
-                  value={row.image_url ?? ""}
-                  uploadKey="thumb"
-                  uploadingKey={uploadingKey}
-                  onChange={(v) => setRowField("image_url", v)}
-                  onUpload={(e) => handleUpload("thumb", e, (url) => setRowField("image_url", url))}
-                />
+                <div className="flex flex-col gap-1">
+                  <ImageInput
+                    value={row.image_url ?? ""}
+                    uploadKey="thumb"
+                    uploadingKey={uploadingKey}
+                    onChange={(v) => setRowField("image_url", v)}
+                    onUpload={(e) => handleUpload("thumb", e, (url) => setRowField("image_url", url))}
+                  />
+                  <span className="text-[10px] text-gray-400">정방형 권장 (예: 600 x 600px)</span>
+                </div>
               </Field>
             </div>
           </div>
@@ -305,13 +308,16 @@ export default function AdminProductDetailPage() {
                 <input value={detail.hero?.tag ?? ""} onChange={(e) => setDetailPath("hero.tag", e.target.value)} className={inputCls} />
               </Field>
               <Field label="히어로 이미지">
-                <ImageInput
-                  value={detail.hero?.image ?? ""}
-                  uploadKey="hero"
-                  uploadingKey={uploadingKey}
-                  onChange={(v) => setDetailPath("hero.image", v)}
-                  onUpload={(e) => handleUpload("hero", e, (url) => setDetailPath("hero.image", url))}
-                />
+                <div className="flex flex-col gap-1">
+                  <ImageInput
+                    value={detail.hero?.image ?? ""}
+                    uploadKey="hero"
+                    uploadingKey={uploadingKey}
+                    onChange={(v) => setDetailPath("hero.image", v)}
+                    onUpload={(e) => handleUpload("hero", e, (url) => setDetailPath("hero.image", url))}
+                  />
+                  <span className="text-[10px] text-gray-400">가로형 권장 (예: 1920 x 1080px)</span>
+                </div>
               </Field>
               <Field label="제목 (KO)">
                 <input value={detail.hero?.title ?? ""} onChange={(e) => setDetailPath("hero.title", e.target.value)} className={inputCls} />
@@ -449,13 +455,16 @@ export default function AdminProductDetailPage() {
             <h2 className="text-base font-semibold text-gray-900">배너 영역 (전체 폭)</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Field label="배너 이미지">
-                <ImageInput
-                  value={detail.banner?.image ?? ""}
-                  uploadKey="banner"
-                  uploadingKey={uploadingKey}
-                  onChange={(v) => setDetailPath("banner.image", v)}
-                  onUpload={(e) => handleUpload("banner", e, (url) => setDetailPath("banner.image", url))}
-                />
+                <div className="flex flex-col gap-1">
+                  <ImageInput
+                    value={detail.banner?.image ?? ""}
+                    uploadKey="banner"
+                    uploadingKey={uploadingKey}
+                    onChange={(v) => setDetailPath("banner.image", v)}
+                    onUpload={(e) => handleUpload("banner", e, (url) => setDetailPath("banner.image", url))}
+                  />
+                  <span className="text-[10px] text-gray-400">가로형 권장 (예: 1920 x 600px)</span>
+                </div>
               </Field>
               <div />
               <Field label="제목 (KO) - 줄바꿈 Enter">
@@ -487,13 +496,16 @@ export default function AdminProductDetailPage() {
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input placeholder="영문 부제 (예: HDR Processing)" value={item.subtitle_en ?? ""} onChange={(e) => update({ ...item, subtitle_en: e.target.value })} className={inputSmCls} />
-                    <ImageInput
-                      value={item.image ?? ""}
-                      uploadKey={`feat-${Math.random()}`}
-                      uploadingKey={uploadingKey}
-                      onChange={(v) => update({ ...item, image: v })}
-                      onUpload={(e) => handleUpload("feat", e, (url) => update({ ...item, image: url }))}
-                    />
+                    <div className="flex flex-col gap-1">
+                      <ImageInput
+                        value={item.image ?? ""}
+                        uploadKey={`feat-${Math.random()}`}
+                        uploadingKey={uploadingKey}
+                        onChange={(v) => update({ ...item, image: v })}
+                        onUpload={(e) => handleUpload("feat", e, (url) => update({ ...item, image: url }))}
+                      />
+                      <span className="text-[10px] text-gray-400">가로형 권장 (예: 600 x 400px)</span>
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <textarea rows={2} placeholder="제목 (KO) — 줄바꿈(Enter) 가능" value={item.title_ko ?? ""} onChange={(e) => update({ ...item, title_ko: e.target.value })} className={textareaSmCls} />
