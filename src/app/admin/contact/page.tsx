@@ -180,12 +180,6 @@ export default function AdminContactPage() {
                     >
                       {c.is_read ? "안읽음으로 표시" : "읽음으로 표시"}
                     </button>
-                    <a
-                      href={`mailto:${c.email}?subject=${encodeURIComponent("RE: " + c.subject)}`}
-                      className="px-3 py-1.5 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
-                    >
-                      이메일 답장
-                    </a>
                     <button
                       onClick={() => removeItem(c.id)}
                       className="ml-auto px-3 py-1.5 rounded-lg text-sm text-red-500 hover:bg-red-50"
