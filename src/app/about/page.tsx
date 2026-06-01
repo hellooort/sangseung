@@ -100,28 +100,28 @@ const values = [
     nameKo: "기술력", nameEn: "Technology",
     descKo: "축적된 기술과 노하우로\n최적의 솔루션 제공", descEn: "Optimal solutions from\naccumulated expertise",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 7h10v10H7z" /></svg>
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 7h10v10H7z" /></svg>
     ),
   },
   {
     nameKo: "신뢰성", nameEn: "Reliability",
     descKo: "정직과 책임을 바탕으로\n높은 신뢰 구축", descEn: "Trust built on\nhonesty and accountability",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
     ),
   },
   {
     nameKo: "전문성", nameEn: "Expertise",
     descKo: "전문 인력과 체계적인\n프로세스로 완벽히 수행", descEn: "Expert staff and\nsystematic processes",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0v7m-5-9.5V17a5 3 0 0010 0v-2.5" /></svg>
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0v7m-5-9.5V17a5 3 0 0010 0v-2.5" /></svg>
     ),
   },
   {
     nameKo: "지속성", nameEn: "Sustainability",
     descKo: "지속적인 연구개발과\n미래 가치 창출", descEn: "Continuous R&D and\nfuture value creation",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0A8.003 8.003 0 015.064 13m13.355 2H15" /></svg>
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0A8.003 8.003 0 015.064 13m13.355 2H15" /></svg>
     ),
   },
 ];
@@ -225,25 +225,25 @@ export default async function AboutPage() {
             {/* 하단: 신뢰 · 기술 · 가치 */}
             <div className="mt-16 rounded-2xl border border-[#1f2a37] bg-gradient-to-r from-[#0e1726] to-[#0b1220] p-6 md:p-8">
               <div className="flex flex-col lg:flex-row lg:items-center gap-8">
-                <div className="lg:w-1/4 flex items-center gap-3">
+                <div className="lg:w-1/4 flex items-center gap-4">
                   <span className="text-[#4A90D9]">
-                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
+                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
                   </span>
                   <div>
-                    <p className="text-[#4A90D9] font-bold">{t("신뢰 · 기술 · 가치", "Trust · Tech · Value")}</p>
-                    <p className="text-[#7d8fa0] text-xs mt-0.5 break-keep">
+                    <p className="text-[#4A90D9] text-lg font-bold">{t("신뢰 · 기술 · 가치", "Trust · Tech · Value")}</p>
+                    <p className="text-[#7d8fa0] text-xs mt-1 break-keep">
                       {t("고객의 성공을 함께 설계하는 파트너, 상승종합통신㈜", "Your partner for success, SANGSEUNG Co., Ltd.")}
                     </p>
                   </div>
                 </div>
                 <div className="lg:flex-1 grid grid-cols-2 sm:grid-cols-4 gap-6">
                   {values.map((v) => (
-                    <div key={v.nameKo} className="flex flex-col items-center text-center gap-2">
-                      <div className="flex flex-col items-center gap-1 text-white">
+                    <div key={v.nameKo} className="flex flex-col items-center text-center gap-3">
+                      <div className="flex flex-col items-center gap-2 text-white">
                         <span className="text-[#4A90D9]">{v.icon}</span>
-                        <span className="text-sm font-semibold">{t(v.nameKo, v.nameEn)}</span>
+                        <span className="text-base md:text-lg font-bold">{t(v.nameKo, v.nameEn)}</span>
                       </div>
-                      <p className="text-[#6b7d8f] text-xs leading-snug whitespace-pre-line break-keep">{t(v.descKo, v.descEn)}</p>
+                      <p className="text-[#6b7d8f] text-xs md:text-sm leading-relaxed whitespace-pre-line break-keep">{t(v.descKo, v.descEn)}</p>
                     </div>
                   ))}
                 </div>
