@@ -49,7 +49,7 @@ const fallbackWorks: WorkRow[] = Array.from({ length: 23 }).map((_, i) => ({
 export default async function WorksPage() {
   const [cats, works, locale] = await Promise.all([
     getList<WorkCat>("work_categories", { orderBy: "sort_order" }, fallbackCats),
-    getList<WorkRow>("works", { orderBy: "id", ascending: false }, fallbackWorks),
+    getList<WorkRow>("works", { orderBy: "sort_order", ascending: true }, fallbackWorks),
     getLocale(),
   ]);
 
