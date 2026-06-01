@@ -225,14 +225,14 @@ export default async function AboutPage() {
             {/* 하단: 신뢰 · 기술 · 가치 */}
             <div className="mt-16 rounded-2xl border border-[#1f2a37] bg-gradient-to-r from-[#0e1726] to-[#0b1220] p-6 md:p-8">
               <div className="flex flex-col lg:flex-row lg:items-center gap-8">
-                <div className="lg:w-1/4 flex items-center gap-4">
+                <div className="lg:w-1/4 flex flex-col items-center text-center gap-3">
                   <span className="text-[#4A90D9]">
                     <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.6 0c0 5-3.6 7.5-8.6 9.5C7.6 17.5 4 15 4 10V6l8-3 8 3v4z" /></svg>
                   </span>
                   <div>
                     <p className="text-[#4A90D9] text-lg font-bold">{t("신뢰 · 기술 · 가치", "Trust · Tech · Value")}</p>
-                    <p className="text-[#7d8fa0] text-xs mt-1 break-keep">
-                      {t("고객의 성공을 함께 설계하는 파트너, 상승종합통신㈜", "Your partner for success, SANGSEUNG Co., Ltd.")}
+                    <p className="text-[#7d8fa0] text-xs mt-2 whitespace-pre-line break-keep">
+                      {t("고객의 성공을 함께 설계하는 파트너,\n상승종합통신㈜", "Your partner for success,\nSANGSEUNG Co., Ltd.")}
                     </p>
                   </div>
                 </div>
