@@ -1,6 +1,7 @@
 import HeaderClient, { defaultNavItems, type NavItem, type SubMenuItem } from "./HeaderClient";
-import { getSiteSetting } from "@/lib/supabase/public";
+import { getSiteSetting, getList } from "@/lib/supabase/public";
 import { getLocale } from "@/lib/locale.server";
+import { ledCategoryHref, type LedCategoryRow } from "@/lib/led-categories";
 
 // DB 의 navigation 이 array 가 아니거나 형식이 깨져있어도 헤더가 멈추지 않도록 정규화.
 function toSubItem(x: unknown): SubMenuItem {
@@ -24,11 +25,32 @@ function normalizeNav(raw: unknown): NavItem[] {
   return arr.map(toSubItem) as NavItem[];
 }
 
+// "LED 디스플레이"(/business/led) 메뉴의 하위 항목을 product_categories 로 동적 교체.
+// 제품 카테고리를 추가하면 네비게이션에도 같은 위치에 자동으로 나타난다.
+function injectLedCategories(items: NavItem[], cats: LedCategoryRow[]): NavItem[] {
+  if (cats.length === 0) return items;
+  const ledSubmenu: SubMenuItem[] = cats.map((c) => ({
+    name: c.name_ko,
+    name_en: c.name_en ?? c.name_ko,
+    href: ledCategoryHref(c),
+  }));
+  const walk = (nodes: SubMenuItem[]): SubMenuItem[] =>
+    nodes.map((node) => {
+      if (node.href === "/business/led") {
+        return { ...node, submenu: ledSubmenu };
+      }
+      if (node.submenu) return { ...node, submenu: walk(node.submenu) };
+      return node;
+    });
+  return walk(items as SubMenuItem[]) as NavItem[];
+}
+
 export default async function Header() {
-  const [rawNav, locale] = await Promise.all([
+  const [rawNav, locale, cats] = await Promise.all([
     getSiteSetting<unknown>("navigation", defaultNavItems),
     getLocale(),
+    getList<LedCategoryRow>("product_categories", { orderBy: "sort_order" }),
   ]);
-  const navItems = normalizeNav(rawNav);
+  const navItems = injectLedCategories(normalizeNav(rawNav), cats);
   return <HeaderClient navItems={navItems} locale={locale} />;
 }

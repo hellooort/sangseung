@@ -2,25 +2,50 @@
 
 import { useState } from "react";
 import type { Locale } from "@/lib/locale";
+import { createClient } from "@/lib/supabase/client";
+
+const EMPTY_FORM = {
+  company: "",
+  name: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+};
 
 export default function ContactClient({ locale }: { locale: Locale }) {
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
 
-  const [formData, setFormData] = useState({
-    company: "",
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(t(
-      "문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.",
-      "Your inquiry has been received. We will contact you shortly.",
-    ));
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      const { error } = await createClient().from("contacts").insert({
+        company: formData.company.trim() || null,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+      });
+      if (error) throw error;
+      alert(t(
+        "문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.",
+        "Your inquiry has been received. We will contact you shortly.",
+      ));
+      setFormData(EMPTY_FORM);
+    } catch {
+      alert(t(
+        "문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+        "An error occurred while submitting your inquiry. Please try again later.",
+      ));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -109,8 +134,14 @@ export default function ContactClient({ locale }: { locale: Locale }) {
             />
           </div>
 
-          <button type="submit" className="w-full bg-white text-black py-4 rounded font-semibold hover:bg-white/90 transition-colors">
-            {t("문의 보내기", "Submit Inquiry")}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="w-full bg-white text-black py-4 rounded font-semibold hover:bg-white/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {submitting
+              ? t("전송 중...", "Submitting...")
+              : t("문의 보내기", "Submit Inquiry")}
           </button>
         </form>
 

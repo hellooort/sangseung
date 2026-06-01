@@ -484,19 +484,25 @@ export default function AdminProductDetailPage() {
               onChange={(arr) => setDetailPath("features", arr)}
               empty={() => ({ subtitle_en: "", title_ko: "", title_en: "", description_ko: "", description_en: "", image: "" })}
               render={(item, update) => (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input placeholder="영문 부제 (예: HDR Processing)" value={item.subtitle_en ?? ""} onChange={(e) => update({ ...item, subtitle_en: e.target.value })} className={inputSmCls} />
-                  <ImageInput
-                    value={item.image ?? ""}
-                    uploadKey={`feat-${Math.random()}`}
-                    uploadingKey={uploadingKey}
-                    onChange={(v) => update({ ...item, image: v })}
-                    onUpload={(e) => handleUpload("feat", e, (url) => update({ ...item, image: url }))}
-                  />
-                  <input placeholder="제목 (KO)" value={item.title_ko ?? ""} onChange={(e) => update({ ...item, title_ko: e.target.value })} className={inputSmCls} />
-                  <input placeholder="제목 (EN)" value={item.title_en ?? ""} onChange={(e) => update({ ...item, title_en: e.target.value })} className={inputSmCls} />
-                  <textarea rows={3} placeholder="설명 (KO)" value={item.description_ko ?? ""} onChange={(e) => update({ ...item, description_ko: e.target.value })} className={textareaSmCls} />
-                  <textarea rows={3} placeholder="Description (EN)" value={item.description_en ?? ""} onChange={(e) => update({ ...item, description_en: e.target.value })} className={textareaSmCls} />
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input placeholder="영문 부제 (예: HDR Processing)" value={item.subtitle_en ?? ""} onChange={(e) => update({ ...item, subtitle_en: e.target.value })} className={inputSmCls} />
+                    <ImageInput
+                      value={item.image ?? ""}
+                      uploadKey={`feat-${Math.random()}`}
+                      uploadingKey={uploadingKey}
+                      onChange={(v) => update({ ...item, image: v })}
+                      onUpload={(e) => handleUpload("feat", e, (url) => update({ ...item, image: url }))}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <textarea rows={2} placeholder="제목 (KO) — 줄바꿈(Enter) 가능" value={item.title_ko ?? ""} onChange={(e) => update({ ...item, title_ko: e.target.value })} className={textareaSmCls} />
+                    <textarea rows={2} placeholder="제목 (EN) — line break allowed" value={item.title_en ?? ""} onChange={(e) => update({ ...item, title_en: e.target.value })} className={textareaSmCls} />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <textarea rows={6} placeholder="설명 (KO) — Enter 로 문단 구분" value={item.description_ko ?? ""} onChange={(e) => update({ ...item, description_ko: e.target.value })} className={textareaSmCls} />
+                    <textarea rows={6} placeholder="Description (EN) — paragraphs with Enter" value={item.description_en ?? ""} onChange={(e) => update({ ...item, description_en: e.target.value })} className={textareaSmCls} />
+                  </div>
                 </div>
               )}
             />

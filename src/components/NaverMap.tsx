@@ -19,8 +19,14 @@ import { useEffect, useRef, useState } from "react";
  */
 
 interface NaverMapProps {
-  lat: number;
-  lng: number;
+  /** 폴백 좌표(저장된 위·경도). address 로 Geocoding 성공 시 그 결과로 덮어씀. */
+  lat?: number | null;
+  lng?: number | null;
+  /**
+   * 주소(도로명/지번). 전달되면 Geocoding 으로 정확한 좌표를 구해 마커를 찍는다.
+   * (저장된 lat/lng 가 주소와 어긋나도 항상 주소 위치에 맞춤)
+   */
+  address?: string | null;
   /** 마커에 표시할 사무실 이름 */
   title?: string;
   /** "네이버 지도에서 보기" 링크에 사용할 검색어(주소 등) */
@@ -93,9 +99,14 @@ function loadNaverMapsScript(): Promise<void> {
   return window.__naverMapsScriptPromise;
 }
 
+function isFiniteNum(n: unknown): n is number {
+  return typeof n === "number" && Number.isFinite(n);
+}
+
 export default function NaverMap({
   lat,
   lng,
+  address,
   title,
   searchQuery,
   zoom = 16,
@@ -103,14 +114,39 @@ export default function NaverMap({
 }: NaverMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
+    isFiniteNum(lat) && isFiniteNum(lng) ? { lat, lng } : null,
+  );
+
+  // 주소가 있으면 Geocoding 으로 정확한 좌표를 구해 마커 위치를 보정한다.
+  useEffect(() => {
+    const addr = address?.trim();
+    if (!addr) return;
+    let cancelled = false;
+    fetch(`/api/geocode?address=${encodeURIComponent(addr)}`, { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d) return;
+        if (isFiniteNum(d.lat) && isFiniteNum(d.lng)) {
+          setCoords({ lat: d.lat, lng: d.lng });
+        }
+      })
+      .catch(() => {
+        /* 실패 시 저장된 좌표(폴백) 유지 */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [address]);
 
   useEffect(() => {
+    if (!coords) return;
     let cancelled = false;
     loadNaverMapsScript()
       .then(() => {
         if (cancelled || !containerRef.current || !window.naver?.maps) return;
         const { Map, LatLng, Marker } = window.naver.maps;
-        const center = new LatLng(lat, lng);
+        const center = new LatLng(coords.lat, coords.lng);
         const map = new Map(containerRef.current, {
           center,
           zoom,
@@ -136,7 +172,7 @@ export default function NaverMap({
     return () => {
       cancelled = true;
     };
-  }, [lat, lng, zoom, title]);
+  }, [coords, zoom, title]);
 
   if (error) {
     return (

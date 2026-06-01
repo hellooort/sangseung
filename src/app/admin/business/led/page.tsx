@@ -120,10 +120,6 @@ export default function AdminLedPage() {
     finally { setUploadingKey(null); e.target.value = ""; }
   };
 
-  const updateProduct = (id: string, patch: Partial<LedProductCard>) => setValue({ ...value, products: value.products.map((p) => (p.id === id ? { ...p, ...patch } : p)) });
-  const addProduct = () => setValue({ ...value, products: [...value.products, { id: newId(), name: "", href: "/", image: "", specs_ko: "", specs_en: "" }] });
-  const removeProduct = (id: string) => { if (!confirm("삭제?")) return; setValue({ ...value, products: value.products.filter((p) => p.id !== id) }); };
-
   const updateFeature = (id: string, patch: Partial<LedFeatureItem>) => setValue({ ...value, features: value.features.map((f) => (f.id === id ? { ...f, ...patch } : f)) });
   const addFeature = () => setValue({ ...value, features: [...value.features, { id: newId(), title_ko: "", title_en: "", description_ko: "", description_en: "" }] });
   const removeFeature = (id: string) => { if (!confirm("삭제?")) return; setValue({ ...value, features: value.features.filter((f) => f.id !== id) }); };
@@ -188,31 +184,14 @@ export default function AdminLedPage() {
               <input value={value.productsLead_ko} onChange={(e) => setValue({ ...value, productsLead_ko: e.target.value })} placeholder="섹션 리드 (KO)" className={inputCls} />
               <input value={value.productsLead_en} onChange={(e) => setValue({ ...value, productsLead_en: e.target.value })} placeholder="Lead (EN)" className={inputCls} />
             </div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-semibold text-gray-900">제품 카드 (각 카드는 LED 카테고리 페이지로 링크)</h2>
-              <button onClick={addProduct} className="text-blue-600 text-sm hover:underline">+ 카드 추가</button>
-            </div>
-            <div className="space-y-3">
-              {value.products.map((p) => (
-                <div key={p.id} className="border border-gray-100 rounded-lg p-4">
-                  <div className="flex gap-3">
-                    <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                      {p.image && <Image src={p.image} alt="" fill className="object-cover" unoptimized />}
-                      <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                        {uploadingKey === `p-${p.id}` ? "..." : "변경"}
-                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`p-${p.id}`, e, (url) => updateProduct(p.id, { image: url }))} />
-                      </label>
-                    </div>
-                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
-                      <input value={p.name} onChange={(e) => updateProduct(p.id, { name: e.target.value })} placeholder="제품명 (예: COB LED)"     className={inputCls + " font-semibold"} />
-                      <input value={p.href} onChange={(e) => updateProduct(p.id, { href: e.target.value })} placeholder="링크 (예: /business/led/cob)" className={inputCls + " font-mono text-xs"} />
-                      <textarea rows={3} value={p.specs_ko} onChange={(e) => updateProduct(p.id, { specs_ko: e.target.value })} placeholder="스펙 (KO) - 줄바꿈 Enter" className={textareaCls} />
-                      <textarea rows={3} value={p.specs_en} onChange={(e) => updateProduct(p.id, { specs_en: e.target.value })} placeholder="Specs (EN) - one per line" className={textareaCls} />
-                    </div>
-                  </div>
-                  <div className="text-right mt-2"><button onClick={() => removeProduct(p.id)} className="text-red-500 text-xs hover:underline">삭제</button></div>
-                </div>
-              ))}
+            <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+              <p className="font-semibold mb-1">제품 카드는 이제 “제품 라인업”에서 자동으로 만들어집니다.</p>
+              <p className="text-blue-800/80 leading-relaxed">
+                카드(카테고리)의 추가·순서·이미지·스펙은{" "}
+                <a href="/admin/business/products" className="font-semibold underline hover:text-blue-700">제품 라인업 관리</a>
+                {" "}에서 관리하세요. 카테고리를 추가하면 이 페이지의 카드, 네비게이션, 카테고리 상세 페이지에 모두 자동 반영됩니다.
+                여기서는 위의 <b>섹션 제목·문구</b>만 편집됩니다.
+              </p>
             </div>
           </div>
         )}

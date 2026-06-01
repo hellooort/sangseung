@@ -52,15 +52,19 @@ export default async function LocationPage() {
                   typeof office.lng === "number" &&
                   !Number.isNaN(office.lat) &&
                   !Number.isNaN(office.lng);
+                // 주소(KO)가 있으면 지도에서 Geocoding 해 정확한 위치로 보정한다.
+                const geocodeAddr = office.address_ko?.trim() || null;
+                const canShowMap = hasCoords || !!geocodeAddr;
                 return (
                   <div key={office.id} className="bg-[#111] rounded-2xl overflow-hidden">
                     <div className="aspect-video md:aspect-[21/9] bg-[#1a1a1a] relative">
-                      {hasCoords ? (
+                      {canShowMap ? (
                         <NaverMap
-                          lat={office.lat as number}
-                          lng={office.lng as number}
+                          lat={office.lat}
+                          lng={office.lng}
+                          address={geocodeAddr}
                           title={officeName}
-                          searchQuery={office.address_ko ?? officeName}
+                          searchQuery={geocodeAddr ?? officeName}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-center">

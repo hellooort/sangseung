@@ -255,10 +255,10 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                       {feature.subtitle_en}
                     </span>
                   )}
-                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight">
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight whitespace-pre-line text-left break-keep">
                     {tr(locale, feature.title_ko, feature.title_en)}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line text-left break-keep">
                     {tr(locale, feature.description_ko, feature.description_en)}
                   </p>
                 </div>

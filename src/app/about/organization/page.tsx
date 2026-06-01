@@ -76,12 +76,13 @@ export default async function OrganizationPage() {
               </div>
 
               <div className="w-px h-8 bg-[#333]" />
-              <div className="w-full max-w-4xl h-px bg-[#333]" />
+              {/* 가로 연결선: 각 본부 위 세로선과 끊김 없이 이어지도록 grid 폭에 맞춤 */}
+              <div className="w-full h-px bg-[#333] hidden lg:block" />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-8 items-start">
                 {data.divisions.map((division, di) => (
                   <div key={division.id ?? di} className="flex flex-col items-center">
-                    <div className="w-px h-8 bg-[#333] hidden lg:block" />
+                    <div className="w-px h-8 bg-[#333] hidden lg:block -mt-8" />
 
                     <div className="bg-[#1a1a1a] border border-[#4A90D9] text-white px-6 py-3 rounded-lg font-semibold text-center w-full mb-4">
                       {tr(locale, division.name_ko, division.name_en)}
@@ -100,12 +101,12 @@ export default async function OrganizationPage() {
                     {division.departments && division.departments.length > 0 && (
                       <div className="space-y-4 w-full">
                         {division.departments.map((dept, dpi) => (
-                          <div key={dept.id ?? dpi} className="w-full">
-                            <div className="bg-[#222] text-[#4A90D9] px-4 py-2 rounded text-sm font-medium text-center mb-2">
+                          <div key={dept.id ?? dpi} className="w-full flex flex-col items-center">
+                            <div className="bg-[#222] text-[#4A90D9] px-4 py-2 rounded text-sm font-medium text-center w-full mb-2">
                               {tr(locale, dept.name_ko, dept.name_en)}
                             </div>
                             {dept.teams && dept.teams.length > 0 && (
-                              <div className="space-y-1 pl-4">
+                              <div className="space-y-1 w-full">
                                 {dept.teams.map((team, ti) => (
                                   <div key={team.id ?? ti} className="bg-[#111] text-[#888] px-3 py-1.5 rounded text-xs text-center">
                                     {tr(locale, team.ko, team.en)}

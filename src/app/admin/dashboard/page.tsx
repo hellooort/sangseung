@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const quickLinks = [
+  { label: "상담신청/문의",   href: "/admin/contact",              color: "bg-indigo-500" },
   { label: "인사말 수정",     href: "/admin/about/greeting",       color: "bg-blue-500" },
-  { label: "시공사례 관리",   href: "/admin/works",                color: "bg-green-500" },
+  { label: "설치사례 관리",   href: "/admin/works",                color: "bg-green-500" },
   { label: "인증서 관리",     href: "/admin/about/certificates",   color: "bg-purple-500" },
   { label: "자료실 관리",     href: "/admin/resources/downloads",  color: "bg-orange-500" },
   { label: "파트너사 관리",   href: "/admin/partners",             color: "bg-pink-500" },
@@ -20,7 +21,8 @@ interface StatCard {
 }
 
 const STAT_DEFS: { label: string; href: string; table: string }[] = [
-  { label: "시공사례", href: "/admin/works",                table: "works" },
+  { label: "문의",     href: "/admin/contact",              table: "contacts" },
+  { label: "설치사례", href: "/admin/works",                table: "works" },
   { label: "인증서",   href: "/admin/about/certificates",   table: "certificates" },
   { label: "파트너사", href: "/admin/partners",             table: "partners" },
   { label: "자료실",   href: "/admin/resources/downloads",  table: "resources" },

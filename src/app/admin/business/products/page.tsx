@@ -7,25 +7,21 @@ import { useTableList } from "@/lib/supabase/hooks";
 import { createClient } from "@/lib/supabase/client";
 import { uploadImage } from "@/lib/supabase/storage";
 
-// 카테고리 이름 → 공개 URL slug 매핑 (페이지 파일명과 1:1 대응)
-const CAT_SLUG_MAP: Record<string, string> = {
-  "COB LED": "cob",
-  "INDOOR FIXED": "indoor",
-  "OUTDOOR FIXED": "outdoor",
-  "RENTAL": "rental",
-  "MEDIA FACADE": "facade",
-  "AD SIGN": "adsign",
-};
+import { ledCategorySlug } from "@/lib/led-categories";
 
-function getCategorySlug(cat: { name_ko: string; slug?: string }): string {
-  return CAT_SLUG_MAP[cat.name_ko] ?? cat.slug ?? "";
+// LED 카테고리 → URL slug (제품의 category_slug 동기화에 사용)
+function getCategorySlug(cat: { id: number; name_ko: string; slug?: string | null }): string {
+  return ledCategorySlug(cat);
 }
 
 interface Category {
   id: number;
   name_ko: string;
   name_en: string | null;
-  slug: string;
+  slug: string | null;
+  image_url: string | null;
+  specs_ko: string | null;
+  specs_en: string | null;
   sort_order: number;
 }
 
@@ -53,6 +49,7 @@ export default function AdminProductsPage() {
   const [showCategoryManager, setShowCategoryManager] = useState(false);
   const [savedMsg, setSavedMsg] = useState(false);
   const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const [catUploadingId, setCatUploadingId] = useState<number | null>(null);
 
   // 제품 추가는 직접 supabase 호출로 처리해 에러 메시지를 즉시 사용자에게 표시.
   // useTableList.insert 는 에러 시 setError 만 호출하고 상태가 비동기로 갱신되어
@@ -136,11 +133,37 @@ export default function AdminProductsPage() {
   };
 
   const addCategory = async () => {
-    await cats.insert({ name_ko: "새 카테고리", name_en: "New Category", sort_order: cats.items.length });
+    const sb = createClient();
+    const { data, error } = await sb
+      .from("product_categories")
+      .insert({ name_ko: "새 카테고리", name_en: "New Category", sort_order: cats.items.length })
+      .select()
+      .single();
+    if (error) {
+      alert("카테고리 추가 실패\n\n" + error.message);
+      return;
+    }
+    if (data) cats.setItems([...cats.items, data as Category]);
   };
 
   const updateCategory = (id: number, field: keyof Category, value: string) => {
     cats.setItems(cats.items.map((c) => (c.id === id ? { ...c, [field]: value } : c)));
+  };
+
+  const handleCategoryImageUpload = async (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCatUploadingId(id);
+    try {
+      const url = await uploadImage(file, "products");
+      cats.setItems(cats.items.map((c) => (c.id === id ? { ...c, image_url: url } : c)));
+      await cats.update(id, { image_url: url });
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "업로드 실패");
+    } finally {
+      setCatUploadingId(null);
+      e.target.value = "";
+    }
   };
 
   // 카테고리 선택 시 category_slug 자동 입력 (이름→slug 매핑)
@@ -182,7 +205,15 @@ export default function AdminProductsPage() {
 
   const saveAll = async () => {
     const catUpdates = cats.items.map((c, idx) =>
-      cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "", slug: c.slug ?? "", sort_order: idx }),
+      cats.update(c.id, {
+        name_ko: c.name_ko,
+        name_en: c.name_en ?? "",
+        slug: ledCategorySlug(c),
+        image_url: c.image_url ?? null,
+        specs_ko: c.specs_ko ?? "",
+        specs_en: c.specs_en ?? "",
+        sort_order: idx,
+      }),
     );
     const productUpdates = products.items.map((p) => {
       const cat = cats.items.find((c) => c.id === p.category_id);
@@ -246,26 +277,48 @@ export default function AdminProductsPage() {
           </div>
           <div className="space-y-2">
             {cats.items.map((cat, idx) => (
-              <div key={cat.id} className="flex items-center gap-2 border border-gray-100 rounded-lg p-3">
-                <div className="flex flex-col">
-                  <button onClick={() => moveCategory(cat.id, -1)} disabled={idx === 0} className="text-gray-400 hover:text-gray-700 disabled:opacity-30">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
-                  </button>
-                  <button onClick={() => moveCategory(cat.id, 1)} disabled={idx === cats.items.length - 1} className="text-gray-400 hover:text-gray-700 disabled:opacity-30">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              <div key={cat.id} className="border border-gray-100 rounded-lg p-3 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex flex-col">
+                    <button onClick={() => moveCategory(cat.id, -1)} disabled={idx === 0} className="text-gray-400 hover:text-gray-700 disabled:opacity-30">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                    </button>
+                    <button onClick={() => moveCategory(cat.id, 1)} disabled={idx === cats.items.length - 1} className="text-gray-400 hover:text-gray-700 disabled:opacity-30">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                  </div>
+                  <input type="text" value={cat.name_ko} onChange={(e) => updateCategory(cat.id, "name_ko", e.target.value)} placeholder="카테고리명 (KO)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                  <input type="text" value={cat.name_en ?? ""} onChange={(e) => updateCategory(cat.id, "name_en", e.target.value)} placeholder="Name (EN)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
+                  <span className="text-xs font-mono text-gray-400 w-24 text-center shrink-0" title="공개 URL: /business/led/{slug}">
+                    /{getCategorySlug(cat)}
+                  </span>
+                  <span className="text-xs text-gray-400 w-12 text-right">
+                    {products.items.filter((p) => p.category_id === cat.id).length}개
+                  </span>
+                  <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600 p-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                   </button>
                 </div>
-                <input type="text" value={cat.name_ko} onChange={(e) => updateCategory(cat.id, "name_ko", e.target.value)} placeholder="카테고리명 (KO)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                <input type="text" value={cat.name_en ?? ""} onChange={(e) => updateCategory(cat.id, "name_en", e.target.value)} placeholder="Name (EN)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500" />
-                <span className="text-xs font-mono text-gray-400 w-20 text-center shrink-0" title="URL slug (자동)">
-                  {getCategorySlug(cat) || "—"}
-                </span>
-                <span className="text-xs text-gray-400 w-16 text-right">
-                  {products.items.filter((p) => p.category_id === cat.id).length}개
-                </span>
-                <button onClick={() => removeCategory(cat.id)} className="text-red-400 hover:text-red-600 p-2">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                </button>
+                <div className="flex items-stretch gap-3 pl-8">
+                  <div className="relative w-28 h-20 bg-gray-100 rounded-lg shrink-0 flex items-center justify-center overflow-hidden">
+                    {cat.image_url ? (
+                      <>
+                        <Image src={cat.image_url} alt="" fill className="object-cover" unoptimized />
+                        <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                          변경
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} />
+                        </label>
+                      </>
+                    ) : (
+                      <label className="cursor-pointer text-center px-2">
+                        <span className="text-xs text-gray-400">{catUploadingId === cat.id ? "업로드중" : "카드 이미지"}</span>
+                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleCategoryImageUpload(cat.id, e)} disabled={catUploadingId === cat.id} />
+                      </label>
+                    )}
+                  </div>
+                  <textarea value={cat.specs_ko ?? ""} onChange={(e) => updateCategory(cat.id, "specs_ko", e.target.value)} rows={3} placeholder="카드 스펙 (KO) — 한 줄에 하나씩" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                  <textarea value={cat.specs_en ?? ""} onChange={(e) => updateCategory(cat.id, "specs_en", e.target.value)} rows={3} placeholder="Card specs (EN) — one per line" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                </div>
               </div>
             ))}
             {cats.items.length === 0 && <p className="text-gray-400 text-sm text-center py-6">카테고리가 없습니다.</p>}

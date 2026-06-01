@@ -43,7 +43,7 @@ export default function AdminWorksPage() {
   };
 
   const removeCategory = async (id: number) => {
-    if (!confirm("카테고리를 삭제하시겠습니까? (해당 카테고리에 속한 시공사례 연결도 해제됩니다)")) return;
+    if (!confirm("카테고리를 삭제하시겠습니까? (해당 카테고리에 속한 설치사례 연결도 해제됩니다)")) return;
     await cats.remove(id);
     await works.reload();
   };
@@ -123,9 +123,22 @@ export default function AdminWorksPage() {
 
   const filtered = activeCategory !== null ? works.items.filter((p) => p.category_id === activeCategory) : works.items;
 
+  const moveProject = (id: number, direction: "up" | "down") => {
+    const visibleIds = filtered.map((p) => p.id);
+    const pos = visibleIds.indexOf(id);
+    const swapPos = direction === "up" ? pos - 1 : pos + 1;
+    if (pos < 0 || swapPos < 0 || swapPos >= visibleIds.length) return;
+    const otherId = visibleIds[swapPos];
+    const next = [...works.items];
+    const i = next.findIndex((p) => p.id === id);
+    const j = next.findIndex((p) => p.id === otherId);
+    [next[i], next[j]] = [next[j], next[i]];
+    works.setItems(next);
+  };
+
   const saveAll = async () => {
     const catUpdates = cats.items.map((c) => cats.update(c.id, { name_ko: c.name_ko, name_en: c.name_en ?? "" }));
-    const workUpdates = works.items.map((p) =>
+    const workUpdates = works.items.map((p, idx) =>
       works.update(p.id, {
         category_id: p.category_id,
         title_ko: p.title_ko,
@@ -133,6 +146,7 @@ export default function AdminWorksPage() {
         subtitle_ko: p.subtitle_ko ?? "",
         subtitle_en: p.subtitle_en ?? "",
         size: p.size ?? "",
+        sort_order: idx,
       }),
     );
     const results = await Promise.all([...catUpdates, ...workUpdates]);
@@ -146,7 +160,7 @@ export default function AdminWorksPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">시공사례 관리</h1>
+        <h1 className="text-2xl font-bold text-gray-900">설치사례 관리</h1>
         <div className="flex items-center gap-3">
           {(cats.error || works.error) && <span className="text-red-500 text-sm">{cats.error || works.error}</span>}
           <button onClick={saveAll} disabled={cats.saving || works.saving} className="bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-60">
@@ -187,13 +201,31 @@ export default function AdminWorksPage() {
       </div>
 
       <div className="space-y-4">
-        {filtered.map((project) => {
+        {filtered.map((project, viewIdx) => {
           const isEditing = editingProject === project.id;
           const extra = project.extra_images || [];
           return (
             <div key={project.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               <div className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-gray-50" onClick={() => setEditingProject(isEditing ? null : project.id)}>
                 <div className="flex items-center gap-4">
+                  <div className="flex flex-col gap-0.5" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => moveProject(project.id, "up")}
+                      disabled={viewIdx === 0}
+                      title="위로"
+                      className="text-gray-400 hover:text-gray-700 disabled:opacity-30 p-0.5"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                    </button>
+                    <button
+                      onClick={() => moveProject(project.id, "down")}
+                      disabled={viewIdx === filtered.length - 1}
+                      title="아래로"
+                      className="text-gray-400 hover:text-gray-700 disabled:opacity-30 p-0.5"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                  </div>
                   {project.image_url ? (
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden">
                       <Image src={project.image_url} alt="" fill className="object-cover" unoptimized />
@@ -280,7 +312,7 @@ export default function AdminWorksPage() {
                       )}
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
-                      <b>투명 배경 PNG 권장.</b> 업로드 시 시공사례 카드/모달의 대표 이미지 위에
+                      <b>투명 배경 PNG 권장.</b> 업로드 시 설치사례 카드/모달의 대표 이미지 위에
                       <b> 자동으로 흰색 처리되어 가운데에 크게</b> 표시됩니다 (원본 색상이 무엇이든
                       흰색으로 통일). 가로·세로 자동 정렬되며 비율은 그대로 유지됩니다.
                     </p>
@@ -352,7 +384,7 @@ export default function AdminWorksPage() {
 
         {filtered.length === 0 && (
           <div className="bg-white rounded-xl border border-dashed border-gray-300 p-12 text-center text-gray-400 text-sm">
-            등록된 시공사례가 없습니다.
+            등록된 설치사례가 없습니다.
           </div>
         )}
       </div>

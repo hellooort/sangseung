@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
-import { getSiteSetting } from "@/lib/supabase/public";
+import { getSiteSetting, getList } from "@/lib/supabase/public";
 import { tr } from "@/lib/locale";
+import { ledCategoryHref, ledCategorySlug, type LedCategoryRow } from "@/lib/led-categories";
 
 interface LedProductCard {
   id?: string;
@@ -103,11 +104,34 @@ const splitLines = (s: string) =>
   s.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
 
 export default async function LEDBusinessPage() {
-  const [locale, data] = await Promise.all([
+  const [locale, data, cats] = await Promise.all([
     getLocale(),
     getSiteSetting<LedPageData>("page_led", fallback),
+    getList<LedCategoryRow>("product_categories", { orderBy: "sort_order" }),
   ]);
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+
+  // 제품 카테고리(product_categories)를 단일 소스로 카드 생성.
+  // 카테고리에 이미지/스펙이 아직 입력되지 않았으면 기존 page_led.products(같은 링크)
+  // 값으로 폴백 → 기존에 보이던 이미지·문구가 사라지지 않는다.
+  // 카테고리 자체가 없으면(DB 미연결) page_led.products 전체로 폴백.
+  const productCards: LedProductCard[] =
+    cats.length > 0
+      ? cats.map((c) => {
+          const slug = ledCategorySlug(c);
+          const legacy = data.products.find(
+            (p) => p.href.replace(/\/+$/, "").endsWith(`/${slug}`),
+          );
+          return {
+            id: String(c.id),
+            name: locale === "en" && c.name_en ? c.name_en : c.name_ko,
+            href: ledCategoryHref(c),
+            image: c.image_url || legacy?.image || "",
+            specs_ko: c.specs_ko || legacy?.specs_ko || "",
+            specs_en: c.specs_en || legacy?.specs_en || "",
+          };
+        })
+      : data.products;
 
   return (
     <>
@@ -137,7 +161,7 @@ export default async function LEDBusinessPage() {
         </div>
       </section>
 
-      {data.products.length > 0 && (
+      {productCards.length > 0 && (
         <section className="py-24 px-6 lg:px-20">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -147,8 +171,8 @@ export default async function LEDBusinessPage() {
               {tr(locale, data.productsLead_ko, data.productsLead_en)}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {data.products.map((product, i) => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {productCards.map((product, i) => {
                 const specs = splitLines(locale === "en" && product.specs_en ? product.specs_en : product.specs_ko);
                 return (
                   <Link key={product.id ?? i} href={product.href || "#"} className="relative aspect-[3/4] rounded-xl overflow-hidden group block">
