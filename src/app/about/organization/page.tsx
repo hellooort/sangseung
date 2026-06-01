@@ -76,8 +76,14 @@ export default async function OrganizationPage() {
               </div>
 
               <div className="w-px h-8 bg-[#333]" />
-              {/* 가로 연결선: 각 본부 위 세로선과 끊김 없이 이어지도록 grid 폭에 맞춤 */}
-              <div className="w-full h-px bg-[#333] hidden lg:block" />
+              {/* 가로 연결선: 양 끝 본부의 세로선까지만 (밖으로 빠져나가지 않게 inset).
+                  4열 grid + gap-6(1.5rem) 기준, 양끝 inset = (100% - 4.5rem)/8 = 첫/마지막 열의 중심. */}
+              <div className="relative w-full h-px hidden lg:block">
+                <div
+                  className="absolute top-0 h-px bg-[#333]"
+                  style={{ left: "calc((100% - 4.5rem) / 8)", right: "calc((100% - 4.5rem) / 8)" }}
+                />
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-8 items-start">
                 {data.divisions.map((division, di) => (
