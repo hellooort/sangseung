@@ -393,7 +393,10 @@ export default function AdminProductDetailPage() {
 
             <div className="border-t pt-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-gray-900">갤러리 이미지 ({detail.gallery?.images?.length ?? 0}장)</h3>
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-sm font-semibold text-gray-900">갤러리 이미지 ({detail.gallery?.images?.length ?? 0}장)</h3>
+                  <span className="text-[10px] text-gray-500">가로형 권장 (예: 800 x 600px)</span>
+                </div>
                 <label className="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer hover:bg-blue-700">
                   {uploadingKey === "gallery-multi" ? "업로드 중..." : "+ 여러 장 업로드"}
                   <input type="file" multiple accept="image/*" className="hidden" onChange={handleMultiUpload} />
