@@ -37,8 +37,6 @@ const fallbackCats: WorkCatRow[] = [
   { id: 4, name_ko: "MEDIA FACADE", name_en: "Media Facade",  sort_order: 3 },
 ];
 
-const heights = [280, 350, 240, 320, 260, 300];
-
 export default async function WorksSection({ locale }: { locale: Locale }) {
   const [works, cats] = await Promise.all([
     getList<WorkRow>("works", { orderBy: "sort_order", limit: 6 }, fallbackWorks),
@@ -65,13 +63,13 @@ export default async function WorksSection({ locale }: { locale: Locale }) {
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-          {works.map((work, idx) => {
+          {works.map((work) => {
             const title = tr(locale, work.title_ko, work.title_en);
             const cat = work.category_id ? catMap.get(work.category_id) : null;
             return (
               <Link key={work.id} href="/works" className="break-inside-avoid group block">
                 <div className="relative bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
-                  <div className="relative w-full bg-[#2a2a2a]" style={{ height: heights[idx % heights.length] }}>
+                  <div className="relative w-full aspect-[3/2] bg-[#2a2a2a]">
                     {work.image_url && (
                       <Image
                         src={work.image_url}

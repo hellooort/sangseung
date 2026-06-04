@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>상승종합통신 웹사이트 개발 작업 보고서</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 15mm 20mm 15mm;
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+      font-size: 9pt;
+      color: #888;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    color: #1a1a1a;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    margin: 0;
+    padding: 0;
+  }
+  .cover {
+    page-break-after: always;
+    text-align: center;
+    padding-top: 80mm;
+  }
+  .cover h1 {
+    font-size: 26pt;
+    color: #0a2540;
+    margin-bottom: 8mm;
+    line-height: 1.3;
+  }
+  .cover .subtitle {
+    font-size: 13pt;
+    color: #555;
+    margin-bottom: 30mm;
+  }
+  .cover .meta {
+    display: inline-block;
+    text-align: left;
+    border: 1px solid #ddd;
+    padding: 8mm 12mm;
+    background: #fafafa;
+    font-size: 11pt;
+    line-height: 2;
+  }
+  .cover .meta b { color: #0a2540; display: inline-block; min-width: 100px; }
+
+  h1 {
+    font-size: 18pt;
+    color: #0a2540;
+    border-bottom: 3px solid #0a2540;
+    padding-bottom: 6px;
+    margin-top: 14mm;
+    margin-bottom: 6mm;
+    page-break-after: avoid;
+  }
+  h2 {
+    font-size: 13.5pt;
+    color: #fff;
+    background: #0a2540;
+    padding: 5px 10px;
+    margin-top: 10mm;
+    margin-bottom: 4mm;
+    border-radius: 3px;
+    page-break-after: avoid;
+  }
+  h2.section-ok { background: #27ae60; }
+
+  h3 {
+    font-size: 11.5pt;
+    color: #0a2540;
+    margin-top: 7mm;
+    margin-bottom: 3mm;
+    padding-left: 6px;
+    border-left: 4px solid #0a2540;
+    page-break-after: avoid;
+  }
+
+  p { margin: 3mm 0; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 3mm 0 5mm;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #d0d0d0;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #f0f3f7;
+    color: #0a2540;
+    font-weight: 600;
+  }
+  table.review {
+    table-layout: fixed;
+  }
+  table.review td:first-child,
+  table.review th:first-child {
+    width: 15%;
+    background: #ececec;
+    color: #333;
+    text-align: center;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+
+  .summary-table th, .summary-table td { vertical-align: middle; }
+  .summary-table td:nth-child(1) { font-weight: 500; }
+
+  ul { margin: 2mm 0 3mm; padding-left: 20px; }
+  ul li { margin-bottom: 2mm; }
+
+  .info-box {
+    background: #eaf3fb;
+    border-left: 4px solid #2980b9;
+    padding: 8px 14px;
+    margin: 3mm 0 5mm;
+    font-size: 10pt;
+    color: #1c4d70;
+    border-radius: 2px;
+  }
+  .info-box .title {
+    font-weight: 700;
+    color: #1f5f8b;
+    margin-bottom: 3px;
+    font-size: 10.5pt;
+  }
+
+  .footer-note {
+    margin-top: 12mm;
+    padding-top: 6mm;
+    border-top: 2px solid #0a2540;
+    font-size: 10pt;
+    color: #444;
+  }
+  .footer-note strong { color: #0a2540; }
+
+  .no-break { page-break-inside: avoid; }
+
+  .tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 9pt;
+    font-weight: 600;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .tag-fix  { background: #e8f0fe; color: #1a56db; }
+  .tag-feat { background: #e6f4ea; color: #1e7e34; }
+  .tag-ui   { background: #fef3e2; color: #b45309; }
+  .tag-sec  { background: #fce8e8; color: #9b1c1c; }
+</style>
+</head>
+<body>
+
+<!-- ====== COVER PAGE ====== -->
+<div class="cover">
+  <h1>상승종합통신 웹사이트<br>개발 작업 보고서</h1>
+  <div class="subtitle">— 출시 전 기능 개선 및 오류 수정 작업 정리 —</div>
+  <div class="meta">
+    <div><b>대상</b> : 상승종합통신 공식 웹사이트</div>
+    <div><b>작업 범위</b> : 관리자 페이지 전체 + 공개 페이지 기능</div>
+    <div><b>작업 일자</b> : 2026년 5월 20일</div>
+    <div><b>수정 항목</b> : 총 12건 (18개 파일)</div>
+  </div>
+</div>
+
+<!-- ====== SECTION 1: 종합 요약 ====== -->
+<h1>1. 작업 요약</h1>
+<p>출시를 앞두고 웹사이트 전체 기능을 점검하여 총 <b>12건의 개선 및 오류 수정</b>을 완료하였습니다. 크게 고객사 요청 기능 개선 7건과 관리자 시스템 안정화 5건으로 구성됩니다.</p>
+
+<table class="summary-table">
+  <thead>
+    <tr>
+      <th style="width:45%">작업 항목</th>
+      <th style="width:15%">구분</th>
+      <th>내용 요약</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>공사실적 관리자 저장 오류</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>저장 시 DB 타입 불일치로 저장 실패하던 문제 해결</td>
+    </tr>
+    <tr>
+      <td>설치사례 이미지 슬라이드쇼</td>
+      <td><span class="tag tag-feat">기능 추가</span></td>
+      <td>상세 모달에서 여러 이미지를 넘겨볼 수 있도록 개선</td>
+    </tr>
+    <tr>
+      <td>설치사례 최근 추가순 정렬</td>
+      <td><span class="tag tag-feat">기능 개선</span></td>
+      <td>새로 추가한 항목이 자동으로 상단에 표시되도록 변경</td>
+    </tr>
+    <tr>
+      <td>비디오월 페이지 불필요 요소 제거</td>
+      <td><span class="tag tag-ui">UI 수정</span></td>
+      <td>좌측 상단 브레드크럼(경로 표시) 제거</td>
+    </tr>
+    <tr>
+      <td>IBS / 해외프로젝트 이미지 확대 기능</td>
+      <td><span class="tag tag-feat">기능 추가</span></td>
+      <td>클릭 시 이미지 전체화면 확대 및 항목 이동 기능 추가</td>
+    </tr>
+    <tr>
+      <td>모바일 상단 메뉴 클릭 불가</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>모바일에서 하단 메뉴 항목이 잘려 접근 불가했던 문제 해결</td>
+    </tr>
+    <tr>
+      <td>관리자 카드 이미지 업로드 불가</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>새 카드 추가 후 이미지 업로드 버튼이 보이지 않던 문제 해결</td>
+    </tr>
+    <tr>
+      <td>관리자 로그인 안정성 개선</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>반복 인증 요청으로 인한 성능 저하 구조 개선</td>
+    </tr>
+    <tr>
+      <td>제품 상세 관리자 페이지 오류</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>잘못된 접근 시 로딩 화면에서 멈추던 문제 해결</td>
+    </tr>
+    <tr>
+      <td>파트너사 저장 안정성 개선</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>저장 버튼 클릭 시 중복 처리되던 내부 로직 정리</td>
+    </tr>
+    <tr>
+      <td>전체 저장 결과 피드백 개선</td>
+      <td><span class="tag tag-fix">오류 수정</span></td>
+      <td>저장 실패 시에도 "저장 완료"가 표시되던 문제 수정 (8개 페이지)</td>
+    </tr>
+    <tr>
+      <td>로그인 보안 강화</td>
+      <td><span class="tag tag-sec">보안</span></td>
+      <td>외부 URL로 우회 이동이 가능하던 보안 취약점 차단</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ====== SECTION 2: 기능 개선 항목 ====== -->
+<h1>2. 기능 개선 상세</h1>
+
+<h2>2-1. 공사실적 관리자 저장 오류 수정</h2>
+
+<h3>현상</h3>
+<p>"사업소개 → 네트웍사업 → 공사실적" 관리자 페이지에서 내용을 수정하고 저장하면 오류가 발생하여 저장이 전혀 되지 않았습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>공사 용량(capacity) 항목이 데이터베이스에서 숫자형으로 설정되어 있는데, 값이 비어 있을 때 빈 텍스트("")를 전송하여 저장 오류 발생</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>값이 비어 있을 경우 자동으로 "없음(null)" 처리하여 저장되도록 로직 수정</td>
+  </tr>
+</table>
+
+<h2>2-2. 설치사례 이미지 슬라이드쇼 기능 추가</h2>
+
+<h3>현상</h3>
+<p>설치사례 항목을 클릭하면 상세 모달이 열리는데, 추가 이미지가 여러 장 있어도 첫 번째 이미지만 표시되고 다음 이미지로 넘기는 기능이 없었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>수정</td>
+    <td>
+      • 상세 모달에 이전/다음 버튼 및 썸네일 네비게이션 추가<br>
+      • 카드 목록에 추가 이미지 수량 표시 배지(+N) 추가<br>
+      • 데이터 조회 시 추가 이미지 목록 포함하도록 개선
+    </td>
+  </tr>
+</table>
+
+<h2>2-3. 설치사례 최근 추가순 정렬</h2>
+
+<h3>현상</h3>
+<p>새로 등록한 설치사례 프로젝트가 목록 맨 아래에 표시되어 최신 작업 현황을 상단에서 바로 확인하기 어려웠습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>기존</td>
+    <td>수동 정렬 기준으로 표시 — 새 항목은 하단에 위치</td>
+  </tr>
+  <tr>
+    <td>변경</td>
+    <td>최근 추가 순(내림차순)으로 정렬 — 새로 등록한 항목이 자동으로 상단에 배치</td>
+  </tr>
+</table>
+
+<h2>2-4. 비디오월 페이지 불필요 요소 제거</h2>
+
+<h3>현상</h3>
+<p>비디오월(Video-Wall) 페이지 좌측 상단에 의도하지 않은 경로 표시("사업소개 / Video-Wall")가 노출되었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>수정</td>
+    <td>해당 경로 표시 영역 완전 제거</td>
+  </tr>
+</table>
+
+<h2>2-5. IBS / 해외프로젝트 이미지 확대 기능 추가</h2>
+
+<h3>현상</h3>
+<p>설치사례 페이지에는 이미지 클릭 시 전체화면 확대 기능이 있었으나, IBS 및 해외프로젝트 섹션에는 동일한 기능이 없어 이미지를 크게 볼 수 없었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>수정</td>
+    <td>
+      • 이미지 클릭 시 전체화면 모달 확대 기능 추가<br>
+      • 이전/다음 항목으로 이동하는 네비게이션 버튼 구현<br>
+      • 마우스 올림(hover) 시 확대 아이콘 표시
+    </td>
+  </tr>
+</table>
+
+<h2>2-6. 모바일 상단 메뉴 클릭 불가 수정</h2>
+
+<h3>현상</h3>
+<p>모바일 화면에서 상단 내비게이션 메뉴를 열었을 때, "자료실" 이후 하단 메뉴 항목들이 화면 밖으로 잘려 클릭이 불가능했습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>메뉴 항목 수가 많아 화면 높이를 초과하는 경우 스크롤이 작동하지 않아 하단 항목에 접근 불가</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>모바일 메뉴 영역에 세로 스크롤 기능 적용 — 화면 내에서 모든 메뉴 항목에 접근 가능</td>
+  </tr>
+</table>
+
+<h2>2-7. 관리자 카드 이미지 업로드 불가 수정</h2>
+
+<h3>현상</h3>
+<p>유지보수 관리자 페이지에서 새 카드를 추가한 뒤, 이미지가 없는 초기 상태에서 이미지 업로드 버튼이 화면에 표시되지 않아 이미지를 등록할 수 없었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>이미지 업로드 버튼이 이미지가 있을 때만 보이는 구조로 되어 있어, 신규 카드에서는 버튼 자체가 투명하게 처리됨</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>이미지 없을 때는 "업로드" 버튼을 항상 표시, 이미지 있을 때는 마우스 올림(hover) 시 "변경" 버튼 표시로 조건부 처리</td>
+  </tr>
+</table>
+
+<!-- ====== SECTION 3: 관리자 시스템 안정화 ====== -->
+<h1>3. 관리자 시스템 안정화</h1>
+
+<div class="info-box">
+  <div class="title">검증 개요</div>
+  관리자 페이지 전체(18개 화면)를 정밀 점검하여 출시 전 잠재적 오류를 사전에 발굴하고 수정하였습니다.
+</div>
+
+<h2>3-1. 관리자 로그인 안정성 개선</h2>
+
+<h3>현상</h3>
+<p>관리자 페이지 접속 시 내부적으로 인증 확인이 불필요하게 반복 실행되는 구조가 있었습니다. 이는 서버 요청을 증가시켜 응답 속도에 영향을 줄 수 있는 문제였습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>인증 클라이언트 객체가 화면이 업데이트될 때마다 새로 생성되어, 이를 감지한 시스템이 인증 확인을 반복 실행</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>인증 클라이언트 객체를 최초 1회만 생성하도록 개선하여 불필요한 반복 실행 제거</td>
+  </tr>
+</table>
+
+<h2>3-2. 제품 상세 관리자 페이지 오류 수정</h2>
+
+<h3>현상</h3>
+<p>관리자 제품 상세 페이지에 잘못된 경로로 접근하는 경우, 로딩 화면에서 무한히 멈추는 문제가 있었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>잘못된 접근 감지 후 로딩 완료 처리가 되지 않아 화면이 계속 로딩 상태로 유지</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>잘못된 접근 시 즉시 오류 메시지를 표시하고 로딩을 종료하도록 처리 추가</td>
+  </tr>
+</table>
+
+<h2>3-3. 파트너사 저장 안정성 개선</h2>
+
+<h3>현상</h3>
+<p>파트너사 관리자 페이지에서 "전체 저장" 버튼 클릭 시 내부적으로 동일한 저장 작업이 중복 실행되는 문제가 있었습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>원인</td>
+    <td>정렬 순서 저장 함수가 전체 저장 내부에 이미 포함되어 있음에도 별도로 한 번 더 호출되는 구조</td>
+  </tr>
+  <tr>
+    <td>수정</td>
+    <td>중복 호출 제거 및 저장 결과 검증 로직 추가</td>
+  </tr>
+</table>
+
+<h2>3-4. 전체 저장 결과 피드백 개선 — 8개 화면</h2>
+
+<h3>현상</h3>
+<p>관리자 페이지에서 "전체 저장" 버튼 클릭 후 저장이 실패한 경우에도 "저장 완료!" 메시지가 표시되어, 관리자가 저장 성공 여부를 정확히 인지하기 어려웠습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>수정</td>
+    <td>저장 결과를 실제로 확인하여, 성공 시에만 "저장 완료!" 메시지 표시. 실패 시 기존 오류 메시지 영역에 내용이 표시됨</td>
+  </tr>
+  <tr>
+    <td>적용 화면</td>
+    <td>인증서 관리, 오시는 길, 공사실적, 제품 라인업, 설치사례, 자료실, 보도자료, IBS/해외프로젝트 (총 8개 화면)</td>
+  </tr>
+</table>
+
+<h2>3-5. 로그인 보안 강화</h2>
+
+<h3>현상</h3>
+<p>로그인 URL에 외부 주소를 삽입하는 방식으로 로그인 후 외부 사이트로 이동시킬 수 있는 보안 취약점이 존재했습니다.</p>
+
+<table class="review">
+  <tr><th>구분</th><th>내용</th></tr>
+  <tr>
+    <td>수정</td>
+    <td>로그인 후 이동 경로를 관리자 내부 페이지로만 제한하여 외부 URL로의 이동을 차단</td>
+  </tr>
+</table>
+
+<!-- ====== SECTION 4: 출시 전 확인 사항 ====== -->
+<h1>4. 출시 전 확인 사항</h1>
+
+<div class="info-box">
+  <div class="title">아래 항목은 코드 수정과 별도로 수동 처리가 필요합니다.</div>
+</div>
+
+<ol>
+  <li><b>영문 번역 데이터 적용</b><br>
+    IBS, 해외프로젝트, 공사실적 항목의 영문 번역 내용을 데이터베이스에 반영하는 작업이 필요합니다. (별도 제공된 SQL 파일 실행)
+  </li>
+  <li><b>최종 기능 시나리오 테스트</b><br>
+    • 이미지 업로드 → 내용 수정 → 저장 → 새로고침 확인<br>
+    • 모바일 기기에서 전체 메뉴 접근 및 클릭 확인<br>
+    • 설치사례 / IBS / 해외프로젝트 이미지 확대 기능 확인
+  </li>
+</ol>
+
+<!-- ====== FOOTER: 결론 ====== -->
+<div class="footer-note">
+  <p><strong>※ 종합 의견 :</strong> 이번 점검 작업을 통해 출시에 영향을 주는 주요 오류 및 미구현 기능이 모두 수정되었습니다. 특히 모바일 메뉴 접근 불가, 공사실적 저장 오류, 관리자 이미지 업로드 불가 등은 <strong>사용자 경험에 직접적인 영향을 미치는 항목으로 모두 해결 완료</strong>하였습니다. 영문 번역 데이터 적용 후 출시를 진행하시면 됩니다.</p>
+  <p style="text-align:right; margin-top:8mm; color:#888;">— 보고서 끝 —</p>
+</div>
+
+</body>
+</html>

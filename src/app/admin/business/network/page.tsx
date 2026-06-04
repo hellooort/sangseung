@@ -207,12 +207,15 @@ export default function AdminNetworkPage() {
               {value.categories.map((c) => (
                 <div key={c.id} className="border border-gray-100 rounded-lg p-4">
                   <div className="flex gap-3">
-                    <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden flex-shrink-0">
-                      {c.image && <Image src={c.image} alt="" fill className="object-cover" unoptimized />}
-                      <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                        {uploadingKey === `c-${c.id}` ? "..." : "변경"}
-                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`c-${c.id}`, e, (url) => updateCategory(c.id, { image: url }))} />
-                      </label>
+                    <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                      <div className="relative w-32 aspect-[3/2] bg-gray-100 rounded overflow-hidden">
+                        {c.image && <Image src={c.image} alt="" fill className="object-cover" unoptimized />}
+                        <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                          {uploadingKey === `c-${c.id}` ? "..." : "변경"}
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(`c-${c.id}`, e, (url) => updateCategory(c.id, { image: url }))} />
+                        </label>
+                      </div>
+                      <span className="text-[10px] text-gray-400 text-center">가로형 3:2<br/>(예: 1200 x 800px)</span>
                     </div>
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
                       <input value={c.title_ko}       onChange={(e) => updateCategory(c.id, { title_ko: e.target.value })}       placeholder="제목 (KO)"       className={inputCls} />

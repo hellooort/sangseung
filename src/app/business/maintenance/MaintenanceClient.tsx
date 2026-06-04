@@ -115,7 +115,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
             <div className="grid grid-cols-2 gap-4 lg:gap-5">
               {data.benefits.map((b, idx) => (
                 <div key={b.id} className={`bg-white rounded-xl overflow-hidden shadow-lg ${idx === 1 ? "lg:mt-12" : idx === 2 ? "lg:-mt-6" : idx === 3 ? "lg:mt-6" : idx === 4 ? "lg:-mt-6" : ""}`}>
-                  <div className="relative aspect-[4/3] bg-gray-100">
+                  <div className="relative aspect-[3/2] bg-gray-100">
                     {b.image && <Image src={b.image} alt={b.title_ko} fill className="object-cover" unoptimized />}
                   </div>
                   <div className="p-4 lg:p-5">
@@ -177,7 +177,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {currentTab.items.map((item) => (
                 <div key={item.id} className="bg-white rounded-xl overflow-hidden">
-                  <div className="relative aspect-[4/3] bg-gray-100">
+                  <div className="relative aspect-[3/2] bg-gray-100">
                     {item.image && <Image src={item.image} alt={item.title_ko} fill className="object-cover" unoptimized />}
                   </div>
                   <div className="p-5 text-center">

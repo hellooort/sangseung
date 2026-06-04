@@ -301,7 +301,7 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="flex items-stretch gap-3 pl-8">
                   <div className="flex flex-col items-center gap-1 shrink-0">
-                    <div className="relative w-28 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                    <div className="relative w-24 aspect-[3/4] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                       {cat.image_url ? (
                         <>
                           <Image src={cat.image_url} alt="" fill className="object-cover" unoptimized />
@@ -317,7 +317,7 @@ export default function AdminProductsPage() {
                         </label>
                       )}
                     </div>
-                    <span className="text-[10px] text-gray-400">권장: 800 x 600px</span>
+                    <span className="text-[10px] text-gray-400 text-center">세로형 권장 · 3:4<br/>(예: 600 x 800px)</span>
                   </div>
                   <textarea value={cat.specs_ko ?? ""} onChange={(e) => updateCategory(cat.id, "specs_ko", e.target.value)} rows={3} placeholder="카드 스펙 (KO) — 한 줄에 하나씩" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
                   <textarea value={cat.specs_en ?? ""} onChange={(e) => updateCategory(cat.id, "specs_en", e.target.value)} rows={3} placeholder="Card specs (EN) — one per line" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />

@@ -98,7 +98,7 @@ export default function OverseasClient({ locale, categories, projects }: Props) 
                   className="group bg-[#1a1a1a] rounded-xl overflow-hidden hover:bg-[#222] transition-all cursor-pointer"
                   onClick={() => setSelectedProject(project)}
                 >
-                  <div className="relative h-48 bg-gradient-to-br from-[#2a3a4a] to-[#1a2a3a] flex items-center justify-center overflow-hidden">
+                  <div className="relative aspect-[3/2] bg-gradient-to-br from-[#2a3a4a] to-[#1a2a3a] flex items-center justify-center overflow-hidden">
                     {project.image_url ? (
                       <Image src={project.image_url} alt={project.title_ko} fill className="object-cover" unoptimized />
                     ) : (

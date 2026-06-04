@@ -321,7 +321,7 @@ export default function AdminWorksPage() {
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-2">메인 이미지 (썸네일)</label>
                     <div className="flex items-center gap-3">
-                      <div className="relative w-28 h-20 bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                      <div className="relative w-28 aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
                         {project.image_url ? (
                           <Image src={project.image_url} alt="" fill className="object-cover" unoptimized />
                         ) : (
@@ -347,7 +347,7 @@ export default function AdminWorksPage() {
                       )}
                     </div>
                     <p className="mt-1 text-xs text-gray-400">
-                      가로형 이미지 권장 (예: 1200 x 800px)
+                      가로형 3:2 권장 (예: 1200 x 800px) — 카드가 이 비율로 표시됩니다
                     </p>
                   </div>
 

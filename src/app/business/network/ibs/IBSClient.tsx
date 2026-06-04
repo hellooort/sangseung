@@ -94,7 +94,7 @@ export default function IBSClient({ locale, categories, items }: Props) {
                 className="group bg-[#1a1a1a] rounded-xl overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
                 onClick={() => setSelectedItem(item)}
               >
-                <div className="relative h-48 bg-[#2a2a2a] flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-[3/2] bg-[#2a2a2a] flex items-center justify-center overflow-hidden">
                   {item.image_url ? (
                     <Image src={item.image_url} alt={item.title_ko} fill className="object-cover" unoptimized />
                   ) : (

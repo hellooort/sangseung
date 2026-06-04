@@ -158,24 +158,27 @@ export default function CategoryItemAdmin({ pageTitle, catTable, itemTable, uplo
       <div className="space-y-3">
         {filtered.map((item) => (
           <div key={item.id} className="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-4">
-            <div className="relative w-24 h-24 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
-              {item.image_url ? (
-                <>
-                  <Image src={item.image_url} alt="" fill className="object-cover" unoptimized />
-                  <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
-                    변경
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(item.id, e)} />
+            <div className="flex flex-col gap-1 shrink-0">
+              <div className="relative w-28 aspect-[3/2] bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                {item.image_url ? (
+                  <>
+                    <Image src={item.image_url} alt="" fill className="object-cover" unoptimized />
+                    <label className="absolute inset-0 cursor-pointer opacity-0 hover:opacity-100 bg-black/40 flex items-center justify-center text-white text-xs">
+                      변경
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(item.id, e)} />
+                    </label>
+                  </>
+                ) : (
+                  <label className="cursor-pointer text-center">
+                    <svg className="w-6 h-6 text-gray-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span className="text-xs text-gray-400">{uploadingId === item.id ? "업로드중" : "업로드"}</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(item.id, e)} disabled={uploadingId === item.id} />
                   </label>
-                </>
-              ) : (
-                <label className="cursor-pointer text-center">
-                  <svg className="w-6 h-6 text-gray-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" />
-                  </svg>
-                  <span className="text-xs text-gray-400">{uploadingId === item.id ? "업로드중" : "업로드"}</span>
-                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(item.id, e)} disabled={uploadingId === item.id} />
-                </label>
-              )}
+                )}
+              </div>
+              <span className="text-[10px] text-gray-400 text-center">가로형 권장<br/>(예: 600 x 400px)</span>
             </div>
             <div className="flex-1 space-y-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

@@ -507,7 +507,7 @@ export default function AdminProductDetailPage() {
                         onChange={(v) => update({ ...item, image: v })}
                         onUpload={(e) => handleUpload("feat", e, (url) => update({ ...item, image: url }))}
                       />
-                      <span className="text-[10px] text-gray-400">가로형 권장 (예: 600 x 400px)</span>
+                      <span className="text-[10px] text-gray-400">가로형 16:10 권장 (예: 1600 x 1000px)</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

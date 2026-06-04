@@ -216,7 +216,7 @@ export default function AdminMaintenancePage() {
                 <div key={b.id} className="border border-gray-100 rounded-lg p-4">
                   <div className="flex gap-3 mb-3">
                     <div className="flex flex-col gap-1 shrink-0">
-                      <div className="relative w-32 h-24 bg-gray-100 rounded overflow-hidden">
+                      <div className="relative w-32 aspect-[3/2] bg-gray-100 rounded overflow-hidden">
                         {b.image && <Image src={b.image} alt="" fill className="object-cover" unoptimized />}
                         <label className={`absolute inset-0 cursor-pointer flex items-center justify-center text-white text-xs ${b.image ? "opacity-0 hover:opacity-100 bg-black/40" : "bg-gray-300/80 hover:bg-gray-400/80"}`}>
                           {uploadingKey === `b-${b.id}` ? "업로드중" : b.image ? "변경" : "업로드"}

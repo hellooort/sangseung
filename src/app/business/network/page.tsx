@@ -148,7 +148,7 @@ export default async function NetworkBusinessPage() {
                   href={category.href || "#"}
                   className="group block bg-[#1a1a1a] rounded-2xl overflow-hidden hover:bg-[#222] transition-all"
                 >
-                  <div className="relative h-48 bg-[#2a2a2a]">
+                  <div className="relative aspect-[3/2] bg-[#2a2a2a]">
                     {category.image && (
                       <Image src={category.image} alt={category.title_ko} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
                     )}

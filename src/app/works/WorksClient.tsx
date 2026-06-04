@@ -12,8 +12,6 @@ interface Props {
   locale: Locale;
 }
 
-const heights = [320, 280, 350, 300, 340, 290, 310, 360, 320, 270, 300, 340, 380, 290, 310, 330, 280, 300, 320, 290, 340, 330, 280];
-
 export default function WorksClient({ categories, works, locale }: Props) {
   const [activeFilter, setActiveFilter] = useState<number | "all">("all");
   const [selectedWork, setSelectedWork] = useState<WorkRow | null>(null);
@@ -91,13 +89,13 @@ export default function WorksClient({ categories, works, locale }: Props) {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {filtered.map((work, idx) => {
+            {filtered.map((work) => {
               const title = tr(locale, work.title_ko, work.title_en);
               const extraCount = Array.isArray(work.extra_images) ? work.extra_images.filter(Boolean).length : 0;
               return (
                 <div key={work.id} className="break-inside-avoid group cursor-pointer" onClick={() => openWork(work)}>
                   <div className="relative bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
-                    <div className="relative w-full bg-[#2a2a2a]" style={{ height: heights[idx % heights.length] }}>
+                    <div className="relative w-full aspect-[3/2] bg-[#2a2a2a]">
                       {work.image_url && (
                         <Image
                           src={work.image_url}
