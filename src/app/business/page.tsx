@@ -128,7 +128,7 @@ export default async function BusinessPage() {
               return (
                 <div key={area.id} className="bg-[#111] rounded-2xl overflow-hidden">
                   {hasImage && (
-                    <div className="relative w-full aspect-[21/9] bg-[#1a1a1a]">
+                    <div className="relative w-full aspect-video bg-[#1a1a1a]">
                       <Image src={area.hero_image as string} alt={area.title_ko ?? ""} fill className="object-cover" unoptimized />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/30 to-transparent" />
                     </div>

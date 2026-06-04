@@ -93,7 +93,7 @@ export default async function NetworkBusinessPage() {
 
   return (
     <>
-      <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
+      <section className="relative aspect-video min-h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           {data.hero.image && (
             <Image src={data.hero.image} alt={data.hero.title_ko} fill className="object-cover" unoptimized />

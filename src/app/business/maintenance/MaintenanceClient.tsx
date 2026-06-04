@@ -77,7 +77,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
 
   return (
     <>
-      <section className="relative h-[560px] md:h-[640px] flex items-center overflow-hidden">
+      <section className="relative aspect-video min-h-[480px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           {data.hero.image && (
             <Image src={data.hero.image} alt="Maintenance" fill className="object-cover" priority unoptimized />
