@@ -57,7 +57,7 @@ export default async function IPWallPage() {
 
   return (
     <>
-      <section className="py-20 px-6 lg:px-20 bg-[#0A0A0A]">
+      <section className="pt-40 pb-20 px-6 lg:px-20 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative">

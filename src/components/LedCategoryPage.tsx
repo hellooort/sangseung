@@ -36,7 +36,7 @@ export default function LedCategoryPage({
 
   return (
     <>
-      <section className="py-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
+      <section className="pt-44 pb-24 px-6 lg:px-20 bg-gradient-to-b from-[#0A0A0A] to-[#111]">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 text-sm text-[#666] mb-4">
             <Link href="/business/led" className="hover:text-[#4A90D9]">

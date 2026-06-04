@@ -111,7 +111,7 @@ export default async function BusinessPage() {
 
   return (
     <>
-      <section className="py-24 px-6 lg:px-20">
+      <section className="pt-44 pb-24 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
           <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">
             BUSINESS
