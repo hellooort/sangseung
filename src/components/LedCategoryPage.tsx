@@ -57,7 +57,7 @@ export default function LedCategoryPage({
 
       <section className="py-24 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
               <Link
                 key={product.slug}
@@ -69,11 +69,11 @@ export default function LedCategoryPage({
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
+                    className="object-contain p-6 sm:p-8 group-hover:scale-105 transition-transform duration-300"
                     unoptimized
                   />
                 </div>
-                <div className="p-6">
+                <div className="p-5 sm:p-6">
                   <h3 className="text-white text-xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
                     {locale === "en" && product.name_en ? product.name_en : product.name}
                   </h3>

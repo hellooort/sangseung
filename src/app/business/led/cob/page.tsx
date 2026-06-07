@@ -64,7 +64,7 @@ export default async function COBLEDPage() {
 
       <section className="py-24 px-6 lg:px-20">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
               <Link
                 key={product.slug}
@@ -76,11 +76,11 @@ export default async function COBLEDPage() {
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
+                    className="object-contain p-6 sm:p-8 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-white text-2xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
+                <div className="p-5 sm:p-6">
+                  <h3 className="text-white text-xl sm:text-2xl font-bold mb-3 group-hover:text-[#4A90D9] transition-colors">
                     {tr(locale, product.name, product.name_en)}
                   </h3>
                   <p className="text-[#888] leading-relaxed mb-4">
