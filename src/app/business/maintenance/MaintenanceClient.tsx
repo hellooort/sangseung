@@ -77,26 +77,28 @@ export default function MaintenanceClient({ locale, data }: Props) {
 
   return (
     <>
-      <section className="relative aspect-video min-h-[480px] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative overflow-hidden bg-[#0A0A0A] md:aspect-video">
+        <div className="relative aspect-video md:absolute md:inset-0 md:aspect-auto">
           {data.hero.image && (
             <Image src={data.hero.image} alt="Maintenance" fill className="object-cover" priority unoptimized />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+          <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto w-full px-6 lg:px-20 pt-20">
-          <p className="text-[#F5A623] text-sm md:text-base font-medium tracking-[0.25em] mb-5">
-            {data.hero.badge_en}
-          </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 whitespace-pre-line">
-            {tr(locale, data.hero.title_ko, data.hero.title_en)}
-          </h1>
-          <p className="text-white/85 text-base md:text-lg mb-10 max-w-xl whitespace-pre-line">
-            {tr(locale, data.hero.description_ko, data.hero.description_en)}
-          </p>
-          <Link href={data.hero.ctaHref || "/contact"} className="inline-block border border-white text-white px-8 py-3 rounded text-sm font-medium hover:bg-white hover:text-black transition-colors">
-            {tr(locale, data.hero.ctaLabel_ko, data.hero.ctaLabel_en)}
-          </Link>
+        <div className="relative md:absolute md:inset-0 md:flex md:items-center">
+          <div className="max-w-7xl mx-auto w-full px-6 lg:px-20 py-10 md:py-0">
+            <p className="text-[#F5A623] text-sm md:text-base font-medium tracking-[0.25em] mb-5">
+              {data.hero.badge_en}
+            </p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 whitespace-pre-line">
+              {tr(locale, data.hero.title_ko, data.hero.title_en)}
+            </h1>
+            <p className="text-white/85 text-base md:text-lg mb-10 max-w-xl whitespace-pre-line">
+              {tr(locale, data.hero.description_ko, data.hero.description_en)}
+            </p>
+            <Link href={data.hero.ctaHref || "/contact"} className="inline-block border border-white text-white px-8 py-3 rounded text-sm font-medium hover:bg-white hover:text-black transition-colors">
+              {tr(locale, data.hero.ctaLabel_ko, data.hero.ctaLabel_en)}
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -93,22 +93,24 @@ export default async function NetworkBusinessPage() {
 
   return (
     <>
-      <section className="relative aspect-video min-h-[420px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative overflow-hidden bg-[#0A0A0A] md:aspect-video">
+        <div className="relative aspect-video md:absolute md:inset-0 md:aspect-auto">
           {data.hero.image && (
             <Image src={data.hero.image} alt={data.hero.title_ko} fill className="object-cover" unoptimized />
           )}
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
+          <div className="hidden md:block absolute inset-0 bg-black/55" />
+          <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
         </div>
-        <div className="relative z-20 text-center px-6">
-          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">{data.hero.badge_en}</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            {tr(locale, data.hero.title_ko, data.hero.title_en)}
-          </h1>
-          <p className="text-[#ccc] text-lg max-w-2xl mx-auto">
-            {tr(locale, data.hero.description_ko, data.hero.description_en)}
-          </p>
+        <div className="relative z-20 md:absolute md:inset-0 md:flex md:items-center md:justify-center">
+          <div className="text-center px-6 py-10 md:py-0 max-w-3xl mx-auto">
+            <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">{data.hero.badge_en}</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+              {tr(locale, data.hero.title_ko, data.hero.title_en)}
+            </h1>
+            <p className="text-[#ccc] text-base md:text-lg max-w-2xl mx-auto">
+              {tr(locale, data.hero.description_ko, data.hero.description_en)}
+            </p>
+          </div>
         </div>
       </section>
 

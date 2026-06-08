@@ -86,14 +86,15 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
   return (
     <>
       {/* Section 1: Hero */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative overflow-hidden bg-black md:min-h-[90vh] md:flex md:items-center">
+        <div className="relative aspect-video md:absolute md:inset-0 md:aspect-auto">
           {heroImage && (
             <Image src={heroImage} alt={detail.hero?.title ?? ""} fill className="object-cover" priority unoptimized />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
+          <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-20 py-20 w-full">
+        <div className="relative md:absolute md:inset-0 md:flex md:items-center w-full">
+        <div className="max-w-7xl mx-auto px-6 lg:px-20 py-10 md:py-20 w-full">
           {detail.hero?.tag && (
             <span className="inline-block text-[#4A90D9] text-xs tracking-[0.3em] font-medium border border-[#4A90D9]/30 px-4 py-1.5 rounded-full mb-6">
               {detail.hero.tag}
@@ -128,6 +129,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
           >
             {tr(locale, detail.hero?.cta_label_ko, detail.hero?.cta_label_en) || t("견적 문의", "Get a Quote")}
           </Link>
+        </div>
         </div>
       </section>
 
