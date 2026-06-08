@@ -42,6 +42,13 @@ export default async function LedCategoryPage({
   const matched = cats.find((c) => ledCategorySlug(c) === categorySlug);
   const descKo = matched?.description_ko?.trim() || description_ko;
   const descEn = matched?.description_en?.trim() || description_en;
+  // 라벨/제목도 관리자(product_categories)에서 관리하는 카테고리 이름을 우선 사용 →
+  // 관리자에서 이름을 바꾸면 상단(브레드크럼/뱃지/제목)이 자동으로 바뀜.
+  const titleKoFinal = matched?.name_ko?.trim() || title_ko;
+  const titleEnFinal = matched?.name_en?.trim() || title_en;
+  const labelText = matched
+    ? (locale === "en" && matched.name_en?.trim() ? matched.name_en : matched.name_ko)
+    : categoryLabel;
 
   return (
     <>
@@ -52,11 +59,11 @@ export default async function LedCategoryPage({
               {t("LED 디스플레이", "LED Display")}
             </Link>
             <span>/</span>
-            <span className="text-[#4A90D9]">{categoryLabel}</span>
+            <span className="text-[#4A90D9]">{labelText}</span>
           </div>
-          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-3 block">{categoryLabel}</span>
+          <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-3 block">{labelText}</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            {locale === "en" ? title_en : title_ko}
+            {locale === "en" ? titleEnFinal : titleKoFinal}
           </h1>
           <p className="text-[#888] text-lg max-w-2xl leading-relaxed whitespace-pre-line">
             {locale === "en" ? descEn : descKo}
