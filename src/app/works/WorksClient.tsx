@@ -12,6 +12,8 @@ interface Props {
   locale: Locale;
 }
 
+const heights = [560, 460, 620, 500, 580, 480, 540, 640, 560, 440, 520, 600, 660, 480, 540, 600, 460, 520, 580, 500, 600, 580, 460];
+
 export default function WorksClient({ categories, works, locale }: Props) {
   const [activeFilter, setActiveFilter] = useState<number | "all">("all");
   const [selectedWork, setSelectedWork] = useState<WorkRow | null>(null);
@@ -89,13 +91,13 @@ export default function WorksClient({ categories, works, locale }: Props) {
           </div>
 
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {filtered.map((work) => {
+            {filtered.map((work, idx) => {
               const title = tr(locale, work.title_ko, work.title_en);
               const extraCount = Array.isArray(work.extra_images) ? work.extra_images.filter(Boolean).length : 0;
               return (
                 <div key={work.id} className="break-inside-avoid group cursor-pointer" onClick={() => openWork(work)}>
                   <div className="relative bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
-                    <div className="relative w-full aspect-[3/2] bg-[#2a2a2a]">
+                    <div className="relative w-full bg-[#2a2a2a]" style={{ height: heights[idx % heights.length] }}>
                       {work.image_url && (
                         <Image
                           src={work.image_url}
@@ -108,7 +110,7 @@ export default function WorksClient({ categories, works, locale }: Props) {
                       )}
                       {work.logo_url && (
                         <>
-                          <div className="absolute inset-0 bg-black/45" />
+                          <div className="absolute inset-0 bg-black/30" />
                           <div className="absolute inset-0 flex items-center justify-center p-5">
                             <div
                               className="w-[90%] h-[65%] max-w-[500px] bg-white"
@@ -134,7 +136,7 @@ export default function WorksClient({ categories, works, locale }: Props) {
                         </div>
                       )}
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-4 pointer-events-none">
                       {work.size && <span className="text-[#4A90D9] text-xs mb-1">{work.size}</span>}
                       <h3 className="text-white text-lg font-bold leading-tight">{title}</h3>
                       <span className="text-[#aaa] text-sm mt-1">{catLabel(work.category_id)}</span>

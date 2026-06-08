@@ -10,6 +10,8 @@ export interface LedCategoryRow {
   image_url: string | null;
   specs_ko: string | null;
   specs_en: string | null;
+  description_ko: string | null;
+  description_en: string | null;
   sort_order: number;
 }
 

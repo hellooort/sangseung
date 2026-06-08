@@ -218,15 +218,15 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
           <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-black">
             {bannerImage && (
               <div className="absolute inset-0">
-                <Image src={bannerImage} alt="" fill className="object-cover opacity-50" unoptimized />
+                <Image src={bannerImage} alt="" fill className="object-cover" unoptimized />
               </div>
             )}
             <div className="relative text-center px-6 max-w-4xl">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight whitespace-pre-line">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight whitespace-pre-line [text-shadow:_0_2px_12px_rgb(0_0_0_/_75%)]">
                 {tr(locale, detail.banner?.title_ko, detail.banner?.title_en)}
               </h2>
               {(detail.banner?.description_ko || detail.banner?.description_en) && (
-                <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                <p className="text-white text-base md:text-lg max-w-2xl mx-auto leading-relaxed [text-shadow:_0_2px_10px_rgb(0_0_0_/_75%)]">
                   {tr(locale, detail.banner?.description_ko, detail.banner?.description_en)}
                 </p>
               )}
@@ -237,12 +237,12 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
 
       {/* Section 4: Tech Features */}
       {featuresArr.length > 0 && (
-        <section className="py-24 px-6 lg:px-20 bg-white">
+        <section className="py-16 px-6 lg:px-20 bg-white">
           <div className="max-w-6xl mx-auto">
             {featuresArr.map((feature, index) => (
               <div
                 key={index}
-                className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-12 items-center ${index > 0 ? "mt-32" : ""}`}
+                className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 lg:gap-12 items-center ${index > 0 ? "mt-12 md:mt-16" : ""}`}
               >
                 <div className="md:w-1/2">
                   <div className="relative aspect-[16/10] bg-gray-100 rounded-2xl overflow-hidden">
@@ -273,13 +273,13 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
         <section className="py-24 px-6 lg:px-20 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">{t("Specifications", "Specifications")}</h2>
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden border-2 border-gray-300">
               <table className="w-full">
                 <tbody>
                   {specsArr.map((spec, index) => (
-                    <tr key={index} className="border-b border-gray-100 last:border-0">
-                      <td className="px-6 py-4 text-gray-700 font-medium bg-gray-50 w-2/5 text-sm">{spec.label}</td>
-                      <td className="px-6 py-4 text-gray-600 text-center text-sm">{spec.value}</td>
+                    <tr key={index} className="border-b border-gray-300 last:border-0">
+                      <td className="px-6 py-4 text-gray-900 font-bold bg-gray-100 w-2/5 text-sm border-r border-gray-300">{spec.label}</td>
+                      <td className="px-6 py-4 text-gray-700 text-center text-sm">{spec.value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -297,10 +297,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
       {applicationsArr.length > 0 && (
         <section className="py-24 px-6 lg:px-20 bg-white">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">{t("Applications", "Applications")}</h2>
-            <p className="text-gray-500 text-center mb-12">
-              {t("다양한 공간에 최적화된 영상 솔루션을 제공합니다.", "Optimal video solutions for diverse spaces.")}
-            </p>
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">{t("Applications", "Applications")}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {applicationsArr.map((app, index) => (
                 <div key={index} className="bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">

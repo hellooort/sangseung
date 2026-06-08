@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getLocale } from "@/lib/locale.server";
 import { getList } from "@/lib/supabase/public";
 import { tr } from "@/lib/locale";
+import { ledCategorySlug, type LedCategoryRow } from "@/lib/led-categories";
 
 interface DbProductRow {
   slug: string | null;
@@ -27,10 +28,18 @@ interface CobProduct {
 export default async function COBLEDPage() {
   const locale = await getLocale();
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
-  const rows = await getList<DbProductRow>(
-    "products",
-    { orderBy: "sort_order", filter: { column: "category_slug", value: "cob" } },
-  );
+  const [rows, cats] = await Promise.all([
+    getList<DbProductRow>(
+      "products",
+      { orderBy: "sort_order", filter: { column: "category_slug", value: "cob" } },
+    ),
+    getList<LedCategoryRow>("product_categories", { orderBy: "sort_order" }),
+  ]);
+  const cobCat = cats.find((c) => ledCategorySlug(c) === "cob");
+  const descKo = cobCat?.description_ko?.trim() ||
+    "Chip on Board 기술을 적용한 차세대 LED 디스플레이입니다. 기존 SMD 방식 대비 더 높은 화질과 안정성을 제공합니다.";
+  const descEn = cobCat?.description_en?.trim() ||
+    "Next-generation LED displays based on Chip-on-Board technology, delivering higher image quality and reliability than conventional SMD displays.";
   const products: CobProduct[] = rows
     .map((r) => ({
       slug: r.slug as string,
@@ -53,11 +62,8 @@ export default async function COBLEDPage() {
             <span className="text-[#4A90D9]">COB LED</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">COB LED</h1>
-          <p className="text-[#888] text-lg max-w-2xl leading-relaxed">
-            {t(
-              "Chip on Board 기술을 적용한 차세대 LED 디스플레이입니다. 기존 SMD 방식 대비 더 높은 화질과 안정성을 제공합니다.",
-              "Next-generation LED displays based on Chip-on-Board technology, delivering higher image quality and reliability than conventional SMD displays.",
-            )}
+          <p className="text-[#888] text-lg max-w-2xl leading-relaxed whitespace-pre-line">
+            {t(descKo, descEn)}
           </p>
         </div>
       </section>

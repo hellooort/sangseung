@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Locale } from "@/lib/locale";
+import { getList } from "@/lib/supabase/public";
+import { ledCategorySlug, type LedCategoryRow } from "@/lib/led-categories";
 
 export interface LedCategoryProduct {
   slug: string;
@@ -22,7 +24,7 @@ interface Props {
   products: LedCategoryProduct[];
 }
 
-export default function LedCategoryPage({
+export default async function LedCategoryPage({
   locale,
   categoryLabel,
   categorySlug,
@@ -33,6 +35,13 @@ export default function LedCategoryPage({
   products,
 }: Props) {
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);
+
+  // 카테고리 설명은 관리자(product_categories)에서 수정 가능 → DB 값이 있으면 우선 사용,
+  // 비어 있으면 페이지에 넘겨진 기본 문구로 폴백.
+  const cats = await getList<LedCategoryRow>("product_categories", { orderBy: "sort_order" });
+  const matched = cats.find((c) => ledCategorySlug(c) === categorySlug);
+  const descKo = matched?.description_ko?.trim() || description_ko;
+  const descEn = matched?.description_en?.trim() || description_en;
 
   return (
     <>
@@ -49,8 +58,8 @@ export default function LedCategoryPage({
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             {locale === "en" ? title_en : title_ko}
           </h1>
-          <p className="text-[#888] text-lg max-w-2xl leading-relaxed">
-            {locale === "en" ? description_en : description_ko}
+          <p className="text-[#888] text-lg max-w-2xl leading-relaxed whitespace-pre-line">
+            {locale === "en" ? descEn : descKo}
           </p>
         </div>
       </section>

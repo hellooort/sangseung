@@ -22,6 +22,8 @@ interface Category {
   image_url: string | null;
   specs_ko: string | null;
   specs_en: string | null;
+  description_ko: string | null;
+  description_en: string | null;
   sort_order: number;
 }
 
@@ -212,6 +214,8 @@ export default function AdminProductsPage() {
         image_url: c.image_url ?? null,
         specs_ko: c.specs_ko ?? "",
         specs_en: c.specs_en ?? "",
+        description_ko: c.description_ko ?? "",
+        description_en: c.description_en ?? "",
         sort_order: idx,
       }),
     );
@@ -321,6 +325,13 @@ export default function AdminProductsPage() {
                   </div>
                   <textarea value={cat.specs_ko ?? ""} onChange={(e) => updateCategory(cat.id, "specs_ko", e.target.value)} rows={3} placeholder="카드 스펙 (KO) — 한 줄에 하나씩" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
                   <textarea value={cat.specs_en ?? ""} onChange={(e) => updateCategory(cat.id, "specs_en", e.target.value)} rows={3} placeholder="Card specs (EN) — one per line" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                </div>
+                <div className="pl-8">
+                  <label className="text-[11px] font-medium text-gray-500 mb-1 block">카테고리 페이지 상단 설명 문구 (제목 밑)</label>
+                  <div className="flex gap-3">
+                    <textarea value={cat.description_ko ?? ""} onChange={(e) => updateCategory(cat.id, "description_ko", e.target.value)} rows={2} placeholder="설명 문구 (KO)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                    <textarea value={cat.description_en ?? ""} onChange={(e) => updateCategory(cat.id, "description_en", e.target.value)} rows={2} placeholder="Description (EN)" className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-xs text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 resize-none" />
+                  </div>
                 </div>
               </div>
             ))}
