@@ -85,7 +85,7 @@ export default function AdminContactPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="sticky top-16 z-20 py-4 mb-8 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-gray-900">상담신청 / 문의</h1>
           {unreadCount > 0 && (

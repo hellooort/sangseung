@@ -63,9 +63,16 @@ export default function AdminWorksPage() {
       logo_url: "",
       image_url: "",
       extra_images: [],
-      sort_order: works.items.length,
+      sort_order: 0,
     });
-    if (created) setEditingProject(created.id);
+    if (created) {
+      // 새 프로젝트를 목록 맨 앞으로 배치하고 sort_order 를 즉시 저장한다.
+      // works/page.tsx, 관리자 목록 모두 sort_order 오름차순이라 맨 위에 표시됨.
+      const reordered = [created, ...works.items.filter((p) => p.id !== created.id)];
+      works.setItems(reordered);
+      await Promise.all(reordered.map((p, idx) => works.update(p.id, { sort_order: idx })));
+      setEditingProject(created.id);
+    }
   };
 
   const updateProject = (id: number, field: keyof WorkRow, value: string | number | string[] | null) => {
@@ -159,7 +166,7 @@ export default function AdminWorksPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="sticky top-16 z-20 py-4 mb-8 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">설치사례 관리</h1>
         <div className="flex items-center gap-3">
           {(cats.error || works.error) && <span className="text-red-500 text-sm">{cats.error || works.error}</span>}

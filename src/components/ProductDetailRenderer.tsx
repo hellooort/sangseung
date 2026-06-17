@@ -217,10 +217,12 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
       {/* Section 3: Immersive Banner */}
       {(detail.banner?.title_ko || bannerImage) && (
         <section className="relative py-0">
-          <div className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-black">
+          <div className="relative min-h-[55vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden bg-black">
             {bannerImage && (
               <div className="absolute inset-0">
-                <Image src={bannerImage} alt="" fill className="object-cover" unoptimized />
+                {/* 모바일: 가로 이미지가 좌우로 잘리지 않게 전체 표시(contain),
+                    데스크탑: 풀블리드(cover) */}
+                <Image src={bannerImage} alt="" fill className="object-contain md:object-cover" unoptimized />
               </div>
             )}
             <div className="relative text-center px-6 max-w-4xl">

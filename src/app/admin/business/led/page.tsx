@@ -128,7 +128,7 @@ export default function AdminLedPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="sticky top-16 z-20 py-4 mb-6 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">LED 디스플레이 페이지 관리</h1>
           <p className="text-sm text-gray-500 mt-1">/business/led 페이지의 모든 섹션을 관리합니다.</p>

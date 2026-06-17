@@ -117,7 +117,7 @@ export default function AdminLocationsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="sticky top-16 z-20 py-4 mb-8 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">오시는 길 관리</h1>
         <div className="flex gap-3 items-center">
           {error && <span className="text-red-500 text-sm">{error}</span>}

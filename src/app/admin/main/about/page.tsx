@@ -35,7 +35,7 @@ export default function AdminMainAboutPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="sticky top-16 z-20 py-4 mb-8 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">메인 - 회사 소개 섹션</h1>
           <p className="text-sm text-gray-500 mt-1">메인 페이지의 &quot;디지털 미디어 솔루션…&quot; 영역을 관리합니다.</p>

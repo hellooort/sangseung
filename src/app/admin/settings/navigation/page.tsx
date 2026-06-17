@@ -213,7 +213,7 @@ export default function AdminNavigationPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="sticky top-16 z-20 py-4 mb-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">네비게이션 관리</h1>
           <p className="text-sm text-gray-500 mt-1">상단 메뉴(헤더)와 모바일 메뉴에 동일하게 적용됩니다. 영문 칸이 비면 한국어로 폴백.</p>

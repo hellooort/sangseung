@@ -206,7 +206,7 @@ export default function AdminProductDetailPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="sticky top-16 z-20 py-4 mb-6 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <Link href="/admin/business/products" className="text-blue-600 text-sm hover:underline">
             ← 제품 목록으로

@@ -71,7 +71,7 @@ export default async function OrganizationPage() {
             </h1>
 
             <div className="flex flex-col items-center">
-              <div className="bg-[#4A90D9] text-white px-8 py-4 rounded-lg font-bold text-lg mb-8">
+              <div className="bg-[#4A90D9] text-white px-8 py-4 rounded-lg font-bold text-lg">
                 {tr(locale, data.ceo_ko, data.ceo_en)}
               </div>
 

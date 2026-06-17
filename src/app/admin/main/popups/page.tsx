@@ -82,7 +82,7 @@ export default function AdminPopupsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="sticky top-16 z-20 py-4 mb-6 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">팝업 관리</h1>
           <p className="text-sm text-gray-500 mt-1">메인 페이지에 노출되는 팝업을 관리합니다. 활성화된 팝업만 표시되며, 사용자는 &quot;오늘 하루 보지 않기&quot; 로 닫을 수 있습니다.</p>

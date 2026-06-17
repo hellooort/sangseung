@@ -43,7 +43,7 @@ export default function AdminMainResultPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="sticky top-16 z-20 py-4 mb-8 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">메인 - 실적 통계 섹션</h1>
           <p className="text-sm text-gray-500 mt-1">메인 페이지의 RESULT 섹션 (프로젝트 / 고객사 카운트) 을 관리합니다.</p>
