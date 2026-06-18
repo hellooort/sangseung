@@ -248,12 +248,12 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                 key={index}
                 className={`flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 lg:gap-12 items-center ${index > 0 ? "mt-12 md:mt-16" : ""}`}
               >
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2">
                   <div className="relative aspect-[16/10] bg-gray-100 rounded-2xl overflow-hidden">
                     {isValidUrl(feature.image) && <Image src={feature.image as string} alt="" fill className="object-cover" unoptimized />}
                   </div>
                 </div>
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2">
                   {feature.subtitle_en && (
                     <span className="text-[#4A90D9] text-xs tracking-[0.2em] font-medium mb-3 block">
                       {feature.subtitle_en}

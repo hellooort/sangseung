@@ -90,14 +90,25 @@ export default function WorksClient({ categories, works, locale }: Props) {
             ))}
           </div>
 
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
+          {/* 그리드 마소너리: 행 우선(왼쪽→오른쪽) 순서로 채워서 최신 항목이 좌상단부터 가로로 흐르게.
+              gridAutoRows + row-span 으로 높이 변화감은 유지. */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            style={{ gridAutoRows: "1px", columnGap: "20px" }}
+          >
             {filtered.map((work, idx) => {
               const title = tr(locale, work.title_ko, work.title_en);
               const extraCount = Array.isArray(work.extra_images) ? work.extra_images.filter(Boolean).length : 0;
+              const cardHeight = heights[idx % heights.length];
               return (
-                <div key={work.id} className="break-inside-avoid group cursor-pointer" onClick={() => openWork(work)}>
+                <div
+                  key={work.id}
+                  className="group cursor-pointer"
+                  style={{ gridRowEnd: `span ${cardHeight + 20}` }}
+                  onClick={() => openWork(work)}
+                >
                   <div className="relative bg-[#1a1a1a] rounded-xl overflow-hidden hover:scale-[1.02] transition-transform">
-                    <div className="relative w-full bg-[#2a2a2a]" style={{ height: heights[idx % heights.length] }}>
+                    <div className="relative w-full bg-[#2a2a2a]" style={{ height: cardHeight }}>
                       {work.image_url && (
                         <Image
                           src={work.image_url}
