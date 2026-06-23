@@ -46,18 +46,30 @@ const fallbackWorks: WorkRow[] = Array.from({ length: 23 }).map((_, i) => ({
   sort_order: i,
 }));
 
-export default async function WorksPage() {
-  const [cats, works, locale] = await Promise.all([
+export default async function WorksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cat?: string }>;
+}) {
+  const [cats, works, locale, sp] = await Promise.all([
     getList<WorkCat>("work_categories", { orderBy: "sort_order" }, fallbackCats),
     getList<WorkRow>("works", { orderBy: "sort_order", ascending: true }, fallbackWorks),
     getLocale(),
+    searchParams,
   ]);
+
+  // ?cat=facade 처럼 쿼리로 들어온 값을 카테고리명과 매칭해 초기 필터를 정한다.
+  const catParam = typeof sp?.cat === "string" ? sp.cat.toLowerCase().replace(/\s+/g, "") : null;
+  const norm = (s: string | null) => (s ?? "").toLowerCase().replace(/\s+/g, "");
+  const initialCatId = catParam
+    ? cats.find((c) => norm(c.name_en).includes(catParam) || norm(c.name_ko).includes(catParam))?.id ?? null
+    : null;
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
       <main className="pt-20">
-        <WorksClient categories={cats} works={works} locale={locale} />
+        <WorksClient categories={cats} works={works} locale={locale} initialCatId={initialCatId} />
       </main>
       <Footer />
     </div>

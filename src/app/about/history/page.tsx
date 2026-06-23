@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getList } from "@/lib/supabase/public";
+import { getLocale } from "@/lib/locale.server";
 import HistoryClient from "./HistoryClient";
 
 export interface HistoryRow {
@@ -31,13 +32,16 @@ const fallback: HistoryRow[] = [
 ];
 
 export default async function HistoryPage() {
-  const rows = await getList<HistoryRow>("histories", { orderBy: "sort_order" }, fallback);
+  const [rows, locale] = await Promise.all([
+    getList<HistoryRow>("histories", { orderBy: "sort_order" }, fallback),
+    getLocale(),
+  ]);
 
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       <Header />
       <main className="pt-20">
-        <HistoryClient rows={rows} />
+        <HistoryClient rows={rows} locale={locale} />
       </main>
       <Footer />
     </div>

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import type { HistoryRow } from "./page";
+import type { Locale } from "@/lib/locale";
+import { tr } from "@/lib/locale";
 
 interface YearGroup {
   year: string;
@@ -10,17 +12,18 @@ interface YearGroup {
 
 interface Props {
   rows: HistoryRow[];
+  locale: Locale;
 }
 
-export default function HistoryClient({ rows }: Props) {
+export default function HistoryClient({ rows, locale }: Props) {
   const grouped = useMemo<YearGroup[]>(() => {
     const map = new Map<string, YearGroup>();
     for (const r of rows) {
       if (!map.has(r.year)) map.set(r.year, { year: r.year, items: [] });
-      map.get(r.year)!.items.push({ month: r.month, text: r.text_ko });
+      map.get(r.year)!.items.push({ month: r.month, text: tr(locale, r.text_ko, r.text_en) });
     }
     return Array.from(map.values()).sort((a, b) => Number(b.year) - Number(a.year));
-  }, [rows]);
+  }, [rows, locale]);
 
   const periods = useMemo(() => {
     if (grouped.length === 0) return [{ label: "전체", years: [] as string[] }];
@@ -43,7 +46,7 @@ export default function HistoryClient({ rows }: Props) {
     <section className="py-24 px-6 lg:px-20">
       <div className="max-w-5xl mx-auto">
         <span className="text-[#4A90D9] text-sm font-medium tracking-widest mb-4 block">HISTORY</span>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">연혁</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-16">{locale === "en" ? "History" : "연혁"}</h1>
 
         <div className="relative mb-16">
           <div className="flex items-center justify-between relative">

@@ -10,12 +10,13 @@ interface Props {
   categories: WorkCat[];
   works: WorkRow[];
   locale: Locale;
+  initialCatId?: number | null;
 }
 
 const heights = [560, 460, 620, 500, 580, 480, 540, 640, 560, 440, 520, 600, 660, 480, 540, 600, 460, 520, 580, 500, 600, 580, 460];
 
-export default function WorksClient({ categories, works, locale }: Props) {
-  const [activeFilter, setActiveFilter] = useState<number | "all">("all");
+export default function WorksClient({ categories, works, locale, initialCatId = null }: Props) {
+  const [activeFilter, setActiveFilter] = useState<number | "all">(initialCatId ?? "all");
   const [selectedWork, setSelectedWork] = useState<WorkRow | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const t = (ko: string, en: string) => (locale === "en" ? en : ko);

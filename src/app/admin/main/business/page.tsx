@@ -25,10 +25,10 @@ const fallback: MainBusinessData = {
   areas: [
     { id: "1", title: "NI",            subtitle_ko: "Network Infrastructure",        subtitle_en: "Network Infrastructure",        description_ko: "네트워크 인프라 구축",       description_en: "Network infrastructure build-out",     href: "/business/network" },
     { id: "2", title: "LED Display",   subtitle_ko: "LED 디스플레이",                subtitle_en: "LED Display",                   description_ko: "설계, 제작, 시공",            description_en: "Design, production, installation",     href: "/business/led" },
-    { id: "3", title: "SI",            subtitle_ko: "System Integration",            subtitle_en: "System Integration",            description_ko: "시스템 통합",                  description_en: "Integrated system services",           href: "/business/si" },
-    { id: "4", title: "Media Façade",  subtitle_ko: "미디어 파사드",                 subtitle_en: "Media Façade",                  description_ko: "건물 외관 LED 디스플레이",   description_en: "LED displays on building exteriors",   href: "/business/facade" },
+    { id: "3", title: "SI",            subtitle_ko: "System Integration",            subtitle_en: "System Integration",            description_ko: "시스템 통합",                  description_en: "Integrated system services",           href: "/business/network" },
+    { id: "4", title: "Media Façade",  subtitle_ko: "미디어 파사드",                 subtitle_en: "Media Façade",                  description_ko: "건물 외관 LED 디스플레이",   description_en: "LED displays on building exteriors",   href: "/works?cat=facade" },
     { id: "5", title: "Network",       subtitle_ko: "네트워크 구축",                 subtitle_en: "Network Build",                 description_ko: "유무선 인프라",               description_en: "Wired & wireless infrastructure",      href: "/business/network" },
-    { id: "6", title: "IBS",           subtitle_ko: "Intelligent Building System",   subtitle_en: "Intelligent Building System",   description_ko: "A/V, PA, CCTV, CATV 등",      description_en: "A/V, PA, CCTV, CATV and more",         href: "/business/ibs" },
+    { id: "6", title: "IBS",           subtitle_ko: "Intelligent Building System",   subtitle_en: "Intelligent Building System",   description_ko: "A/V, PA, CCTV, CATV 등",      description_en: "A/V, PA, CCTV, CATV and more",         href: "/business/network/ibs" },
   ],
 };
 
