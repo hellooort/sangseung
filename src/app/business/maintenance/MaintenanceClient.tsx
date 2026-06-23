@@ -122,8 +122,8 @@ export default function MaintenanceClient({ locale, data }: Props) {
                   {b.image && <Image src={b.image} alt={tr(locale, b.title_ko, b.title_en)} fill className="object-cover" unoptimized />}
                 </div>
                 <div className="p-4 lg:p-5">
-                  <h3 className="text-gray-900 text-base md:text-lg font-bold mb-1">{tr(locale, b.title_ko, b.title_en)}</h3>
-                  <p className="text-gray-500 text-xs md:text-sm">{tr(locale, b.description_ko, b.description_en)}</p>
+                  <h3 className="text-gray-900 text-base md:text-lg font-bold mb-1 whitespace-pre-line">{tr(locale, b.title_ko, b.title_en)}</h3>
+                  <p className="text-gray-500 text-xs md:text-sm whitespace-pre-line">{tr(locale, b.description_ko, b.description_en)}</p>
                 </div>
               </div>
             ))}

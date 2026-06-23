@@ -228,8 +228,8 @@ export default function AdminMaintenancePage() {
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
                       <input type="text" value={b.title_ko}       onChange={(e) => updateBenefit(b.id, { title_ko: e.target.value })}       placeholder="제목 (KO)"       className={inputCls} />
                       <input type="text" value={b.title_en}       onChange={(e) => updateBenefit(b.id, { title_en: e.target.value })}       placeholder="Title (EN)"      className={inputCls} />
-                      <input type="text" value={b.description_ko} onChange={(e) => updateBenefit(b.id, { description_ko: e.target.value })} placeholder="설명 (KO)"       className={inputCls} />
-                      <input type="text" value={b.description_en} onChange={(e) => updateBenefit(b.id, { description_en: e.target.value })} placeholder="Description (EN)" className={inputCls} />
+                      <textarea value={b.description_ko} onChange={(e) => updateBenefit(b.id, { description_ko: e.target.value })} placeholder="설명 (KO) — Enter 로 줄바꿈"       rows={3} className={`${inputCls} resize-y whitespace-pre-wrap`} />
+                      <textarea value={b.description_en} onChange={(e) => updateBenefit(b.id, { description_en: e.target.value })} placeholder="Description (EN) — Enter for line break" rows={3} className={`${inputCls} resize-y whitespace-pre-wrap`} />
                     </div>
                   </div>
                   <div className="flex justify-between text-xs">
