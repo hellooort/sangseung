@@ -106,7 +106,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
         <div className="max-w-7xl mx-auto px-6 lg:px-20 relative">
           {/* 보라색 히어로 - 상단 중앙 */}
           <div className="flex justify-center mb-12 lg:mb-16">
-            <div className="bg-[#3B2B8F] rounded-[40px] lg:rounded-[60px] px-10 lg:px-24 py-12 lg:py-16 text-center w-full max-w-3xl">
+            <div className="bg-[#3B2B8F] rounded-[40px] lg:rounded-[60px] px-10 lg:px-24 py-12 lg:py-16 text-center w-full max-w-4xl">
               <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
                 {t("ICT 시설\n유지보수 및 관리", "ICT Facility\nMaintenance & Management")}
@@ -164,7 +164,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
             <div className="text-center mb-10">
               <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Business performance</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">
-                {t("주요 시공 실적", "Key Performance")}
+                {t("주요 실적", "Key Performance")}
               </h2>
             </div>
 

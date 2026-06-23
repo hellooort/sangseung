@@ -158,7 +158,7 @@ export default function AdminMaintenancePage() {
           { id: "hero",        label: "Hero" },
           { id: "benefits",    label: "5가지 베네핏" },
           { id: "expertise",   label: "전문성 카드" },
-          { id: "performance", label: "주요 시공 실적" },
+          { id: "performance", label: "주요 실적" },
           { id: "cta",         label: "하단 전화 CTA" },
         ].map((t) => (
           <button key={t.id} onClick={() => setTab(t.id as typeof tab)} className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === t.id ? "bg-blue-600 text-white" : "bg-white text-gray-700 border border-gray-200"}`}>
@@ -272,7 +272,7 @@ export default function AdminMaintenancePage() {
         {tab === "performance" && (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-semibold text-gray-900">주요 시공 실적 (탭 별 4장 카드)</h2>
+              <h2 className="text-base font-semibold text-gray-900">주요 실적 (탭 별 4장 카드)</h2>
               <button onClick={addTab} className="text-blue-600 text-sm hover:underline">+ 탭 추가</button>
             </div>
             <div className="space-y-6">
