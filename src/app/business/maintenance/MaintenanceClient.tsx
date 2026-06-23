@@ -109,7 +109,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
             <div className="bg-[#3B2B8F] rounded-[40px] lg:rounded-[60px] px-10 lg:px-24 py-12 lg:py-16 text-center w-full max-w-4xl">
               <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
-                {t("ICT 시설\n유지보수 및 관리", "ICT Facility\nMaintenance & Management")}
+                {t("정보통신설비\n유지보수 · 관리 및 성능점검", "ICT Facilities\nMaintenance, Management & Performance Inspection")}
               </h2>
             </div>
           </div>
