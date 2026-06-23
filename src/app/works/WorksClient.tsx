@@ -205,7 +205,7 @@ export default function WorksClient({ categories, works, locale, initialCatId = 
                     <button
                       onClick={goPrev}
                       className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors"
-                      aria-label="이전"
+                      aria-label={t("이전", "Previous")}
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -214,7 +214,7 @@ export default function WorksClient({ categories, works, locale, initialCatId = 
                     <button
                       onClick={goNext}
                       className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors"
-                      aria-label="다음"
+                      aria-label={t("다음", "Next")}
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

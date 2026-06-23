@@ -100,7 +100,7 @@ export default function OverseasClient({ locale, categories, projects }: Props) 
                 >
                   <div className="relative aspect-[3/2] bg-gradient-to-br from-[#2a3a4a] to-[#1a2a3a] flex items-center justify-center overflow-hidden">
                     {project.image_url ? (
-                      <Image src={project.image_url} alt={project.title_ko} fill className="object-cover" unoptimized />
+                      <Image src={project.image_url} alt={t(project.title_ko, project.title_en)} fill className="object-cover" unoptimized />
                     ) : (
                       <span className="text-white/20 text-5xl font-bold">{region}</span>
                     )}
@@ -171,7 +171,7 @@ export default function OverseasClient({ locale, categories, projects }: Props) 
               <button
                 onClick={goPrev}
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors"
-                aria-label="이전"
+                aria-label={t("이전", "Previous")}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -182,7 +182,7 @@ export default function OverseasClient({ locale, categories, projects }: Props) 
               <button
                 onClick={goNext}
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center transition-colors"
-                aria-label="다음"
+                aria-label={t("다음", "Next")}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

@@ -100,7 +100,7 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
               {detail.hero.tag}
             </span>
           )}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[0.95]">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[0.95] break-words">
             {tr(locale, detail.hero?.title, detail.hero?.title_en)}
           </h1>
           {(detail.hero?.description_ko || detail.hero?.description_en) && (
@@ -282,8 +282,8 @@ export default function ProductDetailRenderer({ detail, locale = "ko" }: Props) 
                 <tbody>
                   {specsArr.map((spec, index) => (
                     <tr key={index} className="border-b border-gray-300 last:border-0">
-                      <td className="px-6 py-4 text-gray-900 font-bold bg-gray-100 w-2/5 text-sm border-r border-gray-300">{spec.label}</td>
-                      <td className="px-6 py-4 text-gray-700 text-center text-sm">{spec.value}</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-900 font-bold bg-gray-100 w-2/5 text-sm border-r border-gray-300 break-keep">{spec.label}</td>
+                      <td className="px-3 py-3 sm:px-6 sm:py-4 text-gray-700 text-center text-sm break-keep">{spec.value}</td>
                     </tr>
                   ))}
                 </tbody>

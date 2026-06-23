@@ -65,6 +65,7 @@ export default async function LocationPage() {
                           address={geocodeAddr}
                           title={officeName}
                           searchQuery={geocodeAddr ?? officeName}
+                          locale={locale}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-center">

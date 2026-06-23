@@ -67,7 +67,7 @@ export default function CertificatesClient({ categories, certificates, locale = 
                 {cert.image_url && (
                   <Image
                     src={cert.image_url}
-                    alt={cert.title_ko}
+                    alt={tr(locale, cert.title_ko, cert.title_en)}
                     fill
                     className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                     unoptimized

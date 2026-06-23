@@ -104,29 +104,29 @@ export default function MaintenanceClient({ locale, data }: Props) {
 
       <section className="relative py-20 lg:py-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 lg:px-20 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="relative">
-              <div className="bg-[#3B2B8F] rounded-r-[80px] lg:rounded-r-[120px] -ml-6 lg:-ml-20 px-6 lg:px-20 py-16 lg:py-20">
-                <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
-                  {t("ICT 시설\n유지보수 및 관리", "ICT Facility\nMaintenance & Management")}
-                </h2>
-              </div>
+          {/* 보라색 히어로 - 상단 중앙 */}
+          <div className="flex justify-center mb-12 lg:mb-16">
+            <div className="bg-[#3B2B8F] rounded-[40px] lg:rounded-[60px] px-10 lg:px-24 py-12 lg:py-16 text-center w-full max-w-3xl">
+              <p className="text-[#F5A623] text-sm font-medium tracking-widest mb-4">Maintenance &amp; Management</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight whitespace-pre-line">
+                {t("ICT 시설\n유지보수 및 관리", "ICT Facility\nMaintenance & Management")}
+              </h2>
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-4 lg:gap-5">
-              {data.benefits.map((b, idx) => (
-                <div key={b.id} className={`bg-white rounded-xl overflow-hidden shadow-lg ${idx === 1 ? "lg:mt-12" : idx === 2 ? "lg:-mt-6" : idx === 3 ? "lg:mt-6" : idx === 4 ? "lg:-mt-6" : ""}`}>
-                  <div className="relative aspect-[3/2] bg-gray-100">
-                    {b.image && <Image src={b.image} alt={b.title_ko} fill className="object-cover" unoptimized />}
-                  </div>
-                  <div className="p-4 lg:p-5">
-                    <h3 className="text-gray-900 text-base md:text-lg font-bold mb-1">{tr(locale, b.title_ko, b.title_en)}</h3>
-                    <p className="text-gray-500 text-xs md:text-sm">{tr(locale, b.description_ko, b.description_en)}</p>
-                  </div>
+          {/* benefits 카드 - 1줄에 2개씩, 항목 추가 시 아래로 계속 정렬 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 max-w-4xl mx-auto">
+            {data.benefits.map((b) => (
+              <div key={b.id} className="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div className="relative aspect-[3/2] bg-gray-100">
+                  {b.image && <Image src={b.image} alt={tr(locale, b.title_ko, b.title_en)} fill className="object-cover" unoptimized />}
                 </div>
-              ))}
-            </div>
+                <div className="p-4 lg:p-5">
+                  <h3 className="text-gray-900 text-base md:text-lg font-bold mb-1">{tr(locale, b.title_ko, b.title_en)}</h3>
+                  <p className="text-gray-500 text-xs md:text-sm">{tr(locale, b.description_ko, b.description_en)}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -180,7 +180,7 @@ export default function MaintenanceClient({ locale, data }: Props) {
               {currentTab.items.map((item) => (
                 <div key={item.id} className="bg-white rounded-xl overflow-hidden">
                   <div className="relative aspect-[3/2] bg-gray-100">
-                    {item.image && <Image src={item.image} alt={item.title_ko} fill className="object-cover" unoptimized />}
+                    {item.image && <Image src={item.image} alt={tr(locale, item.title_ko, item.title_en)} fill className="object-cover" unoptimized />}
                   </div>
                   <div className="p-5 text-center">
                     <h3 className="text-gray-900 text-base font-bold mb-1">{tr(locale, item.title_ko, item.title_en)}</h3>

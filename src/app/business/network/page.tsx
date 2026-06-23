@@ -96,7 +96,7 @@ export default async function NetworkBusinessPage() {
       <section className="relative overflow-hidden bg-[#0A0A0A] md:aspect-video">
         <div className="relative aspect-video md:absolute md:inset-0 md:aspect-auto">
           {data.hero.image && (
-            <Image src={data.hero.image} alt={data.hero.title_ko} fill className="object-cover" unoptimized />
+            <Image src={data.hero.image} alt={tr(locale, data.hero.title_ko, data.hero.title_en)} fill className="object-cover" unoptimized />
           )}
           <div className="hidden md:block absolute inset-0 bg-black/55" />
           <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
@@ -152,7 +152,7 @@ export default async function NetworkBusinessPage() {
                 >
                   <div className="relative aspect-[3/2] bg-[#2a2a2a]">
                     {category.image && (
-                      <Image src={category.image} alt={category.title_ko} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
+                      <Image src={category.image} alt={tr(locale, category.title_ko, category.title_en)} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
                     )}
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
                   </div>

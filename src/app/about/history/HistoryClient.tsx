@@ -71,18 +71,18 @@ export default function HistoryClient({ rows, locale }: Props) {
         </div>
 
         <div className="relative">
-          <div className="absolute left-8 md:left-24 top-0 bottom-0 w-px bg-[#333]" />
+          <div className="absolute left-5 md:left-24 top-0 bottom-0 w-px bg-[#333]" />
 
           {filtered.map((yearData) => (
             <div key={yearData.year} className="mb-16 last:mb-0">
               <div className="flex items-center mb-8">
                 <div className="relative z-10 flex items-center">
-                  <div className="w-4 h-4 rounded-full bg-[#4A90D9] border-4 border-[#0A0A0A] absolute left-6 md:left-[5.5rem] -translate-x-1/2" />
-                  <span className="text-4xl md:text-5xl font-bold text-white ml-16 md:ml-32">{yearData.year}</span>
+                  <div className="w-4 h-4 rounded-full bg-[#4A90D9] border-4 border-[#0A0A0A] absolute left-5 md:left-[5.5rem] -translate-x-1/2" />
+                  <span className="text-4xl md:text-5xl font-bold text-white ml-10 md:ml-32">{yearData.year}</span>
                 </div>
               </div>
 
-              <div className="ml-16 md:ml-32 space-y-6">
+              <div className="ml-10 md:ml-32 space-y-6">
                 {yearData.items.map((item, index) => (
                   <div key={index} className="flex items-start gap-4 group">
                     {item.month && (

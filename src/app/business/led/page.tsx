@@ -138,7 +138,7 @@ export default async function LEDBusinessPage() {
       <section className="relative py-32 px-6 lg:px-20 overflow-hidden">
         <div className="absolute inset-0">
           {data.hero.image && (
-            <Image src={data.hero.image} alt={data.hero.title_ko} fill className="object-cover opacity-30" unoptimized />
+            <Image src={data.hero.image} alt={tr(locale, data.hero.title_ko, data.hero.title_en)} fill className="object-cover opacity-30" unoptimized />
           )}
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
         </div>

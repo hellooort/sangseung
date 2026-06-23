@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { tr, type Locale } from "@/lib/locale";
 
 /**
  * 네이버 지도 (Maps JavaScript API v3) 컴포넌트.
@@ -35,6 +36,8 @@ interface NaverMapProps {
   zoom?: number;
   /** 추가 className (높이 컨테이너에서 사용) */
   className?: string;
+  /** 표시 언어 (ko/en) */
+  locale?: Locale;
 }
 
 declare global {
@@ -111,6 +114,7 @@ export default function NaverMap({
   searchQuery,
   zoom = 16,
   className = "w-full h-full",
+  locale = "ko",
 }: NaverMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -178,7 +182,7 @@ export default function NaverMap({
     return (
       <div className={`${className} flex items-center justify-center text-center bg-[#1a1a1a]`}>
         <div className="px-6">
-          <p className="text-[#888] text-sm mb-3">지도를 불러올 수 없습니다.</p>
+          <p className="text-[#888] text-sm mb-3">{tr(locale, "지도를 불러올 수 없습니다.", "Unable to load the map.")}</p>
           <p className="text-[#555] text-xs">{error}</p>
         </div>
       </div>
@@ -195,7 +199,7 @@ export default function NaverMap({
           rel="noreferrer"
           className="absolute bottom-3 right-3 z-10 bg-white/95 hover:bg-white text-[#222] text-xs font-medium px-3 py-1.5 rounded shadow"
         >
-          네이버 지도에서 보기
+          {tr(locale, "네이버 지도에서 보기", "View on Naver Map")}
         </a>
       )}
     </div>
