@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTableList } from "@/lib/supabase/hooks";
 import { uploadFile, formatFileSize } from "@/lib/supabase/storage";
+import StorageUsage from "@/components/admin/StorageUsage";
 
 interface ResourceRow {
   id: number;
@@ -94,6 +95,8 @@ export default function AdminDownloadsPage() {
           </button>
         </div>
       </div>
+
+      <StorageUsage />
 
       <div className="space-y-4">
         {items.map((resource) => (
