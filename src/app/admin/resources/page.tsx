@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import StorageUsage from "@/components/admin/StorageUsage";
 
 const resourceLinks = [
   {
@@ -30,7 +29,6 @@ export default function AdminResourcesHubPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-8">자료실 관리</h1>
-      <StorageUsage />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {resourceLinks.map((link) => (
           <Link key={link.href} href={link.href} className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-500 hover:shadow-md transition-all">

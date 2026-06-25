@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-// 무료 플랜 스토리지 한도 (1GB)
-const FREE_LIMIT = 1024 * 1024 * 1024;
 const BUCKETS = ["images", "files"];
 
 interface BucketStat {
@@ -76,16 +74,11 @@ export default function StorageUsage() {
 
   const totalBytes = (stats ?? []).reduce((s, x) => s + x.bytes, 0);
   const totalCount = (stats ?? []).reduce((s, x) => s + x.count, 0);
-  const pct = Math.min(100, (totalBytes / FREE_LIMIT) * 100);
-  const barColor = pct >= 90 ? "bg-red-500" : pct >= 70 ? "bg-amber-500" : "bg-blue-600";
   const label = (b: string) => (b === "images" ? "이미지" : b === "files" ? "문서/파일" : b);
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-base font-semibold text-gray-900">스토리지 사용량</h2>
-        <span className="text-xs text-gray-400">무료 한도 1GB</span>
-      </div>
+      <h2 className="text-base font-semibold text-gray-900 mb-3">스토리지 사용량</h2>
 
       {loading ? (
         <p className="text-sm text-gray-400">계산 중…</p>
@@ -93,12 +86,9 @@ export default function StorageUsage() {
         <p className="text-sm text-red-500">사용량을 불러오지 못했습니다: {error}</p>
       ) : (
         <>
-          <div className="flex items-end justify-between mb-2">
+          <div className="mb-3">
             <span className="text-2xl font-bold text-gray-900">{fmt(totalBytes)}</span>
-            <span className="text-sm text-gray-500">/ 1 GB · {pct.toFixed(1)}% 사용</span>
-          </div>
-          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-4">
-            <div className={`h-full ${barColor} rounded-full transition-all`} style={{ width: `${Math.max(pct, 1)}%` }} />
+            <span className="text-sm text-gray-500 ml-2">· 총 {totalCount}개 파일</span>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-600">
             {(stats ?? []).map((s) => (
@@ -107,7 +97,6 @@ export default function StorageUsage() {
                 <span className="text-gray-400">({s.count}개)</span>
               </span>
             ))}
-            <span className="text-gray-400">총 {totalCount}개 파일</span>
           </div>
           {totalBytes === 0 && totalCount > 0 && (
             <p className="text-xs text-amber-600 mt-2">

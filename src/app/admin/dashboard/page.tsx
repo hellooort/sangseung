@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import StorageUsage from "@/components/admin/StorageUsage";
 
 const quickLinks = [
   { label: "상담신청/문의",   href: "/admin/contact",              color: "bg-indigo-500" },
@@ -53,6 +54,8 @@ export default function DashboardPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-8">대시보드</h1>
+
+      <StorageUsage />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
         {stats.map((stat) => (
