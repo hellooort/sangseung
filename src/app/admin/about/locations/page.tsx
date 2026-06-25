@@ -47,16 +47,12 @@ export default function AdminLocationsPage() {
     }
     setGeocodingId(id);
     try {
-      const { lat, lng, roadAddress } = await geocodeAddress(addr);
+      const { lat, lng } = await geocodeAddress(addr);
       setItems((prev) =>
         prev.map((o) => (o.id === id ? { ...o, lat, lng } : o)),
       );
       // 좌표만 즉시 DB 저장 (사용자가 별도 저장 안 눌러도 반영)
       await update(id, { lat, lng });
-      if (roadAddress) {
-        // 검색 결과로 도로명을 안내 (덮어쓰진 않음)
-        console.log("[geocode] matched:", roadAddress);
-      }
     } catch (e) {
       alert((e as Error).message);
     } finally {
