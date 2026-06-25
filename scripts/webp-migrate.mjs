@@ -16,6 +16,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const APPLY = process.argv.includes("--apply");
+const DELETE_ORIG = process.argv.includes("--delete-originals");
 const BUCKET = "images";
 const MAX_DIM = 1920;
 const QUALITY = 82;
@@ -78,7 +79,21 @@ async function listAll(prefix = "") {
 
 function fmt(b) { return b < 1024 ? `${b}B` : b < 1048576 ? `${(b/1024).toFixed(1)}KB` : `${(b/1048576).toFixed(2)}MB`; }
 
+async function deleteOriginalsPhase() {
+  console.log(`\n=== 원본 삭제 단계 (webp 짝이 있는 png/jpg만 삭제) ===`);
+  const all = await listAll("");
+  const webpSet = new Set(all.filter((p) => /\.webp$/i.test(p)));
+  const origs = all.filter((p) => CONVERTIBLE.test(p) && webpSet.has(p.replace(CONVERTIBLE, ".webp")));
+  console.log(`webp 짝이 있는 원본 ${origs.length}개 삭제`);
+  for (let i = 0; i < origs.length; i += 100) {
+    const { error } = await sb.storage.from(BUCKET).remove(origs.slice(i, i + 100));
+    if (error) console.warn(`삭제 실패: ${error.message}`);
+  }
+  console.log("원본 삭제 완료");
+}
+
 async function main() {
+  if (DELETE_ORIG && !APPLY) { await deleteOriginalsPhase(); return; }
   console.log(`\n=== webp 마이그레이션 (${APPLY ? "실제 실행" : "미리보기"}) ===`);
   const all = await listAll("");
   const targets = all.filter((p) => CONVERTIBLE.test(p) && !SKIP.test(p));
@@ -154,18 +169,20 @@ async function main() {
   }
   console.log(`\nDB 업데이트 대상 행: ${rowUpdates}개`);
 
-  // 원본 삭제 (DB 교체 후)
-  if (APPLY && toDelete.length) {
+  // 원본은 기본적으로 보존. 삭제는 webp 확인 후 별도 단계(--delete-originals)에서.
+  if (APPLY && DELETE_ORIG && toDelete.length) {
     for (let i = 0; i < toDelete.length; i += 100) {
-      const batch = toDelete.slice(i, i + 100);
-      const { error } = await sb.storage.from(BUCKET).remove(batch);
+      const { error } = await sb.storage.from(BUCKET).remove(toDelete.slice(i, i + 100));
       if (error) console.warn(`원본 삭제 실패: ${error.message}`);
     }
     console.log(`원본 ${toDelete.length}개 삭제 완료`);
+  } else if (APPLY) {
+    console.log(`\n✅ 원본 ${toDelete.length}개는 보존했습니다. 사이트에서 webp 정상 표시 확인 후`);
+    console.log(`   node scripts/webp-migrate.mjs --delete-originals  로 원본을 삭제하세요.`);
   } else {
-    console.log(`원본 삭제 예정: ${toDelete.length}개 (실제 실행 시)`);
+    console.log(`\n원본 삭제 예정 수: ${toDelete.length}개 (실제 실행 시 보존, 이후 --delete-originals 로 삭제)`);
   }
 
-  console.log(`\n=== ${APPLY ? "완료" : "미리보기 끝 — 실제 실행하려면 --apply"} ===`);
+  console.log(`\n=== ${APPLY ? "변환 완료(원본 보존)" : "미리보기 끝 — 실제 실행하려면 --apply"} ===`);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
