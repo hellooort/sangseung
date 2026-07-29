@@ -131,21 +131,31 @@ async function sendNotification(form: Inquiry): Promise<boolean> {
     timeZone: "Asia/Seoul",
   }).format(new Date());
 
+  const recipients = to.length > 0 ? to : DEFAULT_NOTIFY_TO;
+  const from = process.env.CONTACT_NOTIFY_FROM || DEFAULT_NOTIFY_FROM;
+  const subject = `[홈페이지 문의] ${form.subject} - ${form.name}`;
+  const html = buildHtml(form, receivedAt);
+  const text = buildText(form, receivedAt);
+
   try {
-    const res = await fetch("https://api.resend.com/emails", {
+    // 수신자를 한 메시지에 묶으면 한 명이 반송/차단될 때 메시지 전체가
+    // suppressed 되어 나머지도 못 받는다. batch 로 1인 1메시지 발송한다.
+    const res = await fetch("https://api.resend.com/emails/batch", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from: process.env.CONTACT_NOTIFY_FROM || DEFAULT_NOTIFY_FROM,
-        to: to.length > 0 ? to : DEFAULT_NOTIFY_TO,
-        reply_to: form.email,
-        subject: `[홈페이지 문의] ${form.subject} - ${form.name}`,
-        html: buildHtml(form, receivedAt),
-        text: buildText(form, receivedAt),
-      }),
+      body: JSON.stringify(
+        recipients.map((addr) => ({
+          from,
+          to: [addr],
+          reply_to: form.email,
+          subject,
+          html,
+          text,
+        })),
+      ),
       cache: "no-store",
     });
 
