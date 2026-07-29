@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { Locale } from "@/lib/locale";
-import { createClient } from "@/lib/supabase/client";
 
 const EMPTY_FORM = {
   company: "",
@@ -24,15 +23,20 @@ export default function ContactClient({ locale }: { locale: Locale }) {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const { error } = await createClient().from("contacts").insert({
-        company: formData.company.trim() || null,
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
-        subject: formData.subject.trim(),
-        message: formData.message.trim(),
+      // 저장 + 담당자 알림 메일 발송을 서버 라우트에서 함께 처리한다.
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          company: formData.company.trim(),
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+        }),
       });
-      if (error) throw error;
+      if (!res.ok) throw new Error("submit failed");
       alert(t(
         "문의가 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.",
         "Your inquiry has been received. We will contact you shortly.",
