@@ -160,7 +160,7 @@ export default function ContactClient({ locale }: { locale: Locale }) {
           </div>
           <div className="bg-[#1a1a1a] rounded-xl p-6">
             <h3 className="text-[#4A90D9] font-semibold mb-2">{t("이메일", "Email")}</h3>
-            <p className="text-white">info@sangseung.co.kr</p>
+            <p className="text-white">stcnet@stcnet.co.kr</p>
           </div>
         </div>
       </div>

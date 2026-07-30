@@ -20,7 +20,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const DEFAULT_NOTIFY_TO = [
-  "info@sangseung.co.kr",
+  "stcnet@stcnet.co.kr",
   "yu6625@stcnet.co.kr",
   "njs702@stcnet.co.kr",
   "yun980220@gmail.com",
