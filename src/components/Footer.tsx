@@ -158,6 +158,17 @@ export default async function Footer() {
             </p>
           </div>
 
+          {/* 개인정보처리방침 — 법정 고지사항이라 다른 링크보다 눈에 띄게 표기 */}
+          <div className="lg:flex-1">
+            <h4 className="text-white text-sm font-semibold mb-4">{t("법적 고지", "Legal")}</h4>
+            <Link
+              href="/privacy"
+              className="text-[#aaa] text-sm font-semibold hover:text-white transition-colors"
+            >
+              {t("개인정보처리방침", "Privacy Policy")}
+            </Link>
+          </div>
+
           <div className="flex flex-wrap gap-12 lg:gap-16">
             {Object.entries(footerLinks).map(([category, links]) => (
               <div key={category}>
